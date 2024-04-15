@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-house-visualizer',
-  templateUrl: './house-visualizer.component.html',
-  styleUrl: './house-visualizer.component.css'
+  selector: 'app-housing-visualizer',
+  templateUrl: './housing-visualizer.component.html',
+  styleUrl: './housing-visualizer.component.css'
 })
-export class HouseVisualizerComponent {
+export class HousingVisualizerComponent {
 
   public house: HouseExample = {
     imagesUrl : [
