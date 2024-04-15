@@ -1,12 +1,19 @@
 
 
 <div>
-  <h1>{{house.houseName}}</h1>
+    <h1>{{house.houseName}}</h1>
 
-  <app-info-card [image]="house.imagesUrl[0]"/>
-  <app-info-card [image]="house.imagesUrl[1]"/>
+    @for (image of house.imagesUrl; track house.imagesUrl) {
+        <div *ngIf="image != '' ">
+            <app-info-card [isImage]="true" [image]="image"/>
+        </div>
+    }
 
-  <h3>Anfitrión: {{house.hostName}}</h3>
+
+    <h3>Anfitrión: {{house.hostName}}</h3>
+    <h4>
+        {{house.valuations[0]}}
+    </h4>
 
 
 </div>

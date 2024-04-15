@@ -8,7 +8,7 @@ import {Component, Input} from '@angular/core';
   styleUrl: './info-card.component.css'
 })
 export class InfoCardComponent {
-  private isImage: Boolean = true
+  @Input() isImage: Boolean = false
   @Input() image: String = ""
 
 
