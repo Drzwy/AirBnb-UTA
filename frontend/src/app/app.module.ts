@@ -4,14 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HousingVisualizerComponent} from "../components/housing-visualizer/housing-visualizer.component";
-import {InfoCardComponent} from "../components/housing-visualizer/info-card/info-card.component";
+import {ImageCardComponent} from "../components/housing-visualizer/image-card/image-card.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HousingVisualizerComponent,
-    InfoCardComponent,
-  ],
+    declarations: [
+        AppComponent,
+        HousingVisualizerComponent,
+        ImageCardComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule

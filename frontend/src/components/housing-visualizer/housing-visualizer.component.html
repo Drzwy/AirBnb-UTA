@@ -3,17 +3,28 @@
 <div>
     <h1>{{house.houseName}}</h1>
 
-    @for (image of house.imagesUrl; track house.imagesUrl) {
-        <div *ngIf="image != '' ">
-            <app-info-card [isImage]="true" [image]="image"/>
-        </div>
-    }
+    <app-image-card />
 
 
     <h3>Anfitrión: {{house.hostName}}</h3>
-    <h4>
-        {{house.valuations[0]}}
-    </h4>
+
+    <div class="valuations-container">
+        <h5>Mira las valoraciones:  </h5>
+
+        @for (valuation of house.valuations; track  valuation) {
+            <div class="valuation">
+                <div class = "info-card">
+                    {{valuation}}
+                </div>
+
+                <div class = "info-card">
+                    5 estrellas
+                </div>
+            </div>
+
+
+        }
+    </div>
 
 
 </div>
