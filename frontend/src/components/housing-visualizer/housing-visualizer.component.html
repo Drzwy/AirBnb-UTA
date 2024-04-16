@@ -3,13 +3,21 @@
 <div>
     <h1>{{house.houseName}}</h1>
 
-    <app-image-card />
+    <app-image-card [imageUrls]="house.imagesUrl" />
 
 
-    <h3>Anfitrión: {{house.hostName}}</h3>
+    <h2 class="host">
+        {{TEXTOS.anfitrion}} {{house.hostName}}
+    </h2>
+    <h4>
+        {{TEXTOS.precio}} ${{house.pricePerNight}} {{TEXTOS.precioPorNoche}}
+    </h4>
 
     <div class="valuations-container">
-        <h5>Mira las valoraciones:  </h5>
+
+        <h2 class="subtitle">
+            {{TEXTOS.valoraciones}}
+        </h2>
 
         @for (valuation of house.valuations; track  valuation) {
             <div class="valuation">
@@ -21,8 +29,6 @@
                     5 estrellas
                 </div>
             </div>
-
-
         }
     </div>
 

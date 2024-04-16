@@ -5,14 +5,23 @@ h1 {
   font-size: 2rem;
 }
 
-h2 {
-
+h2.host {
+  font-size: .8rem;
+  font-style: italic;
+  color: #6a6363;
+}
+h2.subtitle {
+  font-size: 1.2rem;
+  font-family: BlinkMacSystemFont, serif;
+}
+h2.valuation {
+  font-family: BlinkMacSystemFont, serif;
 }
 
 .info-card {
   font-family: Roboto, sans-serif;
   font-size: 20px;
-  border: #333030 solid 2px;
+  justify-content: end;
   border-radius: 5px;
   padding: 10px;
   width: 50%;
@@ -29,4 +38,6 @@ h2 {
   align-content: normal;
   display: flex;
   justify-items: left;
+  border: #333030 solid 2px;
+  margin-bottom: 10px;
 }
