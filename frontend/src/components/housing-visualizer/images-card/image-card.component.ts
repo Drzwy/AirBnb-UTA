@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-image-card',
+  selector: 'app-images-card',
   templateUrl: './image-card.component.html',
   styleUrl: './image-card.component.css'
 })

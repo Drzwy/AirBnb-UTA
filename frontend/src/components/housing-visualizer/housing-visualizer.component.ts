@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ImageDTO} from "./image-card/image-card.component";
+import {ImageDTO} from "./images-card/image-card.component";
 
 @Component({
   selector: 'app-housing-visualizer',
@@ -24,7 +24,7 @@ export class HousingVisualizerComponent {
     valuations : ["Muy Bueno, tiene ventanas","Hace calor adentro pero afuera está fresquito"]
   }
 
-  public  TEXTOS = {
+  public  TEXTS = {
     anfitrion: "Anfitrion:",
     precio: "Precio:",
     precioPorNoche: "por noche",

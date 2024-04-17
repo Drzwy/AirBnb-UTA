@@ -3,20 +3,20 @@
 <div>
     <h1>{{house.houseName}}</h1>
 
-    <app-image-card [imageUrls]="house.imagesUrl" />
+    <app-images-card [imageUrls]="house.imagesUrl" />
 
 
     <h2 class="host">
-        {{TEXTOS.anfitrion}} {{house.hostName}}
+        {{TEXTS.anfitrion}} {{house.hostName}}
     </h2>
     <h4 style="margin-left: 70%">
-        {{TEXTOS.precio}} ${{house.pricePerNight}} {{TEXTOS.precioPorNoche}}
+        {{TEXTS.precio}} ${{house.pricePerNight}} {{TEXTS.precioPorNoche}}
     </h4>
 
     <div class="valuations-container">
 
         <h2 class="subtitle">
-            {{TEXTOS.valoraciones}}
+            {{TEXTS.valoraciones}}
         </h2>
 
         @for (valuation of house.valuations; track  valuation) {
