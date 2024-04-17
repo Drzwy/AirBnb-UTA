@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {ImageDTO} from "./images-card/image-card.component";
+import {HousingInformation} from "./housing-info-displayer/housing-info-displayer.component";
 
 @Component({
   selector: 'app-housing-visualizer',
@@ -18,28 +19,54 @@ export class HousingVisualizerComponent {
         alt: "casa por dentro"}
 
     ],
+    houseDescriptionParagraphs: [
+        "Bienvenido al paraíso costero que siempre has soñado. Esta encantadora casa en la playa es el refugio perfecto para aquellos que buscan paz, serenidad y la belleza incomparable del océano. Con vistas panorámicas al mar desde casi todas las habitaciones, esta propiedad ofrece una experiencia de vida costera incomparable.",
+        "Ubicada en una pintoresca comunidad frente al mar, esta casa de estilo contemporáneo irradia calidez y comodidad desde el momento en que pones un pie dentro. Con una arquitectura que fusiona la elegancia moderna con el encanto rústico de la costa, cada detalle ha sido cuidadosamente diseñado para crear un ambiente acogedor y relajante.",
+        "Disfruta de tus mañanas con el sonido de las olas rompiendo suavemente en la playa, mientras tomas tu café en la terraza con vistas al horizonte infinito. Los días de verano se vuelven aún más gloriosos con acceso directo a la playa, donde puedes disfrutar de nadar, practicar surf o simplemente relajarte bajo el sol."
+    ],
     houseName : "Bello apartamento paradisiaco",
     hostName  : "Abelardo Puertas",
     pricePerNight: 123000,
-    valuations : ["Muy Bueno, tiene ventanas","Hace calor adentro pero afuera está fresquito"]
+    valuations : ["Muy Bueno, tiene ventanas","Hace calor adentro pero afuera está fresquito"],
+    location: "Santa Cruz, Bolivia",
+    houseType: "Apartamento de playa",
+    informationOfNumber: {
+      numberOfGuests: 6,
+      numberOfRooms: 3,
+    },
+    services: [
+        "Cama con colchoneta",
+        "Agua caliente en la tarde",
+        "SPA con piedras calientes"
+    ]
   }
 
   public  TEXTS = {
-    anfitrion: "Anfitrion:",
-    precio: "Precio:",
-    precioPorNoche: "por noche",
-    valoraciones: "Mira las valoraciones"
+    hostIs: "Anfitrion:",
+    priceIs: "Precio:",
+    pricePerNight: "por noche",
+    ratings: "Mira las valoraciones",
+    description: "Más sobre esta vivienda",
+    locatedIn: "en",
+    servicesList: "Lo que este lugar ofrece"
+
+    
   }
 
 
 }
 
 interface HouseExample{
-  imagesUrl: ImageDTO[],
-  houseName: String,
-  hostName: String,
-  pricePerNight: Number,
-  valuations: String[]
+  imagesUrl?: ImageDTO[],
+  houseName?: String,
+  hostName?: String,
+  houseDescriptionParagraphs?: String[];
+  pricePerNight?: Number,
+  valuations?: String[],
+  informationOfNumber: HousingInformation
+  services?: String[],
+  houseType?: String,
+  location?: String
 }
 
 

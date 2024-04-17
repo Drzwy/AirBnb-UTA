@@ -1,26 +1,52 @@
 
 
-<div>
+<div >
     <h1>{{house.houseName}}</h1>
 
-    <app-images-card [imageUrls]="house.imagesUrl" />
+    <app-images-card *ngIf="house.imagesUrl" [imageUrls]="house.imagesUrl" />
 
-
-    <h2 class="host">
-        {{TEXTS.anfitrion}} {{house.hostName}}
+    <h2 class="secondary"  *ngIf="house.location && house.houseType">
+        {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
     </h2>
-    <h4 style="margin-left: 70%">
-        {{TEXTS.precio}} ${{house.pricePerNight}} {{TEXTS.precioPorNoche}}
-    </h4>
+
+    <h3 class="secondary">
+        <app-housing-info-displayer [housingInformation]="this.house.informationOfNumber"/>
+    </h3>
+
+
+
+    <div class="valuations-container" *ngIf="house.houseDescriptionParagraphs?.length != 0">
+        <h4>
+            {{TEXTS.description}}
+        </h4>
+
+        @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
+            <h5>
+                {{parragraphs}}
+            </h5>
+        }
+    </div>
+    <div class="valuations-container" *ngIf="house.services">
+        <h2 class="subtitle">
+            {{TEXTS.servicesList}}
+        </h2>
+
+        <ul>
+            @for (service of house.services; track service) {
+                <li> {{service}} </li>
+            }
+        </ul>
+
+    </div>
 
     <div class="valuations-container">
 
         <h2 class="subtitle">
-            {{TEXTS.valoraciones}}
+            {{TEXTS.ratings}}
         </h2>
 
         @for (valuation of house.valuations; track  valuation) {
-            <div class="valuation">
+            <div class="primary">
                 <div class = "info-card">
                     {{valuation}}
                 </div>
@@ -31,6 +57,7 @@
             </div>
         }
     </div>
+
 
 
 </div>

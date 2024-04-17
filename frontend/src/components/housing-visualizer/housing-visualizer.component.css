@@ -4,19 +4,19 @@ h1 {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 2rem;
 }
-
-h2.host {
+.primary {
+  font-family: BlinkMacSystemFont, serif;
+}
+.secondary {
   font-size: .8rem;
   font-style: italic;
   color: #6a6363;
 }
-h2.subtitle {
+.subtitle {
   font-size: 1.2rem;
   font-family: BlinkMacSystemFont, serif;
 }
-h2.valuation {
-  font-family: BlinkMacSystemFont, serif;
-}
+
 
 .info-card {
   position: relative;
@@ -35,7 +35,7 @@ h2.valuation {
   padding: 10px;
 
 }
-.valuation {
+.primary {
   align-content: normal;
   display: flex;
   justify-items: left;
