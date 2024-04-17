@@ -1,2 +1,5 @@
 node_modules/
 .angular/
+.angular/cache/
+.angular/cache/17.3.4/
+.idea/
