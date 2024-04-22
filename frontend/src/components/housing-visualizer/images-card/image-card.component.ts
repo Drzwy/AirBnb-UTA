@@ -15,6 +15,8 @@ export class ImageCardComponent {
 }
 
 export interface ImageDTO {
-  url: String,
-  alt: String
+    url: String
+    alt: String
+    width?: number
+    height?: number
 }

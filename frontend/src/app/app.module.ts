@@ -8,13 +8,15 @@ import {ImageCardComponent} from "../components/housing-visualizer/images-card/i
 import {
     HousingInfoDisplayerComponent
 } from "../components/housing-visualizer/housing-info-displayer/housing-info-displayer.component";
+import {HomeScreenComponent} from "../components/home-screen/home-screen.component";
 
 @NgModule({
     declarations: [
         AppComponent,
         HousingVisualizerComponent,
         ImageCardComponent,
-        HousingInfoDisplayerComponent
+        HousingInfoDisplayerComponent,
+        HomeScreenComponent
     ],
   imports: [
     BrowserModule,

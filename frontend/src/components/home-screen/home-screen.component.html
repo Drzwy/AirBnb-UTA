@@ -1,1 +1,36 @@
-<p>home-screen works!</p>
+
+<div class="home-stay-container">
+
+    @for (homeStay of currentHomeStayList; track homeStay) {
+        <div class="home-stay-display">
+            <div>
+                <img [src]="homeStay.imageUrl.url"
+                     [alt]="homeStay.imageUrl.alt"
+                     [width]="homeStay.imageUrl.width"
+                     [height]="homeStay.imageUrl.height"
+                     class="home-images-display"
+                >
+            </div>
+
+            <div class="font-container">
+                <h2 class="secondary location-font">
+                    {{homeStay.location}}
+                </h2>
+                <h2 class="secondary">
+                    {{homeStay.meanRating}}
+                </h2>
+            </div>
+
+            <h2 class="secondary">
+                {{homeStay.availableDate}}
+            </h2>
+            <h2 class="secondary">
+                {{getPriceOf(homeStay)}}  {{CONSTANTS.perNightText}}
+            </h2>
+
+
+
+        </div>
+    }
+
+</div>
