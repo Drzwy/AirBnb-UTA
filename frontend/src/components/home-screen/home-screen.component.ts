@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {ImageDTO} from "../housing-visualizer/images-card/image-card.component";
-import {HomeDisplayService} from "../../services/home-display.service";
+import {HomeDisplayService, HomeStayType} from "../../services/home-display.service";
 
 @Component({
   selector: 'app-home-screen',
@@ -29,6 +29,8 @@ export class HomeScreenComponent {
   readonly CONSTANTS = {
     perNightText: "noche"
   }
+  readonly homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes()
+  readonly IMAGEDIMENSIONS: number  = 270
 
   public currentHomeStayList: HomeStayInformation[] = [
       this._test,
