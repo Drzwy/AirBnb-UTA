@@ -1,10 +1,9 @@
 <div class="scroll-container">
-    @for (img of getImages(); track img ){
-        <img
-            [src]="img.url"
-            [alt]="img.alt"
-            height="50%"
-            width="50%"
-        />
-    }
+    <img [src]="getImages()[0].url" [alt]="getImages()[0].alt" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;"/>
+    
+    <div class="img-pair">
+        @for (img of getImages(); track img; let i = $index){
+            <img *ngIf="i > 0 && i < 5" [src]="img.url" [alt]="img.alt"/>
+        }
+    </div>
 </div> 

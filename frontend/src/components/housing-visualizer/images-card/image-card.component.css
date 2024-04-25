@@ -1,12 +1,40 @@
-div.scroll-container {
+.scroll-container {
     background-color: #ffffff;
-    border: #333030 4px solid;
-    overflow: auto;
     white-space: nowrap;
-    padding: 10px;
-    min-height: 20%;
+    display: flex;
+    height: 50vh; /* Altura del contenedor ajustada al 70% de la altura de la ventana */
+
 }
 
-div.scroll-container img {
-    padding: 10px;
+.scroll-container img {
+    padding: 4px;
+    width: 50%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: filter 0.3s ease; /* transicion para que el hover quede bonito */
+}
+
+.scroll-container img:hover {
+    filter: brightness(0.8); /* Reduce el brillo al 80% */
+}
+
+.img-pair {
+    display: grid;
+    grid-template-rows: auto; 
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas con tamaño igual */
+}
+
+.img-pair img {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover; /* Hace que las imágenes se ajusten manteniendo su relación de aspecto */
+}
+
+/* Aplicar borde superior derecho a la imagen de arriba y borde inferior derecho a la imagen de abajo */
+.img-pair img:last-child {
+    border-bottom-right-radius: 20px;
+}
+
+.img-pair img:nth-last-child(3) {
+    border-top-right-radius: 20px;
 }

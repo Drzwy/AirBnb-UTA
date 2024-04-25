@@ -1,44 +1,128 @@
-
+.screen-container {
+  font-family: 'Public Sans', sans-serif;
+  color: #222222;
+  width: 60vw; 
+  margin: 0 auto; /* Centra horizontalmente */
+}
 
 h1 {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 2rem;
-}
-.primary {
-  font-family: BlinkMacSystemFont, serif;
-}
-.secondary {
-  font-size: .8rem;
-  font-style: italic;
-  color: #6a6363;
-}
-.subtitle {
-  font-size: 1.2rem;
-  font-family: BlinkMacSystemFont, serif;
+  font-size: 26px;
 }
 
+.details-container {
+  margin-top: 30px;
+}
 
-.info-card {
-  position: relative;
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  justify-content: end;
-  border-radius: 5px;
-  padding: 10px;
-  width: 50%;
-  margin-bottom: 10px;
+.house-location {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.house-information {
+  font-size: 16px;
+  color: #222222;
+  font-weight: normal;
+  margin: 0;
 }
 
 .valuations-container {
-  border: #333030 solid 3px;
-  border-radius: 4px;;
-  padding: 10px;
+  border-top: 1px solid #e4e4e4; /* Línea de separación */
+  margin-top: 40px;
+}
+
+.house-description {
+  margin-top: 40px;
+  font-size: 22px;
+}
+
+.house-detail {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.subtitle {
+  margin-top: 40px;
+  font-size: 22px;
+}
+
+.services-container {
+  display: grid;
+  grid-template-rows: auto; 
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.services {
+  font-weight: normal;
+}
+
+.reviews-container {
+  display: grid;
+  grid-template-rows: auto; 
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 40px;
+  row-gap: 40px;
+}
+
+.primary {
+  width: 70%;
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.stars-card {
+  font-size: 14px;
+}
+
+.info-card {
+  font-size: 16px;
+}
+
+.valuation {
+  font-size: 16px;
+  font-weight: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: calc(1.5em * 3); /* Máximo de 3 líneas */
+  line-height: 1.5em; /* Altura de línea */
+}
+
+.valuation2 {
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5em; /* Altura de línea */
 
 }
-.primary {
-  align-content: normal;
+
+.show-more {
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.prueba {
   display: flex;
-  justify-items: left;
-  border: #333030 solid 2px;
-  margin-bottom: 10px;
+  justify-content: space-between;
+}
+
+.prueba2 {
+  width: 35vw;  
+}
+.prueba3 {
+  width: 20vw; /* Ocupa el 50% del ancho de la ventana */
+  height: 50vh; /* Ocupa el 50% de la altura de la ventana */
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+  border: 2px solid #e4e4e4;
+  border-radius: 15px;
+  padding: 20px;
+  margin-left: 60px;
+  margin-bottom: 60px;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px rgba(36, 36, 36, 0.2); /* sombra más grande */
 }

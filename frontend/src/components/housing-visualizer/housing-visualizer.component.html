@@ -1,43 +1,54 @@
 
 
-<div >
+<div class="screen-container">
     <h1>{{house.houseName}}</h1>
 
     <app-images-card *ngIf="house.imagesUrl" [imageUrls]="house.imagesUrl" />
 
-    <h2 class="secondary"  *ngIf="house.location && house.houseType">
-        {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
-    </h2>
+    <div class="prueba">
+        <div class="prueba2">
 
-    <h3 class="secondary">
-        <app-housing-info-displayer [housingInformation]="this.house.informationOfNumber"/>
-    </h3>
+            <div class="details-container">
+                <h2 class="house-location" *ngIf="house.location && house.houseType">
+                    {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
+                </h2>
+                <h3 class="house-information">
+                    <app-housing-info-displayer [housingInformation]="this.house.informationOfNumber"/>
+                </h3>
+            </div>
 
-
-
-    <div class="valuations-container" *ngIf="house.houseDescriptionParagraphs?.length != 0">
-        <h4>
-            {{TEXTS.description}}
-        </h4>
-
-        @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
-            <h5>
-                {{parragraphs}}
-            </h5>
-        }
+            <div class="valuations-container" *ngIf="house.houseDescriptionParagraphs?.length != 0">
+                <h2 class="house-description">
+                    {{TEXTS.description}}
+                </h2>
+        
+                @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
+                    <h3 class="house-detail">
+                        {{parragraphs}}
+                    </h3>
+                }
+            </div>
+        
+            <div class="valuations-container" *ngIf="house.services">
+                <h2 class="subtitle">
+                    {{TEXTS.servicesList}}
+                </h2>
+        
+                <div class="services-container">
+                    @for (service of house.services; track service) {
+                        <h4 class="services"> {{service}} </h4>
+                    }
+                </div>
+        
+            </div>
+        </div>
+        <div class="prueba3">
+            <h1>AQUI VA LA RESERVA SENHORES DOU EPICO</h1>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJWAAyjOs0CYjl0311cWdUtYL4Vnmcv3Rm0Og1zIuk0Q&s">
+        </div>
     </div>
-    <div class="valuations-container" *ngIf="house.services">
-        <h2 class="subtitle">
-            {{TEXTS.servicesList}}
-        </h2>
 
-        <ul>
-            @for (service of house.services; track service) {
-                <li> {{service}} </li>
-            }
-        </ul>
-
-    </div>
+    
 
     <div class="valuations-container">
 
@@ -45,17 +56,24 @@
             {{TEXTS.ratings}}
         </h2>
 
-        @for (valuation of house.valuations; track  valuation) {
-            <div class="primary">
-                <div class = "info-card">
-                    {{valuation}}
+        <div class="reviews-container">
+            @for (valuation of house.valuations; track  valuation; let i = $index) {
+                <div class="primary">
+                    <div class = "stars-card">
+                        5 ⭐⭐⭐⭐⭐ marzo de 2120
+                    </div>
+                    <div class = "info-card">
+                        <h2 [ngClass]="{'valuation': !isExpanded[i], 'valuation2': isExpanded[i]}"> 
+                            {{valuation}}
+                        </h2>
+                        <a class="show-more" (click)="expand(i)">
+                            Mostrar más
+                        </a>
+                        
+                    </div>
                 </div>
-
-                <div class = "info-card">
-                    5 estrellas
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 
 
