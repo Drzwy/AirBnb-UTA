@@ -1,17 +1,7 @@
 
-<div class="home-stay-type-buttons-container">
-    @for (category of homeStayTypes; track category) {
-        <button class="home-stay-type-button">
-            <img [src]="category.vectorImage.url"
-                 [alt]="category.vectorImage.alt"
-                 [width]="category.vectorImage.width!!"
-                 [height]="category.vectorImage.height!!"
-            >
-            {{category.type}}
-        </button>
-    }
-</div>
 
+
+<app-home-stay-searcher />
 
 <div class="home-stay-container">
 
@@ -21,8 +11,8 @@
             <div>
                 <img [src]="homeStay.imageUrl.url"
                      [alt]="homeStay.imageUrl.alt"
-                     [width]="IMAGEDIMENSIONS"
-                     [height]="IMAGEDIMENSIONS"
+                     [width]="IMAGE_DIMENSIONS"
+                     [height]="IMAGE_DIMENSIONS"
                      class="home-images-display"
                 >
             </div>

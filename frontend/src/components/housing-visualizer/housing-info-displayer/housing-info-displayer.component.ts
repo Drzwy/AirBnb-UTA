@@ -74,3 +74,4 @@ export interface HousingInformation {
   numberOfRooms?: number,
   numberOfBathrooms?: number
 }
+

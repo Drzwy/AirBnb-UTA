@@ -8,7 +8,8 @@ import {ImageCardComponent} from "../components/housing-visualizer/images-card/i
 import {
     HousingInfoDisplayerComponent
 } from "../components/housing-visualizer/housing-info-displayer/housing-info-displayer.component";
-import {HomeScreenComponent} from "../components/home-screen/home-screen.component";
+import {HomeStayListComponent} from "../components/home-stay-list/home-stay-list.component";
+import {HomeStaySearcherComponent} from "../components/home-stay-list/home-stay-searcher/home-stay-searcher.component";
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {HomeScreenComponent} from "../components/home-screen/home-screen.compone
         HousingVisualizerComponent,
         ImageCardComponent,
         HousingInfoDisplayerComponent,
-        HomeScreenComponent
+        HomeStayListComponent,
+        HomeStaySearcherComponent
     ],
   imports: [
     BrowserModule,
