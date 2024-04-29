@@ -12,6 +12,18 @@
 
 }
 
+div.page-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.element {
+  margin: 10px;
+  padding: 20px;
+  width: 100%;
+}
+
 
 .font-container {
     display: flex;
