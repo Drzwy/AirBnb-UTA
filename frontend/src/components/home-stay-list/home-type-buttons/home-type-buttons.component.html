@@ -1,7 +1,7 @@
 
 
 <div class="home-stay-type-buttons-container">
-    <div>
+    <div class="home-stay-type-buttons-container">
         @for (category of homeStayTypes; track category) {
             <button class="home-stay-type-button" (click)="changeHomeStayType(category.type)">
                 <img [src]="category.vectorImage.url"
@@ -14,7 +14,7 @@
         }
     </div>
     <div>
-        <button>Filtros</button>
+        <app-advanced-filter />
     </div>
 
 </div>

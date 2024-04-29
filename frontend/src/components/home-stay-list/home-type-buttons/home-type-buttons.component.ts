@@ -3,11 +3,11 @@ import {HomeDisplayService, HomeStayType} from "../../../services/home-display.s
 
 
 @Component({
-  selector: 'app-home-stay-searcher',
-  templateUrl: './home-stay-searcher.component.html',
-  styleUrl: './home-stay-searcher.component.css'
+  selector: 'app-home-type-buttons',
+  templateUrl: './home-type-buttons.component.html',
+  styleUrl: './home-type-buttons.component.css'
 })
-export class HomeStaySearcherComponent implements OnInit {
+export class HomeTypeButtonsComponent implements OnInit {
   public homeStayTypes: HomeStayType[] = []
   public currentType: string = ""
 

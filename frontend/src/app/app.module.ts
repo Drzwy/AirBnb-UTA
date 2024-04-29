@@ -9,7 +9,9 @@ import {
     HousingInfoDisplayerComponent
 } from "../components/housing-visualizer/housing-info-displayer/housing-info-displayer.component";
 import {HomeStayListComponent} from "../components/home-stay-list/home-stay-list.component";
-import {HomeStaySearcherComponent} from "../components/home-stay-list/home-stay-searcher/home-stay-searcher.component";
+import {HomeTypeButtonsComponent} from "../components/home-stay-list/home-type-buttons/home-type-buttons.component";
+import {AdvancedFilterComponent} from "../components/home-stay-list/advanced-filter/advanced-filter.component";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -18,11 +20,13 @@ import {HomeStaySearcherComponent} from "../components/home-stay-list/home-stay-
         ImageCardComponent,
         HousingInfoDisplayerComponent,
         HomeStayListComponent,
-        HomeStaySearcherComponent
+        HomeTypeButtonsComponent,
+        AdvancedFilterComponent
     ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {ImageDTO} from "../components/housing-visualizer/images-card/image-card.component";
 import {HomeStayInformation} from "../components/home-stay-list/home-stay-list.component";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject} from "rxjs";
+import {FilterState} from "../components/home-stay-list/advanced-filter/advanced-filter.component";
 
 const _test = {
   imageUrl: {
@@ -52,7 +53,13 @@ const _test3 = {
   homeStayType: "Casa Grande"
 }
 
-
+export const emptyFilter: FilterState = {
+  numberOfGuests : 0,
+  numberOfRooms : 0,
+  numberOfBathrooms : 0,
+  minPricePerNight : 0,
+  maxPricePerNight : 0
+}
 
 
 @Injectable({
@@ -62,8 +69,35 @@ export class HomeDisplayService {
   readonly HOUSE_TYPE_VECTOR_SIZE: number = 30
   readonly availableHomeStays: HomeStayInformation[] = [_test,_test2,_test3]
 
+
   //observable type
   public currentType: BehaviorSubject<string> = new BehaviorSubject<string>("")
+
+  //observable filter validation
+  public filterIsValid: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  )
+  private _currentFilterState: FilterState = emptyFilter
+
+  //observable filter
+  public currentFilterState: BehaviorSubject<FilterState> = new BehaviorSubject<FilterState>(
+    this._currentFilterState
+  )
+
+
+  /*
+  * TODO llamar al backend para recibir el filtrado de casas disponibles
+  * */
+  public filterHomeStaysByConditions(type?: string, filter?: FilterState): BehaviorSubject<HomeStayInformation[]> {
+    this.availableHomeStays.forEach(
+      homeStay => {
+
+      }
+    )
+    return new BehaviorSubject<HomeStayInformation[]>( this.availableHomeStays )
+  }
+
+
   /*
   public currentPricePerNightRange: number[min,max]
   public currentNumberOfRooms: number
@@ -76,8 +110,27 @@ export class HomeDisplayService {
     this.currentType.next(type)
   }
 
+  public changeCurrentFilterState(state: FilterState): void {
+    this._currentFilterState = state
+    this.validateCurrentFilterState()
+
+  }
 
 
+
+  private validateCurrentFilterState(): void {
+    if (
+      this._currentFilterState.numberOfGuests <= 0 ||
+      this._currentFilterState.numberOfRooms <= 0  ||
+      this._currentFilterState.numberOfBathrooms <= 0 ||
+      this._currentFilterState.maxPricePerNight < this._currentFilterState.minPricePerNight
+    ){
+      this.filterIsValid.next(false)
+    }
+    else {
+      this.filterIsValid.next(true)
+    }
+  }
   /*
   * Va a cambiar cuando se pueda llamar a la BBDD y obtener los tipos disponibles
   * */

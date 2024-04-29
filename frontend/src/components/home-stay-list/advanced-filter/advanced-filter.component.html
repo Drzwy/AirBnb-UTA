@@ -1,0 +1,29 @@
+
+<button (click)="switchFiltersOption()">{{filterButtonText}}</button>
+<div *ngIf="showFilterDiv" class="advanced-filter-container">
+  <div class="advanced-filter-category-container">
+    <label>{{ CONSTANTS.minPriceLabel }}</label>
+    <input type="number" [(ngModel)]="currentMinPricePerNight" class="advanced-filter-number-place">
+  </div>
+  <div class="advanced-filter-category-container">
+    <label>{{CONSTANTS.maxPriceLabel}}</label>
+    <input type="number" [(ngModel)]="currentMaxPricePerNight" class="advanced-filter-number-place">
+  </div>
+  <div class="advanced-filter-category-container">
+    <label>{{CONSTANTS.numberOfGuestsLabel}}</label>
+    <input type="number" [(ngModel)]="currentNumberOfGuests" class="advanced-filter-number-place">
+  </div>
+  <div class="advanced-filter-category-container">
+    <label>{{CONSTANTS.numberOfRoomsLabel}}</label>
+    <input type="number" [(ngModel)]="currentNumberOfRooms" class="advanced-filter-number-place">
+  </div>
+  <div class="advanced-filter-category-container">
+    <label>{{CONSTANTS.numberOfBathroomsLabel}}</label>
+    <input type="number" [(ngModel)]="currentNumberOfBathrooms" class="advanced-filter-number-place">
+  </div>
+  <button (click)="sendCurrentFilterState()">
+    {{CONSTANTS.applyFilters}}
+  </button>
+
+
+</div>
