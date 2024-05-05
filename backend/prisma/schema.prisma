@@ -14,12 +14,15 @@ datasource db {
 }
 
 model Usuario {
-  id           Int       @id @default(autoincrement())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  tipo_usuario UserTypes @default(Cliente)
-  email        String    @unique
-  hash         String
+  id Int @id @default(autoincrement())
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+  estaActivo         Boolean
+
+  tipoUsuario UserTypes @default(Cliente)
+  email       String    @unique
+  hash        String
 
   run         String @unique
   nombre      String
@@ -30,8 +33,12 @@ model Usuario {
   idiomas     String[]
   detalles    String[]
 
-  huespedDe   Propiedad[] @relation("Arrienda")
   anfitrionDe Propiedad[] @relation("Es dueño")
+  seHospedaEn Hospedaje[] @relation("se hospeda")
+
+  valoracionesAUsuarios    ValoracionUsuario[]   @relation("reseña usuario")
+  valoracionesAPropiedades ValoracionPropiedad[] @relation("reseña propiedad")
+  valoracionesRecibidas    ValoracionUsuario[]   @relation("usuario criticado")
 }
 
 enum UserTypes {
@@ -42,24 +49,83 @@ enum UserTypes {
 model Propiedad {
   id Int @id @default(autoincrement())
 
-  dormitorios Int
-  camas       Int
-  banos       Int
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+  estaActivo         Boolean
 
-  tipo               String
-  descripcion        String
-  fechas_disponibles DateTime[]
-  reglas             String[]
-  calle              String
-  numero_casa        Int
-  numero_dpto        Int?
+  dormitorios       Int
+  camas             Int
+  banos             Int
+  fechasDisponibles DateTime[] @db.Date
+  precioNoche       Float
 
-  comodidades           String[]
-  opciones_de_seguridad String[]
-  opciones_de_llegada   String[]
+  tipo        String
+  descripcion String
 
-  huesped     Usuario? @relation(name: "Arrienda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  huespedId   Int?
-  anfitrion   Usuario  @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pais    String
+  ciudad  String
+  calle   String
+  nroCasa Int
+  nroDpto Int?
+
+  comodidades         String[]
+  opcionesDeSeguridad String[]
+  opcionesDeLlegada   String[]
+  reglas              String[]
+
+  Anfitrion   Usuario @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   anfitrionId Int
+
+  esProvistaA Hospedaje[] @relation(name: "es provista")
+
+  valoracionesRecibidas ValoracionPropiedad[] @relation(name: "propiedad criticada")
+
+  @@unique(name: "ubicacion", [pais, ciudad, calle, nroCasa, nroDpto])
+}
+
+model Hospedaje {
+  id Int @default(autoincrement())
+
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
+
+  fechaIni DateTime @db.Date
+  fechaFin DateTime @db.Date
+
+  Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  huespedId   Int
+  Propiedad   Propiedad @relation(name: "es provista", fields: [propiedadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  propiedadId Int
+
+  @@id([id, huespedId, propiedadId])
+}
+
+model ValoracionUsuario {
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
+
+  descripcion String?
+  puntuacion  Int
+
+  UsuarioCreador     Usuario @relation(name: "reseña usuario", fields: [usuarioCreadorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCreadorId   Int
+  UsuarioCriticado   Usuario @relation(name: "usuario criticado", fields: [usuarioCriticadoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCriticadoId Int
+
+  @@id([usuarioCreadorId, usuarioCriticadoId])
+}
+
+model ValoracionPropiedad {
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
+
+  descripcion String?
+  puntuacion  Int
+
+  UsuarioCreador       Usuario   @relation(name: "reseña propiedad", fields: [usuarioCreadorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCreadorId     Int
+  PropiedadCriticada   Propiedad @relation(name: "propiedad criticada", fields: [propiedadCriticadaId], references: [id])
+  propiedadCriticadaId Int
+
+  @@id([usuarioCreadorId, propiedadCriticadaId])
 }
