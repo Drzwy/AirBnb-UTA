@@ -13,33 +13,61 @@ export class HomestayService {
   public async getHomeStayById(id: number) {
     const homeStay = await this.prisma.propiedad.findUnique({ where: { id } });
     if (homeStay == null) {
-      throw new HttpException('HomeStay Not Found', 404);
+      throw new HttpException('No se encontro la propiedad', 404);
     }
     return homeStay;
   }
 
-  public createHomeStay(
+  public async createHomeStay(
     ownerId: number,
     data: Prisma.PropiedadCreateWithoutOwnerInput,
   ) {
-    return this.prisma.propiedad.create({
-      data: {
-        ...data,
-        ownerId,
-      },
+    const ownerExists = await this.prisma.usuario.findUnique({
+      where: { id: ownerId },
     });
+    if (!ownerExists) {
+      throw new HttpException('El propietario no existe', 404);
+    }
+
+    try {
+      const createHomeStay = this.prisma.propiedad.create({
+        data: {
+          ...data,
+          ownerId,
+        },
+      });
+      return createHomeStay;
+    } catch (error) {
+      throw new HttpException('Error al crear la propiedad', 500);
+    }
   }
 
   public async updateHomeStay(id: number, data: Prisma.PropiedadUpdateInput) {
-    const findHomeStay = await this.getHomeStayById(id);
-    if (findHomeStay) {
+    const homeStay = await this.prisma.propiedad.findUnique({
+      where: { id },
+    });
+    if (homeStay == null) {
+      throw new HttpException('No se encontro la pripiedad', 404);
     }
-    return this.prisma.propiedad.update({ where: { id }, data });
+    try {
+      const updateHomeStay = await this.prisma.propiedad.update({
+        where: { id },
+        data,
+      });
+      return updateHomeStay;
+    } catch (error) {
+      if (error.code == 'P2003') {
+        throw new HttpException('El propietario no existe', 404);
+      }
+    }
   }
 
   public async deleteHomeStay(id: number) {
-    const findHomeStay = await this.getHomeStayById(id);
-    if (findHomeStay) {
+    const homeStay = await this.prisma.propiedad.findUnique({
+      where: { id },
+    });
+    if (homeStay == null) {
+      throw new HttpException('No se encontro la pripiedad', 404);
     }
     return this.prisma.propiedad.delete({ where: { id } });
   }

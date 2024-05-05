@@ -25,6 +25,7 @@ export class HomestayController {
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   public async getHomeStayById(@Param('id', ParseIntPipe) id: number) {
     return await this.homeStayService.getHomeStayById(id);
   }
@@ -45,6 +46,7 @@ export class HomestayController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.OK)
   async deleteHomeStay(@Param('id', ParseIntPipe) id: number) {
     return await this.homeStayService.deleteHomeStay(id);
   }
