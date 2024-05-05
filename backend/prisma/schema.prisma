@@ -30,8 +30,10 @@ model Usuario {
   idiomas     String[]
   detalles    String[]
 
-  huespedDe   Propiedad[] @relation("Arrienda")
-  anfitrionDe Propiedad[] @relation("Es dueño")
+  anfitrionDe Propiedad[]  @relation("Es dueño")
+  seHospedaEn Hospedaje[]  @relation("se hospeda")
+  haValorado  Valoracion[] @relation("reseña")
+  haRecibido  Valoracion[] @relation("es criticado")
 }
 
 enum UserTypes {
@@ -42,24 +44,48 @@ enum UserTypes {
 model Propiedad {
   id Int @id @default(autoincrement())
 
-  dormitorios Int
-  camas       Int
-  banos       Int
+  dormitorios       Int
+  camas             Int
+  banos             Int
+  fechasDisponibles DateTime[] @db.Date
+  precioNoche       Float
 
-  tipo               String
-  descripcion        String
-  fechas_disponibles DateTime[]
-  reglas             String[]
-  calle              String
-  numero_casa        Int
-  numero_dpto        Int?
+  tipo        String
+  descripcion String
+  calle       String
+  nroCasa     Int
+  nroDpto     Int?
 
   comodidades           String[]
   opciones_de_seguridad String[]
   opciones_de_llegada   String[]
+  reglas                String[]
 
-  huesped     Usuario? @relation(name: "Arrienda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  huespedId   Int?
-  anfitrion   Usuario  @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Anfitrion   Usuario     @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   anfitrionId Int
+  esProvistaA Hospedaje[] @relation(name: "es provista")
+
+  @@unique(name: "direccion", [calle, nroCasa, nroDpto])
+}
+
+model Hospedaje {
+  Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  huespedId   Int
+  Propiedad   Propiedad @relation(name: "es provista", fields: [propiedadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  propiedadId Int
+
+  fechaIni DateTime @db.Date
+  fechaFin DateTime @db.Date
+
+  @@id([huespedId, propiedadId])
+}
+
+model Valoracion {
+  Creador   Usuario @relation(name: "reseña", fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioId Int
+
+  UsuarioCriticado   Usuario? @relation(name: "es criticado", fields: [usuarioCriticadoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCriticadoId Int?
+
+  //TODO: lo que falte
 }
