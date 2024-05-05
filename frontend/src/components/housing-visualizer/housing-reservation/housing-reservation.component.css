@@ -1,0 +1,187 @@
+.price-per-night{
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.house-prices{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.reservation-button-container{
+    margin-top: 20px;
+}
+
+.nights{
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.reservation-button{
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%; 
+    height: 50px;
+    color: white;
+    cursor: pointer;
+    background-color: #d90964;
+    border-color: transparent;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.reservation-button:active {
+    transform: scale(0.95); /* Reduce ligeramente el tamaño del botón */
+  }
+
+.charge-message{
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    padding: 5px;
+}
+
+.prices-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.type{
+    font-size: 16px;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.price{
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.total-container{
+    margin-top: 20px;
+    border-top: 1px solid #e4e4e4; /* Línea de separación */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.total-price{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.guests-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.guests{
+    font-weight: normal;
+    font-size: 14px;
+    text-align: left;
+    margin: 0;
+}
+.title{
+    font-weight: 600;
+    font-size: 12px;
+    text-align: left;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}
+
+
+.below-button.show .dropdown-icon svg {
+    transform: rotate(180deg);
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.button {
+    flex: 1;
+    margin: 0;
+    padding: 10px;
+    font-size: 16px;
+    border-top: 2px solid #ccc; /* Borde superior gris claro para todos los botones */
+    border-left: 2px solid #ccc; /* Borde izquierdo gris claro para todos los botones */
+    border-right: 2px solid #ccc; /* Borde derecho gris claro para todos los botones */
+    border-bottom: none; /* No borde inferior por defecto */
+    background-color: transparent; /* Fondo transparente */
+    cursor: pointer;
+}
+
+.left-button {
+    border-top-left-radius: 5px; /* Borde redondeado en la esquina superior izquierda */
+  }
+  
+.right-button {
+    border-top-right-radius: 5px; /* Borde redondeado en la esquina superior derecha */
+    border-left: none; /* Eliminar el borde izquierdo para el botón derecho */
+}
+  
+.below-button {
+    border-bottom: 2px solid #ccc; /* Borde inferior gris claro para el botón 3 */
+    border-radius: 0 0 5px 5px; /* Borde redondeado solo en la esquina inferior */
+    width: 100%;
+  }
+
+.button.show {
+    border-color: black; /* Cambia el color del borde a negro */
+    border-radius: 6px; /* Redondea el borde inferior derecho */
+}
+
+p{
+    font-size: 12px;
+}
+
+.rounded-circle {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.count{
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.circle-buttons{
+    background-color: transparent;
+    border: 2px solid #ccc;
+}
+
+.guest-type{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.guest-age{
+    font-size: 14px;
+}
+
+.guest-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 5px;
+}
+
+.add-dates{
+    font-size: 22px;
+    font-weight: 400;
+}
