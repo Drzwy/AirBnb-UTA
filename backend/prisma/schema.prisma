@@ -18,9 +18,8 @@ model Usuario {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   tipo_usuario UserTypes @default(Cliente)
-
-  email String @unique
-  hash  String
+  email        String    @unique
+  hash         String
 
   run         String @unique
   nombre      String
@@ -30,9 +29,37 @@ model Usuario {
   descripcion String
   idiomas     String[]
   detalles    String[]
+
+  huespedDe   Propiedad[] @relation("Arrienda")
+  anfitrionDe Propiedad[] @relation("Es dueño")
 }
 
 enum UserTypes {
   Cliente
   Administrador
+}
+
+model Propiedad {
+  id Int @id @default(autoincrement())
+
+  dormitorios Int
+  camas       Int
+  banos       Int
+
+  tipo               String
+  descripcion        String
+  fechas_disponibles DateTime[]
+  reglas             String[]
+  calle              String
+  numero_casa        Int
+  numero_dpto        Int?
+
+  comodidades           String[]
+  opciones_de_seguridad String[]
+  opciones_de_llegada   String[]
+
+  huesped     Usuario? @relation(name: "Arrienda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  huespedId   Int?
+  anfitrion   Usuario  @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  anfitrionId Int
 }

@@ -4,20 +4,20 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { LoginDTO, RegisterDTO } from './dto';
+import { LoginDTO } from './dto';
 import * as argon from 'argon2';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/user/user.service';
+import { UserRegisterDTO } from 'src/user/dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService,
-    private config: ConfigService,
-    private user: UserService,
+    private prismaService: PrismaService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+    private userService: UserService,
   ) {}
 
   /**
@@ -27,24 +27,12 @@ export class AuthService {
    * @param dto El DTO correspondiente al Registro de usuarios
    * @returns
    */
-  async register(dto: RegisterDTO) {
-    try {
-      // crear el usuario en la base de datos
-      const user = await this.user.createUser(dto);
+  async register(dto: UserRegisterDTO) {
+    // crear el usuario en la base de datos
+    const user = await this.userService.registerUser(dto);
 
-      // retornar el JWT
-      return this.signToken(user.id, user.email);
-    } catch (error) {
-      // si las credenciales estan duplicadas throw error
-      if (error instanceof PrismaClientKnownRequestError) {
-        // error code predefinido de prisma
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Credenciales duplicadas');
-        }
-      } else {
-        throw error;
-      }
-    }
+    // retornar el JWT
+    return this.signToken(user.id, user.email);
   }
 
   /**
@@ -53,7 +41,7 @@ export class AuthService {
    */
   async login(dto: LoginDTO) {
     // recuperar el usuario
-    const user = await this.prisma.usuario.findUnique({
+    const user = await this.prismaService.usuario.findUnique({
       where: {
         email: dto.email,
       },
@@ -91,10 +79,10 @@ export class AuthService {
     };
 
     // recuperar el secreto para firmar el token
-    const secret = this.config.get('JWT_SECRET');
+    const secret = this.configService.get('JWT_SECRET');
 
     // firmar el token con el secreto y establecer su fecha de expiración
-    const token = await this.jwt.signAsync(payload, {
+    const token = await this.jwtService.signAsync(payload, {
       expiresIn: '1h',
       secret: secret,
     });

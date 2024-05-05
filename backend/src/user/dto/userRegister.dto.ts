@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class RegisterDTO {
+export class UserRegisterDTO {
   @IsEmail()
   @IsNotEmpty()
   email: string;
