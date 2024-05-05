@@ -1,6 +1,6 @@
 services:
   db-dev:
-    image: postgres
+    image: postgres:13
     ports: 
       - 6789:5432
     environment:
