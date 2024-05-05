@@ -1,17 +1,51 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { HomestayService } from './homestay.service';
-import { HomestayCreateDTO } from './dto/homestayCreate.dto';
+import { HomeStayCreateDTO } from './dto';
+import { HomeStayUpdateDTO } from './dto/homeStayUpdate.dto';
 
-@Controller('homestays')
+@Controller('homestay')
 export class HomestayController {
-  constructor(private homestayService: HomestayService) {}
-  @Post('create')
-  createHomestay(@Body() dto: HomestayCreateDTO) {
-    return this.homestayService.createHomestay(dto);
+  constructor(private homeStayService: HomestayService) {}
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  public async getAllHomeStays() {
+    return await this.homeStayService.getAllHomeStays();
   }
 
-  @Get('getAll')
-  getAllHomestays() {
-    return this.homestayService.getAllHomestays();
+  @Get(':id')
+  public async getHomeStayById(@Param('id', ParseIntPipe) id: number) {
+    return await this.homeStayService.getHomeStayById(id);
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async createHomeStay(@Body() { ownerId, ...request }: HomeStayCreateDTO) {
+    return await this.homeStayService.createHomeStay(ownerId, request);
+  }
+
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  async updateHomeStay(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() request: HomeStayUpdateDTO,
+  ) {
+    return await this.homeStayService.updateHomeStay(id, request);
+  }
+
+  @Delete(':id')
+  async deleteHomeStay(@Param('id', ParseIntPipe) id: number) {
+    return await this.homeStayService.deleteHomeStay(id);
   }
 }

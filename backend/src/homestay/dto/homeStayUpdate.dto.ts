@@ -1,48 +1,42 @@
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class HomeStayCreateDTO {
-  @IsNotEmpty()
+export class HomeStayUpdateDTO {
+  @IsOptional()
   @IsNumber()
   dormitorios: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   camas: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   banos: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   tipo: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   descripcion: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   @Type(() => Date)
   fechas_disponibles: Date[];
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   @Type(() => String)
   reglas: string[];
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   calle: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   numero_casa: number;
 
@@ -65,7 +59,7 @@ export class HomeStayCreateDTO {
   @Type(() => String)
   opciones_de_llegada: string[];
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   ownerId: number;
 }
