@@ -30,9 +30,34 @@ model Usuario {
   descripcion String
   idiomas     String[]
   detalles    String[]
+
+  propiedades Propiedad[]
 }
 
 enum UserTypes {
   Cliente
   Administrador
+}
+
+model Propiedad {
+  id Int @id @default(autoincrement())
+
+  dormitorios Int
+  camas       Int
+  banos       Int
+
+  tipo               String
+  descripcion        String
+  fechas_disponibles DateTime[]
+  reglas             String[]
+  calle              String
+  numero_casa        Int
+  numero_dpto        Int?
+
+  comodidades           String[]
+  opciones_de_seguridad String[]
+  opciones_de_llegada   String[]
+
+  owner   Usuario @relation(fields: [ownerId], references: [id])
+  ownerId Int
 }
