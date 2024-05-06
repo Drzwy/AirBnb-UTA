@@ -1,0 +1,156 @@
+<div class="price-per-night">
+  <h2 *ngIf="!startDate || !endDate" class="add-dates">Agrega las fechas para ver los precios</h2>
+  <h2 *ngIf="startDate && endDate" class="house-prices">{{ nights < 28 ? partialHousingPrices[0] : "$"+(toNumber(partialHousingPrices[0]) * nights).toLocaleString('en-US') + " CLP" }}</h2>
+  <h2 *ngIf="startDate && endDate" class="nights"> {{ nights < 28 ? 'noche' : 'mes' }}</h2>
+</div>
+
+<div class="buttons-container">
+  <div class="buttons">
+    <button class="button left-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+      <h2 class="title mb-0">Llegada</h2>
+      <h2 class="guests"> {{ startDate ? (startDate | date:'dd/MM/yyyy') : 'Agrega una fecha' }}</h2>
+    </button>
+    <button class="button right-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+      <h2 class="title mb-0">Salida</h2>
+      <h2 class="guests">{{ endDate ? (endDate | date:'dd/MM/yyyy') : 'Agrega una fecha' }}</h2>
+    </button>
+    <div class="dropdown">
+      
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" data-bs-auto-close="false">
+          <app-calendar-v2 
+          (startDate)="onStartDateSelected($event)"
+          (endDate)="onEndDateSelected($event)"
+          (nights)="onNightsSelected($event)">
+        </app-calendar-v2>   
+      </ul>
+      
+    </div>
+    
+  </div>
+  <div class="dropdown">  
+    <button class="button below-button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" data-bs-offset="0 ,0">
+      <div class="guests-container">
+          <div>
+            <h2 class="title mb-0">Huéspedes</h2>
+            <ng-container *ngIf="(guests.adults + guests.children + guests.infants + guests.pets) > 0">
+              <h2 class="guests">{{ formatGuests() }}</h2>
+            </ng-container>
+          </div>
+          <span class="dropdown-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                  <path d="M14.354 5.646a.5.5 0 0 0-.708 0L8 11.293 2.354 5.646a.5.5 0 0 0-.708.708l6 6a.5.5 0 0 0 .708 0l6-6a.5.5 0 0 0 0-.708z"/>
+              </svg>
+          </span>
+      </div>
+    </button>
+    <ul class="dropdown-menu w-100">
+      <div class="d-flex p-1 guest-row">
+        <li>
+          <span class="dropdown-item-text guest-type">Adultos</span>
+          <span class="dropdown-item-text guest-age">Edad: 13 o más</span>
+        </li>
+        <div class="guest-row">
+          <button class="circle-buttons rounded-circle" (click)="guests.adults = guests.adults > 1 ? guests.adults - 1 : 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+              <path d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+
+          <span class="count">{{ guests.adults }}</span>
+
+          <button class="circle-buttons rounded-circle" (click)="guests.adults = guests.adults + 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="d-flex p-1 guest-row">
+        <li>
+          <span class="dropdown-item-text guest-type">Niños</span>
+          <span class="dropdown-item-text guest-age">De 2 a 12 años</span>
+        </li>
+        <div class="guest-row">
+          <button class="circle-buttons rounded-circle" (click)="guests.children = guests.children > 0 ? guests.children - 1 : 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+              <path d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+
+          <span class="count">{{ guests.children }}</span>
+
+          <button class="circle-buttons rounded-circle" (click)="guests.children = guests.children + 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+          </button>
+        </div>  
+      </div>
+      <div class="d-flex p-1 guest-row">
+        <li>
+          <span class="dropdown-item-text guest-type">Bebés</span>
+          <span class="dropdown-item-text guest-age">Menos de 2 años</span>
+        </li>
+        <div class="guest-row">
+          <button class="circle-buttons rounded-circle" (click)="guests.infants = guests.infants > 0 ? guests.infants - 1 : 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+              <path d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+
+          <span class="count">{{ guests.infants }}</span>
+
+          <button class="circle-buttons rounded-circle" (click)="guests.infants = guests.infants + 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+          </button>
+        </div>      
+      </div>
+      <div class="d-flex p-1 guest-row">
+        <li><span class="dropdown-item-text guest-type">Mascotas</span></li>
+        <div class="guest-row">
+          <button class="circle-buttons rounded-circle" (click)="guests.pets = guests.pets > 0 ? guests.pets - 1 : 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+              <path d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </button>
+
+          <span class="count">{{ guests.pets }}</span>
+
+          <button class="circle-buttons rounded-circle" (click)="guests.pets = guests.pets + 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+            </svg>
+          </button>
+        </div>  
+      </div>
+      <div class="p-3">
+        <p>{{rules}}</p>
+      </div>
+    </ul>
+  </div>
+</div>
+
+<div class="reservation-button-container">
+  <button class="reservation-button" (click)="startDate && endDate ? reserve() : checkAvailability()">
+    {{ startDate && endDate ? 'Reservar' : 'Comprobar disponibilidad' }}
+  </button>
+  <h2 *ngIf="startDate && endDate" class="charge-message">No se hará ningún cargo por el momento</h2>
+</div>
+
+<div *ngIf="nights != 0">
+  @for(price of partialHousingPrices; track price; let i = $index) {
+  <div class="prices-container">
+    <h3 class="type">
+      {{ i === 0 ? price + typeOfPrice[i] : typeOfPrice[i] }}
+    </h3>
+    <h3 class="price">{{ "$"+(toNumber(price) * nights).toLocaleString('en-US') + " CLP"}}</h3>
+  </div>
+  }
+  
+  <div class="total-container">
+    <h3 class="total-price">Total sin incluir impuestos</h3>
+    <h3 class="total-price">{{ priceWithoutTaxes() }}</h3>
+  </div>
+</div>

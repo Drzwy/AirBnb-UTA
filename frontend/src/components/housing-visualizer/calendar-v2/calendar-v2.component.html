@@ -1,0 +1,53 @@
+<div class="calendar">
+  <div class="info-container">
+    <p style="font-weight: 600; font-size: 22px;">{{ selectedNightsText }}</p>
+    <p class="dates" style="font-size: 14px;">{{ selectedDatesText }}</p>
+  </div>
+  <div class="months-container">
+    <div class="calendar-container" *ngFor="let month of getMonths(); let i = index;">
+      <div  class="month">
+        <button *ngIf="i === 0" (click)="previousMonth()" class="button-previous" [disabled]="isCurrentMonth(month.index, month.year)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+          </svg>
+        </button>
+        <h2 class="month-name">{{ getMonthName(month.index) }} {{ month.year }}</h2>
+        <button *ngIf="i === 1" (click)="nextMonth()" class="button-next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Lun.</th>
+            <th>Mar.</th>
+            <th>Mie.</th>
+            <th>Jue.</th>
+            <th>Vie.</th>
+            <th>Sab</th>
+            <th>Dom.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let week of getWeeksInMonth(today.getFullYear(), month.index)">
+            <ng-container *ngFor="let day of week">
+              <td *ngIf="day.day !== 0"
+                  (click)="selectDay(day.day, month.index, month.year)"
+                  [class.today]="isToday(day.day, month.index, month.year)"
+                  [class.selected]="isSelectedDay(day.day, month.index, month.year) === 'selected'"
+                  [class.between]="isSelectedDay(day.day, month.index, month.year) === 'between'"
+                  [class.clicked]="isSelectedDay(day.day, month.index, month.year) === 'clicked'"
+                  [class.disabled]="isDisabled(day.day, month.index, month.year)">
+                {{ day.day }}
+              </td>
+              <td *ngIf="day.day === 0"></td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button class="clear-selection" (click)="clearSelection()">Borrar fechas</button>
+</div>

@@ -15,7 +15,7 @@ export class HousingInfoDisplayerComponent {
   public NUMBEROF = {
     beds: "camas",
     bed: "cama",
-    guests: "huespedes",
+    guests: "huéspedes",
     guest: "huesped",
     rooms: "habitaciones",
     room: "habitación",
