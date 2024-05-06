@@ -1,0 +1,124 @@
+
+
+.my-navbar {
+  background-color: #f4e8e8;
+  color: #4f4646;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  height: 60px;
+  margin-bottom: 60px;
+}
+
+
+.navbar-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+
+
+}
+button.text-option {
+  border: none;
+  font-size: .5rem;
+  padding: 10px 20px;
+}
+button.text-option:hover {
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+button.vector-option {
+  min-height: 20px;
+  padding: 5px;
+  border-radius: 100px;
+}
+
+button.navbar-settings {
+  background-color: #f8f8f8;
+  align-items: center;
+  width: 90px;
+  text-align: center;
+  display: flex;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.navbar-settings-element {
+  margin: 5px
+
+}
+div.first-letter-display {
+  background-color: #000000;
+  color: white;
+  padding: 10px;
+
+  border-radius: 100px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.user_config_display {
+  position: relative;
+  width: 50%;
+  top: 50px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  z-index: 1;
+}
+.container.active .user_config_display {
+  display: block;
+}
+
+.user-config-element-button {
+  width: 100%;
+  max-height: 50px;
+  text-align: left;
+  font-size: .8rem;
+  background-color: white;
+  color: #333030;
+  border: none;
+}
+.user-config-element-button:hover {
+  background-color: #cccccc;
+}
+
+.my-modal {
+}
+.my-modal-header {
+  display: flex;
+  wrap-option: wrap;
+  justify-content: space-between;
+}
+.my-modal-subtitle {
+  font-size: .8rem;
+}
+.my-modal-header-element {
+  max-height: 10px;
+  width: auto;
+}
+.dual-text-button {
+  border: 1px #6a6363;
+  text-align: left;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dual-text-button .top-text {
+  font-size: .6rem;
+  display: block;
+}
+
+.dual-text-button .bottom-text {
+  font-size: .5rem;
+  display: block;
+}
