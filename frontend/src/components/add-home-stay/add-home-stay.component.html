@@ -67,7 +67,7 @@
       <label for="opcionesLlegada">{{CONSTANTS.arrivalOptionsLabel}}</label>
       <textarea class="form-control" id="opcionesLlegada" name="opcionesLlegada" rows="3" [(ngModel)]="currentArrivalOptions"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">{{CONSTANTS.submitButtonLabel}}</button>
+    <button type="submit" class="btn btn-primary" (click)="sendDataToValidation()">{{CONSTANTS.submitButtonLabel}}</button>
   </form>
 </div>
 
