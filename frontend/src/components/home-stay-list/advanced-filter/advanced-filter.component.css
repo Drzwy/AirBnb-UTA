@@ -1,0 +1,16 @@
+
+
+div.advanced-filter-container {
+  display: block;
+  wrap-option: column;
+
+}
+div.advanced-filter-category-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+input.advanced-filter-number-place {
+  max-width: 20%;
+}
+
