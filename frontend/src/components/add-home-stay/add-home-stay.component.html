@@ -1,0 +1,71 @@
+
+<div class="container mt-5">
+  <h2>Formulario de Inscripción de Propiedad</h2>
+  <form>
+    <div class="form-group">
+      <label for="numDormitorios">Número de Dormitorios:</label>
+      <input type="number" class="form-control" id="numDormitorios" name="numDormitorios">
+    </div>
+    <div class="form-group">
+      <label for="camasDisponibles">Camas Disponibles:</label>
+      <input type="number" class="form-control" id="camasDisponibles" name="camasDisponibles">
+    </div>
+    <div class="form-group">
+      <label for="banosDisponibles">Baños Disponibles:</label>
+      <input type="number" class="form-control" id="banosDisponibles" name="banosDisponibles">
+    </div>
+    <div class="form-group">
+      <label for="tipoPropiedad">Tipo de Propiedad:</label>
+      <select class="form-control" id="tipoPropiedad" name="tipoPropiedad">
+        <option>Casa</option>
+        <option>Departamento</option>
+        <option>Otro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="descripcion">Descripción:</label>
+      <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Fechas de Disponibilidad (Rango):</label>
+      <div class="row">
+        <div class="col">
+          <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+        </div>
+        <div class="col">
+          <input type="date" class="form-control" id="fechaFin" name="fechaFin">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="reglas">Reglas:</label>
+      <textarea class="form-control" id="reglas" name="reglas" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="calle">Calle:</label>
+      <input type="text" class="form-control" id="calle" name="calle">
+    </div>
+    <div class="form-group">
+      <label for="numCasa">Número de Casa:</label>
+      <input type="text" class="form-control" id="numCasa" name="numCasa">
+    </div>
+    <div class="form-group">
+      <label for="numDepto">Número de Departamento:</label>
+      <input type="text" class="form-control" id="numDepto" name="numDepto">
+    </div>
+    <div class="form-group">
+      <label for="comodidades">Comodidades:</label>
+      <textarea class="form-control" id="comodidades" name="comodidades" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="opcionesSeguridad">Opciones de Seguridad:</label>
+      <textarea class="form-control" id="opcionesSeguridad" name="opcionesSeguridad" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="opcionesLlegada">Opciones de Llegada:</label>
+      <textarea class="form-control" id="opcionesLlegada" name="opcionesLlegada" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+</div>
+
