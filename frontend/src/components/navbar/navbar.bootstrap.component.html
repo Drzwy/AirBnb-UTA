@@ -19,14 +19,24 @@
         <div class="navbar-settings-element" data-bs-toggle="dropdown" aria-expanded="false" >
           <div class="first-letter-display">{{getFirstChar()}}</div>
         </div>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          @for (configOption of configOptionsButton.optionsLabels; track configOption) {
-            <button class="user-config-element-button dropdown-item">
-              {{configOption}}
-            </button>
-          }
-
-        </ul>
+        @if (isLoggedIn()) {
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            @for (configOption of configOptionsButton.loggedInOptionsLabels; track configOption) {
+              <button class="user-config-element-button dropdown-item">
+                {{configOption}}
+              </button>
+            }
+          </ul>
+        }
+        @else {
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            @for (configOption of configOptionsButton.notLoggedInOptionLabels; track configOption) {
+              <button class="user-config-element-button dropdown-item">
+                {{configOption}}
+              </button>
+            }
+          </ul>
+        }
       </button>
 
       <div class="modal fade my-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
