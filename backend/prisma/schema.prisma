@@ -107,7 +107,7 @@ model ValoracionPropiedad {
   Creador   Usuario @relation(name: "reseña propiedad", fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   usuarioId Int
 
-  PropiedadCriticada   Propiedad @relation(name: "propiedad criticado", fields: [propiedadCriticadaId], references: [id])
+  PropiedadCriticada   Propiedad @relation(name: "propiedad criticado", fields: [propiedadCriticadaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   propiedadCriticadaId Int
 
   descripcion String?

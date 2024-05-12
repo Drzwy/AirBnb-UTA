@@ -10,8 +10,8 @@ export class AdminGuard implements CanActivate {
     const user = await this.userService.getUserById(request.user.id);
     // FIXME: esta cosa no funciona por alguna razon
     console.log({ user });
-    console.log(user.tipo_usuario.valueOf());
-    const role = user.tipo_usuario.valueOf();
+    console.log(user.tipoUsuario.valueOf());
+    const role = user.tipoUsuario.valueOf();
     if (role === 'Admin') return true;
     else return false;
   }

@@ -21,6 +21,15 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   /**
+   * Ruta para obtener a todos los usuarios registrados.
+   * @returns Usuarios encontrados
+   */
+  @Get()
+  getAllUsers() {
+    return this.userService.getAllUsers();
+  }
+
+  /**
    * Ruta para obtener el usuario logeado.
    * @param user Usuario logeado
    * @returns Datos del Usuario logeado
@@ -35,18 +44,9 @@ export class UserController {
    * @param userId ID del usuario
    * @returns Usuario encontrado
    */
-  @Get('get/:userId')
+  @Get(':userId')
   getUserById(@Param('userId') userId: string) {
     return this.userService.getUserById(+userId);
-  }
-
-  /**
-   * Ruta para obtener a todos los usuarios registrados.
-   * @returns Usuarios encontrados
-   */
-  @Get('get')
-  getAllUsers() {
-    return this.userService.getAllUsers();
   }
 
   /**
@@ -56,7 +56,7 @@ export class UserController {
    * @param dto DTO para crear usuario como administrador
    * @returns Usuario creado
    */
-  @Post('create')
+  @Post()
   createUser(@Body() dto: UserCreateDTO) {
     //TODO guard de admin
     return this.userService.createUser(dto);
@@ -69,7 +69,7 @@ export class UserController {
    * @param userId ID del Usuario
    * @returns Usuario borrado
    */
-  @Delete('delete/:userId')
+  @Delete(':userId')
   deleteUserById(@Param('userId') userId: string) {
     //TODO guard de admin
     return this.userService.deleteUserById(+userId);
@@ -83,7 +83,7 @@ export class UserController {
    * @param dto DTO para actualizar el usuario
    * @returns Usuario actualizado
    */
-  @Patch('patch/:userId')
+  @Patch(':userId')
   updateUserById(@Param('userId') userId: string, @Body() dto: UserUpdateDto) {
     return this.userService.updateUserById(+userId, dto);
   }

@@ -23,12 +23,11 @@ export class UserService {
   async registerUser(dto: UserRegisterDTO) {
     const password = dto.password;
     delete dto.password;
+
     const createDto: UserCreateDTO = Object.assign({}, dto, {
-      tipo_usuario: UserTypes.Cliente,
+      tipoUsuario: UserTypes.Cliente,
       hash: password,
     });
-
-    console.log({ dto, createDto });
 
     return this.createUser(createDto);
   }
@@ -50,7 +49,7 @@ export class UserService {
     } catch (error) {
       // si las credenciales estan duplicadas throw error
       if (error instanceof PrismaClientKnownRequestError) {
-        // error code predefinido de prisma
+        // error code "Unique constraint failed on the {constraint}"
         if (error.code === 'P2002') {
           throw new ForbiddenException('Credenciales duplicadas');
         }
@@ -99,7 +98,7 @@ export class UserService {
         where: {
           id: userId,
         },
-        // TODO añadir delete cascade
+        // TODO revisar delete cascade
         // https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/referential-actions
       });
       return deletedUser;
@@ -148,4 +147,20 @@ export class UserService {
       }
     }
   }
+
+  // private transformDto(registerDto: UserRegisterDTO): UserCreateDTO {
+  //   const password = registerDto.password;
+  //   delete registerDto.password;
+
+  //   const createDto: UserCreateDTO = Object.assign(
+  //     new UserCreateDTO(),
+  //     registerDto,
+  //     {
+  //       tipoUsuario: UserTypes.Cliente,
+  //       hash: password,
+  //     },
+  //   );
+
+  //   return createDto;
+  // }
 }
