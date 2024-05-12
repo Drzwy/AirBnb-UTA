@@ -15,6 +15,15 @@ export class HomeStayUpdateDTO {
   banos: number;
 
   @IsOptional()
+  @IsArray()
+  @Type(() => Date)
+  fechasDisponibles: Date[];
+
+  @IsOptional()
+  @IsNumber()
+  precioNoche: number;
+
+  @IsOptional()
   @IsString()
   tipo: string;
 
@@ -23,26 +32,16 @@ export class HomeStayUpdateDTO {
   descripcion: string;
 
   @IsOptional()
-  @IsArray()
-  @Type(() => Date)
-  fechas_disponibles: Date[];
-
-  @IsOptional()
-  @IsArray()
-  @Type(() => String)
-  reglas: string[];
-
-  @IsOptional()
   @IsString()
   calle: string;
 
   @IsOptional()
   @IsNumber()
-  numero_casa: number;
+  nroCasa: number;
 
   @IsOptional()
   @IsNumber()
-  numero_dpto: number;
+  nroDpto: number;
 
   @IsOptional()
   @IsArray()
@@ -60,6 +59,23 @@ export class HomeStayUpdateDTO {
   opciones_de_llegada: string[];
 
   @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  reglas: string[];
+
+  @IsOptional()
   @IsNumber()
-  ownerId: number;
+  anfitrionId: number;
+
+  @IsOptional()
+  @IsString()
+  pais: string;
+
+  @IsOptional()
+  @IsString()
+  ciudad: string;
+
+  @IsOptional()
+  @IsString()
+  comuna: string;
 }

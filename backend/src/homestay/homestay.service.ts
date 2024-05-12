@@ -1,6 +1,11 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { HomeStayCreateDTO } from './dto';
 
 @Injectable()
 export class HomestayService {
@@ -12,33 +17,29 @@ export class HomestayService {
 
   public async getHomeStayById(id: number) {
     const homeStay = await this.prisma.propiedad.findUnique({ where: { id } });
-    if (homeStay == null) {
+    if (!homeStay) {
       throw new HttpException('No se encontro la propiedad', 404);
     }
     return homeStay;
   }
 
-  public async createHomeStay(
-    ownerId: number,
-    data: Prisma.PropiedadCreateWithoutOwnerInput,
-  ) {
+  public async createHomeStay(data: HomeStayCreateDTO) {
     const ownerExists = await this.prisma.usuario.findUnique({
-      where: { id: ownerId },
+      where: { id: data.anfitrionId },
     });
     if (!ownerExists) {
       throw new HttpException('El propietario no existe', 404);
     }
 
     try {
-      const createHomeStay = this.prisma.propiedad.create({
+      const createHomeStay = await this.prisma.propiedad.create({
         data: {
           ...data,
-          ownerId,
         },
       });
       return createHomeStay;
     } catch (error) {
-      throw new HttpException('Error al crear la propiedad', 500);
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -47,7 +48,7 @@ export class HomestayService {
       where: { id },
     });
     if (homeStay == null) {
-      throw new HttpException('No se encontro la pripiedad', 404);
+      throw new HttpException('No se encontro la propiedad', 404);
     }
     try {
       const updateHomeStay = await this.prisma.propiedad.update({
@@ -67,7 +68,7 @@ export class HomestayService {
       where: { id },
     });
     if (homeStay == null) {
-      throw new HttpException('No se encontro la pripiedad', 404);
+      throw new HttpException('No se encontro la propiedad', 404);
     }
     return this.prisma.propiedad.delete({ where: { id } });
   }
