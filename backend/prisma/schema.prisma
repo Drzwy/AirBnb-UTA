@@ -18,6 +18,7 @@ model Usuario {
 
   fechaCreacion      DateTime @default(now())
   fechaActualizacion DateTime @updatedAt
+  estaActivo         Boolean
 
   tipoUsuario UserTypes @default(Cliente)
   email       String    @unique
@@ -48,6 +49,10 @@ enum UserTypes {
 model Propiedad {
   id Int @id @default(autoincrement())
 
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+  estaActivo         Boolean
+
   dormitorios       Int
   camas             Int
   banos             Int
@@ -73,45 +78,54 @@ model Propiedad {
 
   esProvistaA Hospedaje[] @relation(name: "es provista")
 
-  valoracionesRecibidas ValoracionPropiedad[] @relation(name: "propiedad criticado")
+  valoracionesRecibidas ValoracionPropiedad[] @relation(name: "propiedad criticada")
 
   @@unique(name: "ubicacion", [pais, ciudad, calle, nroCasa, nroDpto])
 }
 
 model Hospedaje {
+  id Int @default(autoincrement())
+
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
+
+  fechaIni DateTime @db.Date
+  fechaFin DateTime @db.Date
+
   Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   huespedId   Int
   Propiedad   Propiedad @relation(name: "es provista", fields: [propiedadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   propiedadId Int
 
-  fechaIni DateTime @db.Date
-  fechaFin DateTime @db.Date
-
-  @@id([huespedId, propiedadId])
+  @@id([id, huespedId, propiedadId])
 }
 
 model ValoracionUsuario {
-  Creador   Usuario @relation(name: "reseña usuario", fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  usuarioId Int
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
 
+  descripcion String?
+  puntuacion  Int
+
+  UsuarioCreador     Usuario @relation(name: "reseña usuario", fields: [usuarioCreadorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCreadorId   Int
   UsuarioCriticado   Usuario @relation(name: "usuario criticado", fields: [usuarioCriticadoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   usuarioCriticadoId Int
 
-  descripcion String?
-  puntuacion  Int
-
-  @@id([usuarioId, usuarioCriticadoId])
+  @@id([usuarioCreadorId, usuarioCriticadoId])
 }
 
 model ValoracionPropiedad {
-  Creador   Usuario @relation(name: "reseña propiedad", fields: [usuarioId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  usuarioId Int
-
-  PropiedadCriticada   Propiedad @relation(name: "propiedad criticado", fields: [propiedadCriticadaId], references: [id])
-  propiedadCriticadaId Int
+  fechaCreacion DateTime @default(now())
+  estaActivo    Boolean
 
   descripcion String?
   puntuacion  Int
 
-  @@id([usuarioId, propiedadCriticadaId])
+  UsuarioCreador       Usuario   @relation(name: "reseña propiedad", fields: [usuarioCreadorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  usuarioCreadorId     Int
+  PropiedadCriticada   Propiedad @relation(name: "propiedad criticada", fields: [propiedadCriticadaId], references: [id])
+  propiedadCriticadaId Int
+
+  @@id([usuarioCreadorId, propiedadCriticadaId])
 }
