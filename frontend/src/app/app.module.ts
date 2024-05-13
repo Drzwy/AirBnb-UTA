@@ -14,6 +14,7 @@ import {AdvancedFilterComponent} from "../components/home-stay-list/advanced-fil
 import {FormsModule} from "@angular/forms";
 import {HomeStayFinderComponent} from "../components/home-stay-list/home-stay-finder/home-stay-finder.component";
 import {NavbarComponent} from "../components/navbar/navbar.component";
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {NavbarComponent} from "../components/navbar/navbar.component";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    BsDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

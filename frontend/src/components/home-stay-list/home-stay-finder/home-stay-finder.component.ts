@@ -19,6 +19,9 @@ export class HomeStayFinderComponent {
     finish: "Salida",
     howMany: "Quién",
     wherePlaceHolder: "Explora Destinos",
-    howManyPlaceHolder: "¿Cuántos?"
+    howManyPlaceHolder: "¿Cuántos?",
+    finder: "Buscar"
   }
 }
+
+
