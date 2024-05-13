@@ -68,4 +68,6 @@ export class HomeStayCreateDTO {
   @IsNotEmpty()
   @IsNumber()
   ownerId: number;
+
+  constructor () {}
 }

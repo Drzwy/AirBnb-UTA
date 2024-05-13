@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HousingVisualizerComponent } from '../components/housing-visualizer/housing-visualizer.component';
 import { HomeStayListComponent } from '../components/home-stay-list/home-stay-list.component';
-// import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
+import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 
 const routes: Routes = [
   {
@@ -25,11 +25,11 @@ const routes: Routes = [
     component: HousingVisualizerComponent,
     // canActivate: [authGuard]
   },
-  // {
-  //   path: 'add-home-stay',
-  //   component: AddHomeStayComponent,
-  //   // canActivate: [authGuard]
-  // },
+   {
+     path: 'add-home-stay',
+     component: AddHomeStayComponent,
+     // canActivate: [authGuard]
+   },
   {
     path: '**',
     redirectTo: 'home-stay-list', //mandar al login

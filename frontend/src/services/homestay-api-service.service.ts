@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {HomeStayCreateDTO} from "../../../backend/src/homestay/dto"
+//import {HomeStayCreateDTO} from "../../../backend/src/homestay/dto"
 import {HomeStayForm} from "../components/add-home-stay/add-home-stay.component";
 import {BehaviorSubject, Observable} from "rxjs";
 
@@ -14,8 +14,8 @@ export class HomestayApiServiceService {
 
   }
 
-  public validateForm(form: HomeStayForm): BehaviorSubject<boolean> {
-    if (
+  public validateForm(form: HomeStayForm) {
+    /*if (
       form.rooms < 1 ||
       form.beds < 1 ||
       form.bathrooms < 1
@@ -41,13 +41,16 @@ export class HomestayApiServiceService {
 
       return new BehaviorSubject<boolean>(true)
     }
-    return new BehaviorSubject<boolean>(false)
+    return new BehaviorSubject<boolean>(false) */
   }
 
+  /*
   private sendForm(dto: HomeStayCreateDTO) {
     this.http.post(
       "",
       dto
     )
   }
+
+   */
 }
