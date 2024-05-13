@@ -1,23 +1,22 @@
 <div class="finder-container">
   <div class="finder-place-holder">
-    <label class="finder-place-holder-label">{{ CONSTANTS.where }}</label>
-    <input type = text [placeholder]="CONSTANTS.wherePlaceHolder" [(ngModel)]="currentWhere" class="form-control option-entry string-option-entry" >
+    <label>Dónde</label>
+    <input type = text [placeholder]="CONSTANTS.wherePlaceHolder" [(ngModel)]="currentWhere">
   </div>
   <div class="finder-place-holder">
-    <label class="finder-place-holder-label">{{ CONSTANTS.arrival }}</label>
-    <input type = date [(ngModel)]="currentArrival" class="form-control option-entry" bsDatepicker>
+    <label>Llegada</label>
+    <input type = date [(ngModel)]="currentArrival">
   </div>
   <div class="finder-place-holder">
-    <label class="finder-place-holder-label">{{ CONSTANTS.finish }}</label>
-    <input type=date [(ngModel)]="currentFinish" class="form-control option-entry">
+    <label>Salida</label>
+    <input type = date [(ngModel)]="currentFinish">
   </div>
-
   <div class="finder-place-holder">
-    <label class="finder-place-holder-label">{{ CONSTANTS.howMany }}</label>
-    <input type = text [placeholder]="CONSTANTS.howManyPlaceHolder" [(ngModel)]="currentHowMany" class="form-control option-entry string-option-entry">
+    <label>Quién</label>
+    <input type = text [placeholder]="CONSTANTS.howManyPlaceHolder" [(ngModel)]="currentHowMany">
   </div>
   <div class="lupa">
-    <button class="finder-button"> {{CONSTANTS.finder}} </button>
+    <button class="finder-button"> Buscar </button>
   </div>
 
 

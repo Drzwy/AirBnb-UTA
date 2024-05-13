@@ -1,43 +1,58 @@
+<app-navbar/>
 
 
-<div >
+<div class="screen-container">
     <h1>{{house.houseName}}</h1>
 
     <app-images-card *ngIf="house.imagesUrl" [imageUrls]="house.imagesUrl" />
 
-    <h2 class="secondary"  *ngIf="house.location && house.houseType">
-        {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
-    </h2>
+    <div class="prueba">
+        <div class="prueba2">
 
-    <h3 class="secondary">
-        <app-housing-info-displayer [housingInformation]="this.house.informationOfNumber"/>
-    </h3>
+            <div class="details-container">
+                <h2 class="house-location" *ngIf="house.location && house.houseType">
+                    {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
+                </h2>
+                <h3 class="house-information">
+                    <app-housing-info-displayer [housingInformation]="this.house.informationOfNumber"/>
+                </h3>
+            </div>
 
-
-
-    <div class="valuations-container" *ngIf="house.houseDescriptionParagraphs?.length != 0">
-        <h4>
-            {{TEXTS.description}}
-        </h4>
-
-        @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
-            <h5>
-                {{parragraphs}}
-            </h5>
-        }
+            <div class="valuations-container" *ngIf="house.houseDescriptionParagraphs?.length != 0">
+                <h2 class="house-description">
+                    {{TEXTS.description}}
+                </h2>
+        
+                @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
+                    <h3 class="house-detail">
+                        {{parragraphs}}
+                    </h3>
+                }
+            </div>
+        
+            <div class="valuations-container" *ngIf="house.services">
+                <h2 class="subtitle">
+                    {{TEXTS.servicesList}}
+                </h2>
+        
+                <div class="services-container">
+                    @for (service of house.services; track service) {
+                        <h4 class="services"> {{service}} </h4>
+                    }
+                </div>
+        
+            </div>
+            
+        </div>
+        <div class="prueba3">
+            <app-housing-reservation [housingPrice]="this.house.prices" [rules]="this.house.rules"/> 
+        </div>
     </div>
-    <div class="valuations-container" *ngIf="house.services">
-        <h2 class="subtitle">
-            {{TEXTS.servicesList}}
-        </h2>
-
-        <ul>
-            @for (service of house.services; track service) {
-                <li> {{service}} </li>
-            }
-        </ul>
-
+    
+    <div class="valuations-container">
+        <app-calendar-v2 [location]="this.house.location" />
     </div>
+    
 
     <div class="valuations-container">
 
@@ -45,19 +60,45 @@
             {{TEXTS.ratings}}
         </h2>
 
-        @for (valuation of house.valuations; track  valuation) {
-            <div class="primary">
-                <div class = "info-card">
-                    {{valuation}}
+        <div class="reviews-container">
+            @for (valuation of house.valuations; track  valuation; let i = $index) {
+                <div class="primary">
+                    <div style="display: flex;">
+                        <img class="valuation-img" src={{valuation.img}}>
+                        <div class="valuation-info">
+                            <h2 class="user-name">{{valuation.name}}</h2>
+                            <div class="user-location">
+                                {{valuation.city}},
+                                {{valuation.country}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stars-and-date">
+                        <div class = "stars-card">
+                            @for (star of [1,2,3,4,5]; track star) {
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" style="margin-right: 1px;" [attr.fill]="star <= valuation.stars ? 'currentColor' : '#e2e2e2'"  class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            }
+                        </div>
+                        <div class="date">
+                            {{ valuation.date.toLocaleString('es-ES', { month: 'long', year: 'numeric' }) }}
+                        </div>
+                    </div>
+                    <div class = "info-card">
+                        <h2 [ngClass]="{'valuation': !isExpanded[i], 'valuation2': isExpanded[i]}"> 
+                            {{valuation.text}}
+                        </h2>
+                        <a class="show-more" (click)="expand(i)">
+                            {{ isExpanded[i] ? 'Mostrar menos': 'Mostrar mas' }}
+                        </a>
+                        
+                    </div>
                 </div>
-
-                <div class = "info-card">
-                    5 estrellas
-                </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 
-
+    <button class="btn btn-secondary" (click)="volver()">volver</button>
 
 </div>

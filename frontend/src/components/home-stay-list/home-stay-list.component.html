@@ -1,4 +1,4 @@
-
+<app-navbar/>
 <div class="page-center">
   <app-home-stay-finder />
   <app-home-type-buttons class="element"/>
@@ -9,7 +9,7 @@
 
       <div class="home-stay-display">
         <div>
-          <img [src]="homeStay.imageUrl.url"
+          <img (click)="homeVisualizer()" [src]="homeStay.imageUrl.url"
                [alt]="homeStay.imageUrl.alt"
                [width]="IMAGE_DIMENSIONS"
                [height]="IMAGE_DIMENSIONS"

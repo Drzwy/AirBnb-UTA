@@ -158,14 +158,22 @@ export class HomeDisplayService {
             height: 20,
             width: 20}
         },
-        { type: "Ruca",
-          vectorImage:{
-            url: "https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg",
-            alt: "",
-            height: 20,
-            width: 20
-          }
-        },
+      { type: "Ruca",
+        vectorImage:{
+          url: "https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg",
+          alt: "",
+          height: 20,
+          width: 20
+        }
+      },
+      { type: "Apartamento Pequeño",
+        vectorImage:{
+          url: "https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg",
+          alt: "",
+          height: 20,
+          width: 20
+        }
+      }
     ]
   }
 
