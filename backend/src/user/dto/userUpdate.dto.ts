@@ -1,50 +1,38 @@
-import { UserTypes } from '@prisma/client';
 import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class UserUpdateDto {
-  @IsEnum(UserTypes)
-  @IsNotEmpty()
-  tipo_usuario: UserTypes;
-
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   email?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   hash?: string;
 
   @IsString()
-  @IsNotEmpty()
-  run?: string;
-
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   nombre?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   apellidoPat?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   apellidoMat?: string;
 
   @IsString()
+  @IsOptional()
   descripcion?: string;
 
   @IsArray()
+  @IsOptional()
   @Type(() => String)
   idiomas?: string[];
 
   @IsArray()
+  @IsOptional()
   @Type(() => String)
   detalles?: string[];
 }

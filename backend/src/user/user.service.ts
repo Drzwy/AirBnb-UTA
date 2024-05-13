@@ -21,12 +21,8 @@ export class UserService {
    * @returns Usuario con tipo Cliente creado
    */
   async registerUser(dto: UserRegisterDTO) {
-    const password = dto.password;
-    delete dto.password;
-
     const createDto: UserCreateDTO = Object.assign({}, dto, {
       tipoUsuario: UserTypes.Cliente,
-      hash: password,
     });
 
     return this.createUser(createDto);
@@ -38,13 +34,14 @@ export class UserService {
    * @returns Usuario creado
    */
   async createUser(dto: UserCreateDTO) {
-    const hash = await argon.hash(dto.hash);
+    const hash: string = await argon.hash(dto.hash);
     dto.hash = hash;
 
     try {
-      const user = await this.prismaService.usuario.create({
+      const user: Usuario = await this.prismaService.usuario.create({
         data: dto,
       });
+      delete user.hash;
       return user;
     } catch (error) {
       // si las credenciales estan duplicadas throw error
@@ -72,7 +69,7 @@ export class UserService {
     });
 
     if (!user) throw new NotFoundException('El usuario no existe');
-
+    delete user.hash;
     return user;
   }
 
@@ -81,9 +78,13 @@ export class UserService {
    * @returns Usuarios dentro de la BD
    */
   async getAllUsers() {
-    const users = await this.prismaService.usuario.findMany();
+    let users: Usuario[] = await this.prismaService.usuario.findMany({});
     if (users.length == 0)
       throw new NotFoundException('No existen usuarios registrados');
+    users = users.map((user) => {
+      delete user.hash;
+      return user;
+    });
     return users;
   }
 
@@ -94,14 +95,29 @@ export class UserService {
    */
   async deleteUserById(userId: number) {
     try {
-      const deletedUser = await this.prismaService.usuario.delete({
+      const updateUserQuery = this.prismaService.usuario.update({
         where: {
           id: userId,
         },
-        // TODO revisar delete cascade
-        // https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/referential-actions
+        data: {
+          estaActivo: false,
+        },
       });
-      return deletedUser;
+      const updatePropertiesQuery = this.prismaService.propiedad.updateMany({
+        where: {
+          anfitrionId: userId,
+        },
+        data: {
+          estaActivo: false,
+        },
+      });
+
+      const deletedUser = await this.prismaService.$transaction([
+        updateUserQuery,
+        updatePropertiesQuery,
+      ]);
+      console.log({ deletedUser });
+      return deletedUser; // nose q tira
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -130,8 +146,9 @@ export class UserService {
           id: userId,
         },
         data: dto,
-        // por alguna razon prisma updatea igual aunque tenga los mismos datos
       });
+
+      delete user.hash;
       return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -147,20 +164,4 @@ export class UserService {
       }
     }
   }
-
-  // private transformDto(registerDto: UserRegisterDTO): UserCreateDTO {
-  //   const password = registerDto.password;
-  //   delete registerDto.password;
-
-  //   const createDto: UserCreateDTO = Object.assign(
-  //     new UserCreateDTO(),
-  //     registerDto,
-  //     {
-  //       tipoUsuario: UserTypes.Cliente,
-  //       hash: password,
-  //     },
-  //   );
-
-  //   return createDto;
-  // }
 }

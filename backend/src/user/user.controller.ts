@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,9 +7,10 @@ import {
   Param,
   Patch,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Usuario } from '@prisma/client';
+import { UserTypes, Usuario } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from './decorator';
 import { UserService } from './user.service';
@@ -25,7 +27,11 @@ export class UserController {
    * @returns Usuarios encontrados
    */
   @Get()
-  getAllUsers() {
+  getAllUsers(@User('tipoUsuario') userType: UserTypes) {
+    if (userType == UserTypes.Cliente)
+      throw new UnauthorizedException(
+        'No está autorizado para acceder a este recurso',
+      );
     return this.userService.getAllUsers();
   }
 
@@ -46,6 +52,11 @@ export class UserController {
    */
   @Get(':userId')
   getUserById(@Param('userId') userId: string) {
+    if (isNaN(parseInt(userId)))
+      throw new BadRequestException(
+        'El parámetro introducido no tiene el formato correcto',
+      );
+
     return this.userService.getUserById(+userId);
   }
 
@@ -57,8 +68,14 @@ export class UserController {
    * @returns Usuario creado
    */
   @Post()
-  createUser(@Body() dto: UserCreateDTO) {
-    //TODO guard de admin
+  createUser(
+    @User('tipoUsuario') userType: UserTypes,
+    @Body() dto: UserCreateDTO,
+  ) {
+    if (userType == UserTypes.Cliente)
+      throw new UnauthorizedException(
+        'No está autorizado para acceder a este recurso',
+      );
     return this.userService.createUser(dto);
   }
 
@@ -70,21 +87,52 @@ export class UserController {
    * @returns Usuario borrado
    */
   @Delete(':userId')
-  deleteUserById(@Param('userId') userId: string) {
-    //TODO guard de admin
+  deleteUserById(
+    @User('tipoUsuario') userType: UserTypes,
+    @Param('userId') userId: string,
+  ) {
+    if (isNaN(parseInt(userId)))
+      throw new BadRequestException(
+        'El parámetro introducido no tiene el formato correcto',
+      );
+    if (userType == UserTypes.Cliente)
+      throw new UnauthorizedException(
+        'No está autorizado para acceder a este recurso',
+      );
     return this.userService.deleteUserById(+userId);
   }
 
   /**
+   * Ruta para actualizar los datos del usuario loggeado
+   * @param userId ID del Usuario
+   * @param dto DTO para actualizar el usuario
+   * @returns Usuario actualizado
+   */
+  @Patch()
+  updateLoggedUser(@User('id') userId: number, @Body() dto: UserUpdateDto) {
+    return this.userService.updateUserById(userId, dto);
+  }
+
+  /**
    * Ruta para actualizar los datos de un usuario dado un ID y el DTO correspondiente
-   *
-   * IMPORTANTE: Se deben incluir todos los datos que NO se modifican. Si no se proporcionan, quedarán en blanco
    * @param userId ID del Usuario
    * @param dto DTO para actualizar el usuario
    * @returns Usuario actualizado
    */
   @Patch(':userId')
-  updateUserById(@Param('userId') userId: string, @Body() dto: UserUpdateDto) {
+  updateUserById(
+    @User('tipoUsuario') userType: UserTypes,
+    @Param('userId') userId: string,
+    @Body() dto: UserUpdateDto,
+  ) {
+    if (isNaN(parseInt(userId)))
+      throw new BadRequestException(
+        'El parámetro introducido no tiene el formato correcto',
+      );
+    if (userType == UserTypes.Cliente)
+      throw new UnauthorizedException(
+        'No está autorizado para acceder a este recurso',
+      );
     return this.userService.updateUserById(+userId, dto);
   }
 }
