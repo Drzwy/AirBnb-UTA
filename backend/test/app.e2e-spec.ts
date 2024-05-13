@@ -190,7 +190,13 @@ describe('App e2e', () => {
     });
 
     describe('Create user (Admin)', () => {
-      it('deberia tirar error sin body', () => {});
+      it('deberia tirar error sin body', () => {
+        return pactum
+          .spec()
+          .post('/users/')
+          .withBearerToken('$S{clienteAuthToken}')
+          .expectStatus(HttpStatus.CREATED);
+      });
       it('deberia crear un usuario admin', () => {});
       it('deberia crear un usuario cliente', () => {});
     });

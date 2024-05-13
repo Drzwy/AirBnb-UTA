@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -16,10 +18,19 @@ import { User } from './decorator';
 import { UserService } from './user.service';
 import { UserUpdateDto } from './dto/userUpdate.dto';
 import { UserCreateDTO } from './dto/userCreate.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@UseGuards(JwtGuard) // desactivar para probar
+@ApiTags('Users')
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
+  UAE: UnauthorizedException = new UnauthorizedException(
+    'No está autorizado para acceder a este recurso',
+  );
+  BRE: BadRequestException = new BadRequestException(
+    'El parámetro introducido no tiene el formato correcto',
+  );
+
   constructor(private userService: UserService) {}
 
   /**
@@ -28,10 +39,7 @@ export class UserController {
    */
   @Get()
   getAllUsers(@User('tipoUsuario') userType: UserTypes) {
-    if (userType == UserTypes.Cliente)
-      throw new UnauthorizedException(
-        'No está autorizado para acceder a este recurso',
-      );
+    if (userType == UserTypes.Cliente) throw this.UAE;
     return this.userService.getAllUsers();
   }
 
@@ -52,10 +60,7 @@ export class UserController {
    */
   @Get(':userId')
   getUserById(@Param('userId') userId: string) {
-    if (isNaN(parseInt(userId)))
-      throw new BadRequestException(
-        'El parámetro introducido no tiene el formato correcto',
-      );
+    if (isNaN(parseInt(userId))) throw this.BRE;
 
     return this.userService.getUserById(+userId);
   }
@@ -72,10 +77,7 @@ export class UserController {
     @User('tipoUsuario') userType: UserTypes,
     @Body() dto: UserCreateDTO,
   ) {
-    if (userType == UserTypes.Cliente)
-      throw new UnauthorizedException(
-        'No está autorizado para acceder a este recurso',
-      );
+    if (userType == UserTypes.Cliente) throw this.UAE;
     return this.userService.createUser(dto);
   }
 
@@ -91,14 +93,8 @@ export class UserController {
     @User('tipoUsuario') userType: UserTypes,
     @Param('userId') userId: string,
   ) {
-    if (isNaN(parseInt(userId)))
-      throw new BadRequestException(
-        'El parámetro introducido no tiene el formato correcto',
-      );
-    if (userType == UserTypes.Cliente)
-      throw new UnauthorizedException(
-        'No está autorizado para acceder a este recurso',
-      );
+    if (isNaN(parseInt(userId))) throw this.BRE;
+    if (userType == UserTypes.Cliente) throw this.UAE;
     return this.userService.deleteUserById(+userId);
   }
 
@@ -125,14 +121,8 @@ export class UserController {
     @Param('userId') userId: string,
     @Body() dto: UserUpdateDto,
   ) {
-    if (isNaN(parseInt(userId)))
-      throw new BadRequestException(
-        'El parámetro introducido no tiene el formato correcto',
-      );
-    if (userType == UserTypes.Cliente)
-      throw new UnauthorizedException(
-        'No está autorizado para acceder a este recurso',
-      );
+    if (isNaN(parseInt(userId))) throw this.BRE;
+    if (userType == UserTypes.Cliente) throw this.UAE;
     return this.userService.updateUserById(+userId, dto);
   }
 }
