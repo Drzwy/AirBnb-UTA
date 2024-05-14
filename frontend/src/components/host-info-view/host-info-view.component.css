@@ -1,5 +1,6 @@
 div.main-info-container {
   display: flex;
+  width: 100%;
   flex-wrap: nowrap;
   padding: 30px;
 }
@@ -7,15 +8,13 @@ div.main-info-container {
 .left-column {
   background-color: #f8f9fa; /* Color de fondo de la columna izquierda */
   padding: 20px; /* Añade un poco de espacio al contenido */
-  width: 40%;
+  width: 500px;
   height: max-content;
 }
 
 .right-column {
-  width: 700px;
+  width: 50%;
   padding-left: 30px;
-
-
 }
 
 
@@ -23,7 +22,7 @@ div.main-info-container {
 div.host-info-card {
   display: flex;
   flex-wrap: nowrap;
-  max-width: 50%;
+  width: 50%;
 
 
 }
