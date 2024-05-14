@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeStayFinderComponent } from '../components/home-stay-list/home-stay-finder/home-stay-finder.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
+import {HostInfoViewComponent} from "../components/host-info-view/host-info-view.component";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.co
     HomeTypeButtonsComponent,
     AdvancedFilterComponent,
     HomeStayFinderComponent,
-    AddHomeStayComponent
+    AddHomeStayComponent,
+    HostInfoViewComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

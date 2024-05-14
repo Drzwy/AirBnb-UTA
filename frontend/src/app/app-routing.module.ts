@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HousingVisualizerComponent } from '../components/housing-visualizer/housing-visualizer.component';
 import { HomeStayListComponent } from '../components/home-stay-list/home-stay-list.component';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
+import {HostInfoViewComponent} from "../components/host-info-view/host-info-view.component";
 
 const routes: Routes = [
   {
@@ -20,15 +21,22 @@ const routes: Routes = [
     component: HomeStayListComponent,
     // canActivate: [authGuard]
   },
+
   {
     path: 'housing-visualizer',
     component: HousingVisualizerComponent,
     // canActivate: [authGuard]
   },
-   {
-     path: 'add-home-stay',
-     component: AddHomeStayComponent,
-     // canActivate: [authGuard]
+  {
+    path: 'about-host',
+    component: HostInfoViewComponent,
+    // canActivate: [authGuard]
+  },
+
+  {
+    path: 'add-home-stay',
+    component: AddHomeStayComponent,
+    // canActivate: [authGuard]
    },
   {
     path: '**',

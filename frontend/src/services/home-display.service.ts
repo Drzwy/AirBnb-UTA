@@ -67,7 +67,7 @@ export const emptyFilter: FilterState = {
 })
 export class HomeDisplayService {
   readonly HOUSE_TYPE_VECTOR_SIZE: number = 30
-  readonly availableHomeStays: HomeStayInformation[] = [_test,_test2,_test3]
+  readonly availableHomeStays: HomeStayInformation[] = [_test,_test2,_test3,_test3,_test2,_test]
 
 
   //observable type
