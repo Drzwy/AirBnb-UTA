@@ -13,6 +13,9 @@ import { AdvancedFilterComponent } from '../components/home-stay-list/advanced-f
 import { FormsModule } from '@angular/forms';
 import { HomeStayFinderComponent } from '../components/home-stay-list/home-stay-finder/home-stay-finder.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
+import { RegisterComponent } from '../components/register/register.component';
+import { LoginComponent } from '../components/login/login.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,8 +30,10 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
     HomeTypeButtonsComponent,
     AdvancedFilterComponent,
     HomeStayFinderComponent,
+    RegisterComponent,
+    LoginComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

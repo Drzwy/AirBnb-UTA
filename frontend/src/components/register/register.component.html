@@ -1,0 +1,114 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h4 card-title text-center mt-4 mb-4">Registrarse</h2>
+            <div class="border-bottom mb-4"></div>
+            <p class="h3 text-left mb-3">Te damos la bienvenida a Airbnb</p>
+            <form #form="ngForm" (ngSubmit)="register(form)" class="mt-4">
+              <div class="overflow-auto" style="max-height: 400px;">
+                <div class="form-group">
+                  <label class="mt-2" for="email">Correo electrónico:</label>
+                  <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" placeholder="ejemplo@correo.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+                  <div *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)">
+                    <small class="text-danger">Ingrese un correo electrónico válido</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="mt-2" for="password">Contraseña:</label>
+                  <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" placeholder="contraseña" pattern="(?=.*[A-Z])(?=.*\d).{6,}" required>
+                  <div *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)">
+                      <small class="text-danger">La contraseña debe tener al menos 6 caracteres, una letra mayúscula y un número</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="mt-2" for="run">RUN:</label>
+                  <input type="text" class="form-control" id="run" name="run" [(ngModel)]="user.run" placeholder="12345678-9" pattern="\d{3,8}-[\d|kK]{1}" required>
+                  <div *ngIf="(form.controls['run'].invalid || !checkRun(user.run)) && (form.controls['run'].dirty || form.controls['run'].touched)">
+                      <small class="text-danger">Ingrese un RUN válido, ej: 12345678-9</small>
+                  </div>
+                </div>                              
+                <div class="form-group">
+                  <label class="mt-2" for="name">Nombre:</label>
+                  <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" placeholder="nombre" required>
+                </div>
+                <div class="form-group">
+                  <label class="mt-2" for="lastName">Apellido paterno:</label>
+                  <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName" placeholder="apellido paterno" required>
+                </div>
+                <div class="form-group">
+                  <label class="mt-2" for="moLastName">Apellido materno:</label>
+                  <input type="text" class="form-control" id="moLastName" name="moLastName" [(ngModel)]="user.moLastName" placeholder="apellido materno" required>
+                </div>
+                <div class="form-group">
+                  <label class="mt-2" for="description">Descripción:</label>
+                  <input type="text" class="form-control" id="description" name="description" [(ngModel)]="user.description" placeholder="descripcion">
+                </div>
+                <div class="form-group d-flex flex-column">
+                  <label class="mt-2" for="languages">Idiomas:</label>
+                  <select class="form-select" id="languages" name="languages" multiple>
+                    <option *ngFor="let language of availableLanguages">{{ language }}</option>
+                  </select>
+                </div>                                                 
+                <div class="form-group">
+                  <label class="mt-2" for="details">Detalles:</label>
+                  <input type="text" class="form-control" id="details" name="details" [(ngModel)]="user.details" placeholder="detalles">
+                </div>
+              </div>
+              <div class="text-center mt-4">
+                <button type="submit" class="btn" style="background-color: #db0c63; color: white; width: 100%; height: 50px;" [disabled]="!form.valid">Registrarse</button>
+              </div>
+            </form>
+            <div class="text-center mt-3">
+              <p class="d-flex align-items-center justify-content-center">¿Ya tienes cuenta? <a class="btn btn-link" style="color: black; font-weight: bold;" (click)="login()">Inicia sesión</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <h2>Registro</h2>
+<form #form="ngForm" (ngSubmit)="register(form)">
+  <div class="form-group">
+    <label for="email">Correo electrónico:</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required>
+  </div>
+  <div class="form-group">
+    <label for="password">Contraseña:</label>
+    <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" required>
+  </div>
+  <div class="form-group">
+    <label for="run">RUN:</label>
+    <input type="text" class="form-control" id="run" name="run" [(ngModel)]="user.run" required>
+  </div>
+  <div class="form-group">
+    <label for="name">Nombre:</label>
+    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" required>
+  </div>
+  <div class="form-group">
+    <label for="lastName">Apellido paterno:</label>
+    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName" required>
+  </div>
+  <div class="form-group">
+    <label for="moLastName">Apellido materno:</label>
+    <input type="text" class="form-control" id="moLastName" name="moLastName" [(ngModel)]="user.moLastName" required>
+  </div>
+  <div class="form-group">
+    <label for="description">Descripción:</label>
+    <textarea class="form-control" id="description" name="description" [(ngModel)]="user.description"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="languages">Idiomas:</label>
+    <input type="text" class="form-control" id="languages" name="languages" [(ngModel)]="user.languages" placeholder="Separa los idiomas por comas">
+  </div>
+  <div class="form-group">
+    <label for="details">Detalles:</label>
+    <textarea class="form-control" id="details" name="details" [(ngModel)]="user.details"></textarea>
+  </div>
+  <button type="submit" class="btn btn-info" [disabled]="!form.valid">Registrarse</button>
+  <button (click)="login()" class="btn btn-danger">Login</button>
+</form> -->

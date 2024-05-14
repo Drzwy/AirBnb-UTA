@@ -39,6 +39,11 @@
         }
       </button>
 
+      <!-- puesto mientras para poder hacer logout y cambiar de anfitrion a huesped xd-->
+      <button class="btn btn-danger" (click)="logout()">logout</button> 
+      <button class="btn btn-info" (click)="changeType('Host')">Cambiar a anfitrion</button>
+      <button class="btn btn-info" (click)="changeType('Guest')">Cambiar a huesped</button>
+
       <div class="modal fade my-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
         <div class="modal-dialog my-modal">
           <div class="modal-content my-modal">

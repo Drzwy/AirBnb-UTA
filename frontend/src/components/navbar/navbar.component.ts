@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {ChangeOptionDTO, UserGlobalPreferencesService} from "../../services/user-global-preferences.service";
+import { Router } from '@angular/router';
+import { LoginRegisterService } from '../../services/login-register.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,9 +13,11 @@ export class NavbarComponent {
   private configVisibility: boolean = false
 
 
-  constructor(private service: UserGlobalPreferencesService) {
-
-  }
+  constructor(
+    private service: UserGlobalPreferencesService,
+    private router: Router,
+    private loginRegisterService: LoginRegisterService
+  ) {}
 
 
   readonly configOptionsButton = {
@@ -60,7 +64,15 @@ export class NavbarComponent {
     return this.service.getAllLanguages()
   }
 
+  public logout(): void {
+    if (this.loginRegisterService.logout()) {
+      this.router.navigateByUrl('login');
+    }
+  }
 
+  public changeType(type: string){
+    this.loginRegisterService.changeType(type);
+  }
 
 }
 
