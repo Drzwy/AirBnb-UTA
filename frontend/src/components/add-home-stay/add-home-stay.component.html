@@ -2,28 +2,53 @@
 <div class="container mt-5">
   <h2>Formulario de Inscripción de Propiedad</h2>
   <form>
-    <div class="form-group">
-      <label for="numDormitorios">{{CONSTANTS.roomsNumberLabel}}</label>
-      <input type="number" class="form-control" id="numDormitorios" name="numDormitorios" [(ngModel)]="currentRooms">
+    <div class="align-content-lg-stretch" style="margin: 10px">
+      <div class="form-group ">
+        <div class="numeric-input-holder justify-content-lg-between">
+          <label for="numDormitorios" class="text-body-emphasis">{{CONSTANTS.roomsNumberLabel}}</label>
+          <div class="card-group">
+            <button class="card justify-content-center numeric-input">-</button>
+            <input class="form-control numeric-input text-center" id="numDormitorios"  style="border:none" name="numDormitorios" [(ngModel)]="currentRooms">
+            <button class="card justify-content-center numeric-input">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="numeric-input-holder justify-content-lg-between">
+          <label for="camasDisponibles" class="text-body-emphasis">{{CONSTANTS.bedsNumberLabel}}</label>
+          <div class="card-group ">
+            <button class="card justify-content-center numeric-input">-</button>
+            <input class="form-control numeric-input text-center" id="camasDisponibles" style="border:none" name="camasDisponibles" [(ngModel)]="currentBeds">
+            <button class="card justify-content-center numeric-input">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="numeric-input-holder justify-content-lg-between">
+          <label for="banosDisponibles" class="text-body-emphasis">{{CONSTANTS.bathsNumberLabel}}</label>
+          <div class="card-group ">
+            <button class="card justify-content-center numeric-input">-</button>
+            <input class="form-control numeric-input text-center" style="border:none" id="banosDisponibles" name="banosDisponibles" [(ngModel)]="currentBathrooms">
+            <button class="card justify-content-center numeric-input">+</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="camasDisponibles">{{ CONSTANTS.bedsNumberLabel }}</label>
-      <input type="number" class="form-control" id="camasDisponibles" name="camasDisponibles" [(ngModel)]="currentBeds">
-    </div>
-    <div class="form-group">
-      <label for="banosDisponibles">{{CONSTANTS.bathsNumberLabel}}</label>
-      <input type="number" class="form-control" id="banosDisponibles" name="banosDisponibles" [(ngModel)]="currentBathrooms">
-    </div>
+
+
     <div class="form-group">
       <label for="tipoPropiedad">{{CONSTANTS.homeStayTypeLabel}}</label>
       <select class="form-control" id="tipoPropiedad" name="tipoPropiedad" [(ngModel)]="currentType">
         <option *ngFor="let types of getHomeStayTypes()">{{types.type}}</option>
       </select>
     </div>
+
     <div class="form-group">
       <label for="descripcion">{{CONSTANTS.descriptionLabel}}:</label>
       <textarea class="form-control" id="descripcion" name="descripcion" rows="3" [(ngModel)]="currentDesc"></textarea>
     </div>
+
+
     <div class="form-group">
       <label>{{CONSTANTS.availableDateLabel}}</label>
       <div class="row">

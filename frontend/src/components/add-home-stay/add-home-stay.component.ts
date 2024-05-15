@@ -10,8 +10,8 @@ import {HomestayApiServiceService} from "../../services/homestay-api-service.ser
 export class AddHomeStayComponent {
 
   constructor(
-    private serviceForHomeStayTypes: HomeDisplayService,
-    private serviceForHttp: HomestayApiServiceService)
+    private serviceForHomeStayTypes: HomeDisplayService)
+    //private serviceForHttp: HomestayApiServiceService)
   {
 
   }
@@ -74,7 +74,7 @@ export class AddHomeStayComponent {
       arrivalOptions : this.currentArrivalOptions
     }
 
-    this.serviceForHttp.validateForm(form)
+    //this.serviceForHttp.validateForm(form)
   }
 
 
