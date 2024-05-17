@@ -74,8 +74,4 @@ export class HomeStayUpdateDTO {
   @IsOptional()
   @IsString()
   ciudad: string;
-
-  @IsOptional()
-  @IsString()
-  comuna: string;
 }

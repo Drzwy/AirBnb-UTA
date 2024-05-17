@@ -80,8 +80,4 @@ export class HomeStayCreateDTO {
   @IsNotEmpty()
   @IsString()
   ciudad: string;
-
-  @IsNotEmpty()
-  @IsString()
-  comuna: string;
 }
