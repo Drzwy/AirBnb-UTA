@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {importProvidersFrom, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +15,7 @@ import {FormsModule} from "@angular/forms";
 import {HomeStayFinderComponent} from "../components/home-stay-list/home-stay-finder/home-stay-finder.component";
 import {NavbarComponent} from "../components/navbar/navbar.component";
 import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.co
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    importProvidersFrom(HttpClientModule)
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

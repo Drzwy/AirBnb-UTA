@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {HomeDisplayService, HomeStayType} from "../../services/home-display.service";
-import {HomestayApiServiceService} from "../../services/homestay-api-service.service";
+import {HomestayApiService} from "../../services/homestay-api.service";
+
 
 @Component({
   selector: 'app-add-home-stay',
@@ -10,8 +11,8 @@ import {HomestayApiServiceService} from "../../services/homestay-api-service.ser
 export class AddHomeStayComponent {
 
   constructor(
-    private serviceForHomeStayTypes: HomeDisplayService)
-    //private serviceForHttp: HomestayApiServiceService)
+    private serviceForHomeStayTypes: HomeDisplayService,
+    private serviceForHttp: HomestayApiService)
   {
 
   }
@@ -27,10 +28,10 @@ export class AddHomeStayComponent {
   public currentLocation: string = "";
   public currentStreetAddress: string = "";
   public currentServices: string = "";
-  public currentStreetNumber?: number = 0;
-  public currentDepNumber?: number = 0;
-  public currentSecurityOptions?: string;
-  public currentArrivalOptions?: string;
+  public currentStreetNumber: number = 0;
+  public currentDepNumber: number = 0;
+  public currentSecurityOptions: string = "";
+  public currentArrivalOptions: string = "";
 
   readonly CONSTANTS = {
     roomsNumberLabel: "Número de Dormitorios",
@@ -74,13 +75,28 @@ export class AddHomeStayComponent {
       arrivalOptions : this.currentArrivalOptions
     }
 
-    //this.serviceForHttp.validateForm(form)
+    if (this.validateForm(form)) {
+      this.serviceForHttp.sendHomeStayForm(form).subscribe(
+        form => this.currentBathrooms = 10
+      )
+    }
+
+  }
+
+  private validateForm(form: HomeStayForm): boolean {
+    if (form === undefined) return false;
+    return (
+      form.rooms > 0 ||
+      form.bathrooms > 0 ||
+      form.beds > 0
+    );
   }
 
 
 
   public currentHomeStayForm?: HomeStayForm
 
+  protected readonly navigator = navigator;
 }
 
 export interface HomeStayForm {
@@ -95,8 +111,8 @@ export interface HomeStayForm {
   location: string
   street: string,
   services: string,
-  streetNumber?: number,
-  depNumber?: number,
-  securityOptions?: string,
-  arrivalOptions?: string
+  streetNumber: number,
+  depNumber: number,
+  securityOptions: string,
+  arrivalOptions: string
 }

@@ -7,9 +7,9 @@
         <div class="numeric-input-holder justify-content-lg-between">
           <label for="numDormitorios" class="text-body-emphasis">{{CONSTANTS.roomsNumberLabel}}</label>
           <div class="card-group">
-            <button class="card justify-content-center numeric-input">-</button>
+            <button class="card justify-content-center numeric-input" (click)="currentRooms <= 0? currentRooms = 0: currentRooms = currentRooms-1">-</button>
             <input class="form-control numeric-input text-center" id="numDormitorios"  style="border:none" name="numDormitorios" [(ngModel)]="currentRooms">
-            <button class="card justify-content-center numeric-input">+</button>
+            <button class="card justify-content-center numeric-input" (click)="currentRooms = currentRooms + 1">+</button>
           </div>
         </div>
       </div>
@@ -17,9 +17,9 @@
         <div class="numeric-input-holder justify-content-lg-between">
           <label for="camasDisponibles" class="text-body-emphasis">{{CONSTANTS.bedsNumberLabel}}</label>
           <div class="card-group ">
-            <button class="card justify-content-center numeric-input">-</button>
+            <button class="card justify-content-center numeric-input" (click)="currentBeds <= 0? currentBeds = 0: currentBeds = currentBeds-1">-</button>
             <input class="form-control numeric-input text-center" id="camasDisponibles" style="border:none" name="camasDisponibles" [(ngModel)]="currentBeds">
-            <button class="card justify-content-center numeric-input">+</button>
+            <button class="card justify-content-center numeric-input" (click)="currentBeds = currentBeds + 1">+</button>
           </div>
         </div>
       </div>
@@ -27,9 +27,9 @@
         <div class="numeric-input-holder justify-content-lg-between">
           <label for="banosDisponibles" class="text-body-emphasis">{{CONSTANTS.bathsNumberLabel}}</label>
           <div class="card-group ">
-            <button class="card justify-content-center numeric-input">-</button>
+            <button class="card justify-content-center numeric-input" (click)="currentBathrooms <= 0? currentBathrooms = 0: currentBathrooms = currentBathrooms-1">-</button>
             <input class="form-control numeric-input text-center" style="border:none" id="banosDisponibles" name="banosDisponibles" [(ngModel)]="currentBathrooms">
-            <button class="card justify-content-center numeric-input">+</button>
+            <button class="card justify-content-center numeric-input" (click)="currentBathrooms = currentBathrooms + 1">+</button>
           </div>
         </div>
       </div>
