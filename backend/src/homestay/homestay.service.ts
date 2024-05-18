@@ -19,11 +19,11 @@ export class HomestayService {
   }
 
   public async createHomeStay(
-    ownerId: number,
-    data: Prisma.PropiedadCreateWithoutOwnerInput,
+    anfitrionId: number,
+    data: Prisma.PropiedadCreateWithoutAnfitrionInput,
   ) {
     const ownerExists = await this.prisma.usuario.findUnique({
-      where: { id: ownerId },
+      where: { id: anfitrionId },
     });
     if (!ownerExists) {
       throw new HttpException('El propietario no existe', 404);
@@ -33,7 +33,7 @@ export class HomestayService {
       const createHomeStay = this.prisma.propiedad.create({
         data: {
           ...data,
-          ownerId,
+          anfitrionId,
         },
       });
       return createHomeStay;

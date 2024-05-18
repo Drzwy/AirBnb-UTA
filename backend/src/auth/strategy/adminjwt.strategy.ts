@@ -6,7 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class AdminJwtStrategy extends PassportStrategy(Strategy, 'adminjwt') {
   constructor(
     config: ConfigService,
     private prisma: PrismaService,
@@ -18,12 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: { sub: number; email: string; userType: UserTypes }) {
-    const user = await this.prisma.usuario.findUnique({
-      where: {
-        id: payload.sub,
-      },
-    });
-    delete user.hash;
-    return user;
+    if (payload.userType == UserTypes.Cliente) return true;
+    else return false;
   }
 }

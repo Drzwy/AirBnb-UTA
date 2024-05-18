@@ -32,8 +32,8 @@ export class HomestayController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createHomeStay(@Body() { ownerId, ...request }: HomeStayCreateDTO) {
-    return await this.homeStayService.createHomeStay(ownerId, request);
+  async createHomeStay(@Body() { anfitrionId, ...request }: HomeStayCreateDTO) {
+    return await this.homeStayService.createHomeStay(anfitrionId, request);
   }
 
   @Patch(':id')
