@@ -36,20 +36,20 @@
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group justify-content-sm-center">
       <label for="tipoPropiedad">{{CONSTANTS.homeStayTypeLabel}}</label>
       <select class="form-control" id="tipoPropiedad" name="tipoPropiedad" [(ngModel)]="currentType">
         <option *ngFor="let types of getHomeStayTypes()">{{types.type}}</option>
       </select>
     </div>
 
-    <div class="form-group">
+    <div class="form-group justify-content-sm-center">
       <label for="descripcion">{{CONSTANTS.descriptionLabel}}:</label>
       <textarea class="form-control" id="descripcion" name="descripcion" rows="3" [(ngModel)]="currentDesc"></textarea>
     </div>
 
 
-    <div class="form-group">
+    <div class="form-group justify-content-sm-center">
       <label>{{CONSTANTS.availableDateLabel}}</label>
       <div class="row">
         <div class="col">
@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group justify-content-sm-center">
       <label for="reglas">{{CONSTANTS.rulesLabel}}</label>
       <textarea class="form-control" id="reglas" name="reglas" rows="3" [(ngModel)]="currentRules"></textarea>
     </div>
@@ -92,7 +92,21 @@
       <label for="opcionesLlegada">{{CONSTANTS.arrivalOptionsLabel}}</label>
       <textarea class="form-control" id="opcionesLlegada" name="opcionesLlegada" rows="3" [(ngModel)]="currentArrivalOptions"></textarea>
     </div>
+    <div class="form-group ">
+      <div class="numeric-input-holder justify-content-lg-between">
+        <label for="precioPorNoche" class="text-body-emphasis">{{CONSTANTS.pricePerNightLabel}}</label>
+        <div class="card-group">
+          <button class="card justify-content-center numeric-input" (click)="currentPricePerNight <= 0? currentPricePerNight = 0: currentPricePerNight = currentPricePerNight-10000">-</button>
+          <input class="form-control numeric-input text-center" id="precioPorNoche"  style="border:none" name="precioPorNoche" [(ngModel)]="currentPricePerNight">
+          <button class="card justify-content-center numeric-input" (click)="currentPricePerNight = currentPricePerNight + 10000">+</button>
+        </div>
+      </div>
+    </div>
+
     <button type="submit" class="btn btn-primary" (click)="sendDataToValidation()">{{CONSTANTS.submitButtonLabel}}</button>
   </form>
+  <div class="alert alert-warning" role="alert" [hidden]="!this.getFormIsValid()">
+    This is a warning alert—check it out!
+  </div>
 </div>
 
