@@ -1,8 +1,19 @@
 services:
   db-dev:
     image: postgres:13
-    ports: 
+    ports:
       - 6789:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: nest
+    networks:
+      - airbnb-uta
+
+  db-test:
+    image: postgres:13
+    ports:
+      - 9999:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
