@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -40,14 +39,6 @@ export class HomeStayCreateDTO {
 
   @IsNotEmpty()
   @IsString()
-  pais: string;
-
-  @IsNotEmpty()
-  @IsString()
-  ciudad: string;
-
-  @IsNotEmpty()
-  @IsString()
   calle: string;
 
   @IsNotEmpty()
@@ -58,28 +49,42 @@ export class HomeStayCreateDTO {
   @IsNumber()
   nroDpto: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   @Type(() => String)
   comodidades: string[];
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsArray()
   @Type(() => String)
-  opcionesDeSguridad: string[];
+  opciones_de_seguridad: string[];
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  opciones_de_llegada: string[];
 
   @IsNotEmpty()
   @IsArray()
-  @Type(() => String)
-  opcionesDeLlegada: string[];
-
-  @IsNotEmpty()
-  @IsArray()
-  @ArrayNotEmpty()
   @Type(() => String)
   reglas: string[];
 
   @IsNotEmpty()
   @IsNumber()
   anfitrionId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  pais: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ciudad: string;
+
+  /*
+  * @IsNotEmpty()
+  @IsString()
+  comuna: string;
+  * */
+
 }

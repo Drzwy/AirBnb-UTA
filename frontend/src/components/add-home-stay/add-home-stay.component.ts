@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {HomeDisplayService, HomeStayType} from "../../services/home-display.service";
-import {HomestayApiServiceService} from "../../services/homestay-api-service.service";
+import {HomestayApiService} from "../../services/homestay-api.service";
+
 
 @Component({
   selector: 'app-add-home-stay',
@@ -11,8 +12,7 @@ export class AddHomeStayComponent {
 
   constructor(
     private serviceForHomeStayTypes: HomeDisplayService,
-    //private serviceForHttp: HomestayApiServiceService
-  )
+    private serviceForHttp: HomestayApiService)
   {
 
   }
@@ -22,16 +22,21 @@ export class AddHomeStayComponent {
   public currentBathrooms: number = 0
   public currentType: string = "";
   public currentDesc: string = "";
+  public currentPricePerNight: number = 0
+  public currentAvailableDates: Date[] = []
   public currentInitDate: Date = new Date();
   public currentFinishDate: Date = new Date();
   public currentRules: string = "";
   public currentLocation: string = "";
   public currentStreetAddress: string = "";
   public currentServices: string = "";
-  public currentStreetNumber?: number = 0;
-  public currentDepNumber?: number = 0;
-  public currentSecurityOptions?: string;
-  public currentArrivalOptions?: string;
+  public currentStreetNumber: number = 0;
+  public currentDepNumber: number = 0;
+  public currentSecurityOptions: string = "";
+  public currentArrivalOptions: string = "";
+
+  private invalidFormAlertNotification: boolean = false;
+  public getFormIsValid(): boolean { return this.invalidFormAlertNotification; }
 
   readonly CONSTANTS = {
     roomsNumberLabel: "Número de Dormitorios",
@@ -40,6 +45,7 @@ export class AddHomeStayComponent {
     homeStayTypeLabel: "Tipo de Propiedad",
     descriptionLabel: "Descripción de la propiedad",
     availableDateLabel: "Fechas de disponibilidad",
+    pricePerNightLabel: "Precio por Noche",
     rulesLabel: "Reglas",
     locationLabel: "Ubicación (Comuna)",
     streetAddressLabel: "Calle",
@@ -53,10 +59,10 @@ export class AddHomeStayComponent {
 
 
   public getHomeStayTypes(): HomeStayType[] {
-    return this.serviceForHomeStayTypes.getHomeStayTypes()
+    return this.serviceForHomeStayTypes.getHomeStayTypes();
   }
 
-  public sendDataToValidation() {
+  public async sendDataToValidation() {
     const form: HomeStayForm = {
       rooms : this.currentRooms,
       beds: this.currentBeds,
@@ -75,13 +81,51 @@ export class AddHomeStayComponent {
       arrivalOptions : this.currentArrivalOptions
     }
 
-    //this.serviceForHttp.validateForm(form)
+    if (this.validateForm(form)) {
+      this.invalidFormAlertNotification = false;
+      this.serviceForHttp.sendHomeStayForm(form).subscribe(
+        form => {this.cleanEntries()}
+      )
+    }
+    else {
+      this.invalidFormAlertNotification = true;
+      this.cleanEntries()
+    }
+
   }
 
+  private validateForm(form: HomeStayForm): boolean {
+    if (form === undefined) return false;
+    return (
+      form.rooms > 0 ||
+      form.bathrooms > 0 ||
+      form.beds > 0 ||
+      form.initDate.toString() == ""
+    );
+  }
+  private cleanEntries() {
+    this.currentRooms = 0
+    this.currentBeds = 0
+    this.currentBathrooms = 0
+    this.currentType = "";
+    this.currentDesc = "";
+    this.currentPricePerNight = 0;
+    this.currentInitDate = new Date();
+    this.currentFinishDate = new Date();
+    this.currentRules = "";
+    this.currentLocation = "";
+    this.currentStreetAddress = "";
+    this.currentServices = "";
+    this.currentStreetNumber = 0;
+    this.currentDepNumber = 0;
+    this.currentSecurityOptions = "";
+    this.currentArrivalOptions = "";
+  }
 
 
   public currentHomeStayForm?: HomeStayForm
 
+  protected readonly navigator = navigator;
 }
 
 export interface HomeStayForm {
@@ -96,8 +140,8 @@ export interface HomeStayForm {
   location: string
   street: string,
   services: string,
-  streetNumber?: number,
-  depNumber?: number,
-  securityOptions?: string,
-  arrivalOptions?: string
+  streetNumber: number,
+  depNumber: number,
+  securityOptions: string,
+  arrivalOptions: string
 }
