@@ -6,7 +6,6 @@ import { HousingVisualizerComponent } from '../components/housing-visualizer/hou
 import { ImageCardComponent } from '../components/housing-visualizer/images-card/image-card.component';
 import { HousingInfoDisplayerComponent } from '../components/housing-visualizer/housing-info-displayer/housing-info-displayer.component';
 import { HousingReservationComponent } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
-import { CalendarV2Component } from '../components/housing-visualizer/calendar-v2/calendar-v2.component';
 import { HomeStayListComponent } from '../components/home-stay-list/home-stay-list.component';
 import { HomeTypeButtonsComponent } from '../components/home-stay-list/home-type-buttons/home-type-buttons.component';
 import { AdvancedFilterComponent } from '../components/home-stay-list/advanced-filter/advanced-filter.component';
@@ -16,6 +15,9 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { LoginComponent } from '../components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CalendarModule } from 'primeng/calendar';
+import { CalendarComponent } from '../components/calendar/calendar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,16 +26,16 @@ import { HttpClientModule } from '@angular/common/http';
     ImageCardComponent,
     HousingInfoDisplayerComponent,
     HousingReservationComponent,
-    CalendarV2Component,
     NavbarComponent,
     HomeStayListComponent,
     HomeTypeButtonsComponent,
     AdvancedFilterComponent,
     HomeStayFinderComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    CalendarComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, CalendarModule, BrowserAnimationsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

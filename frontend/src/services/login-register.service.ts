@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { userRegister } from '../components/register/register.component';
-import { Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { userLogin } from '../components/login/login.component';
-import { jwtDecode } from "jwt-decode"; //la idea es hacer todo con jwt pero no tengo los token del backend pipipi
+import { jwtDecode } from "jwt-decode";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -11,94 +12,82 @@ import { jwtDecode } from "jwt-decode"; //la idea es hacer todo con jwt pero no 
 export class LoginRegisterService {
 
 constructor(
-  private router: Router
+  private router: Router,
+  private http: HttpClient
   
-) {this.checkTokenExpiration(); }
+) {this.checkTokenExpiration()}; 
 
-private users: userRegister[] = [
-  {email: "a@a.com", password: "12345A", run: "12345678-9", name: "Ibar", lastName:"Ramiro", moLastName:"Varotes", userType: "Client"},
-  {email: "b@b.com", password: "12345A", run: "22345678-9", name: "Ibarinho", lastName:"Ramirinho", moLastName:"Garotinho", userType: "Admin"}
-]
+// private url = 'http://localhost:3000/auth' no se uso por que agregue el proxy, me daba error de cors si no lo ponia
+public clientType = 'Guest'
 
-
-
-public register(userRegistered: userRegister): Observable<boolean>{
-  let isAlreadyRegistered = this.users.find(user => user.email === userRegistered.email || user.run === userRegistered.run);
-
-  if(!!!isAlreadyRegistered){
-    userRegistered.clientType = "Guest"
-    this.users.push(userRegistered);  
-    console.log(this.users);
-  }
-
-  return of(!!!isAlreadyRegistered); 
+public register(user: userRegister): Observable<{ success: boolean, message?: string }> {
+  return this.http.post<{ access_token: string }>('auth/register', user).pipe(
+    map(result => {
+      if (result && result.access_token) {
+        sessionStorage.setItem('token', result.access_token);
+        return { success: true };
+      }
+      return { success: false, message: 'Unknown error' };
+    }),
+    catchError(error => {
+      console.error('Error during registration', error);
+      let errorMessage = 'An unknown error occurred';
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      }
+      return of({ success: false, message: errorMessage });
+    })
+  );
 }
 
-public login(user2: userLogin): Observable<boolean> {
-  let isAuthenticate = this.users.find(user => user.email === user2.email && user.password === user2.password);
-
-  if (isAuthenticate) {
-    isAuthenticate.clientType = "Guest"
-
-    // Obtener la fecha actual y la fecha de expiración en formato UNIX (segundos)
-    const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-    const expirationTimeInSeconds = currentTimeInSeconds + 600;
-
-    //este token deberia cambiar por el de backend
-    const token: string = btoa(`${user2.email};${user2.password};${isAuthenticate.userType};${expirationTimeInSeconds}`);
-    sessionStorage.setItem('token', token);
-    console.log(this.users)
-  }
-
-  return of(!!isAuthenticate);
+public login(user: userLogin): Observable<{ success: boolean, message?: string }> {
+  console.log(this.clientType)
+  return this.http.post<any>('auth/login', user).pipe(
+    map(result => {
+      if (result && result.access_token) {
+        sessionStorage.setItem('token', result.access_token);
+        return { success: true };
+      }
+      return { success: false };
+    }),
+    catchError(error => {
+      console.error('Error durante el inicio de sesion', error);
+      let errorMessage = '';
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      }
+      return of({ success: false, message: errorMessage });
+    })
+  );
 }
-
 private checkTokenExpiration() {
-  let token = sessionStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (token) {
-    // Decodificar el token para obtener la hora de expiración
-    let expirationTimeInSeconds = atob(token).split(';')[3];
-    let expirationTime = parseInt(expirationTimeInSeconds, 10);
-    console.log(expirationTime)
-    // Obtener la hora actual en segundos
-    const currentTimeInSeconds = Math.floor(Date.now() / 1000);
-    console.log(currentTimeInSeconds)
-    // Verificar si la hora de expiración ha pasado
-    if (currentTimeInSeconds > expirationTime) {
-      // Si ha pasado, eliminar el token y redirigir al login
-      this.logout()
+    const decodedToken: any = jwtDecode(token);
+    const expirationTimeInSeconds: number = decodedToken.exp;
+    const currentTimeInSeconds: number = Math.floor(Date.now() / 1000);
+
+    console.log(expirationTimeInSeconds)
+    console.log(currentTimeInSeconds)    
+
+    if (currentTimeInSeconds > expirationTimeInSeconds) {
+      this.logout();
       this.router.navigateByUrl('login');
     }
   }
 }
 
-// la voy a reemplazar despues por la getDecodeToken
-private getData(i: number) {
-  let token = sessionStorage.getItem('token');
-  if (token){
-      token = atob(token)
-      let tokenA = token.split(';')
-      token = tokenA[i]
-      return token
-  }
-  return 'null'
-}
-
 public changeType(type: string) {
-  if (sessionStorage.getItem('token')) {
-    let email = this.getData(0)
-    let password = this.getData(1)
-    let index = this.users.findIndex(user => user.email === email && user.password === password);
-    if(index != -1){
-      this.users[index].clientType = type
-    }
+  if(this.clientType != type){
+    this.clientType = type
+    console.log(this.clientType)
   }
-  console.log(this.users)
 }
 
 public logout(): boolean {
   if (sessionStorage.getItem('token')) {
     sessionStorage.removeItem('token');
+    this.clientType = 'Guest'
     return true;
   }
   return false;
@@ -122,10 +111,11 @@ public isLoggedIn(): Observable<boolean>{
 }
 
 public isAdmin(): Observable<boolean>{
-  debugger;
-  if (sessionStorage.getItem('token')) {
-    let type = this.getData(2)
-    if (type == 'Admin'){
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    const decodedToken: any = jwtDecode(token);
+    const userType: string = decodedToken.userType;
+    if (userType == 'Administrador'){
       return of(true)
     }
   }
@@ -133,25 +123,12 @@ public isAdmin(): Observable<boolean>{
   return of(false);
 }
 
-// para que solo el host pueda entrar en las funciones de host
 public isHost(): Observable<boolean>{
-  debugger;
-  if (sessionStorage.getItem('token')) {
-      let email = this.getData(0)
-      let password = this.getData(1)
-      let user = this.users.find(user => user.email === email && user.password === password);
-      if(user && user.clientType == "Host"){
-          return of(true);
-      }       
+  if (this.clientType == 'Host') {
+    return of(true);    
   } 
   this.router.navigateByUrl('home-stay-list');
   return of(false);
 } 
-
-// jwt
-// private getDecodeToken(token: string){
-//   const decoded = jwtDecode(token);
-//   return decoded;
-// }
 
 }

@@ -33,29 +33,30 @@ export class RegisterComponent implements AfterViewInit {
   // Objeto para almacenar los datos del formulario
   user: userRegister = {
     email: '',
-    password: '',
+    hash: '',
     run: '',
-    name: '',
-    lastName: '',
-    moLastName: '',
-    description: '',
-    languages: [],
-    details: []
+    nombre: '',
+    apellidoPat: '',
+    apellidoMat: '',
+    descripcion: '',
+    idiomas: [],
+    detalles: []
   }; 
 
   public availableLanguages: string[] = ['Español', 'Inglés', 'Francés', 'Alemán', 'Italiano'];
-  public selectedLanguages: string[] = [];
+  private selectedLanguages: string[] = [];
+  public detail: string = '';
 
   register(form: NgForm) {
     if(form.valid){
-      this.user.languages = this.selectedLanguages;
+      this.user.idiomas = this.selectedLanguages;
+      this.user.detalles = this.detail.split(',')
       this.loginRegisterService.register(this.user).subscribe(result => {
-        if (result){
+        if (result && result.success){
           alert("Usuario registrado correctamente");
-          this.loginRegisterService.login(this.user)
           this.router.navigateByUrl('home-stay-list')
         } else {
-          alert("El usuario ya esta registrado");
+          alert(result.message);
         }
       })
     }
@@ -66,40 +67,38 @@ export class RegisterComponent implements AfterViewInit {
   }
 
   public checkRun(run: string): boolean {
-    // Eliminar puntos y guiones del RUN
+    // Eliminar el guion del RUN
     run = run.replace(/-/g, '');
 
     // Extraer el dígito verificador y el número
-    const dvIngresado = run.slice(-1).toUpperCase();
-    const numero = run.slice(0, -1);
+    const cdEntered = run.slice(-1).toUpperCase();
+    const number = run.slice(0, -1);
   
     // Calcular el dígito verificador esperado
-    let suma = 0;
+    let add = 0;
     let factor = 2;
-    for (let i = numero.length - 1; i >= 0; i--) {
-      suma += parseInt(numero.charAt(i)) * factor;
+    for (let i = number.length - 1; i >= 0; i--) {
+      add += parseInt(number.charAt(i)) * factor;
       factor = factor === 7 ? 2 : factor + 1;
     }
-    const dvEsperado = 11 - (suma % 11);
-    const dvCalculado = dvEsperado === 11 ? '0' : dvEsperado === 10 ? 'K' : dvEsperado.toString();
+    const cdExpected = 11 - (add % 11);
+    const cdCalculated = cdExpected === 11 ? '0' : cdExpected === 10 ? 'K' : cdExpected.toString();
   
     // Comparar el dígito verificador ingresado con el calculado
-    return dvIngresado === dvCalculado;
+    return cdEntered === cdCalculated;
   }
 
 
 }
 // interfaz para guardar los datos del usuario a registrar
 export interface userRegister {
-  email: string,
-  password: string,
-  run: string,
-  name: string,
-  lastName: string,
-  moLastName: string,
-  description?: string,
-  languages?: string[],
-  details?: string[],
-  userType?: string // por ahora es opcional para pruebas
-  clientType?: string // tambien pa probar xd no se donde guardar el tipo de cliente de cada usuario
+  email: string;
+  hash: string;
+  run: string;
+  nombre: string;
+  apellidoPat: string;
+  apellidoMat: string;
+  descripcion?: string;
+  idiomas: string[];
+  detalles: string[];
 }

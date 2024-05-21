@@ -5,6 +5,8 @@ import { HomeStayListComponent } from '../components/home-stay-list/home-stay-li
 import { LoginComponent } from '../components/login/login.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { adminGuard, authGuard, hostGuard, loginGuard } from '../guards/auth.guard';
+import { CalendarComponent } from '../components/calendar/calendar.component';
+import { HousingReservationComponent } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
 // import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 
 const routes: Routes = [
@@ -38,6 +40,14 @@ const routes: Routes = [
   //   component: AddHomeStayComponent,
   //   // canActivate: [authGuard, hostGuard]
   // },
+  {
+    path: 'calendar',
+    component: CalendarComponent,
+  },
+  {
+    path: 'reservation',
+    component: HousingReservationComponent,
+  },
   {
     path: '**',
     redirectTo: 'login',

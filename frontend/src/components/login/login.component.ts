@@ -22,17 +22,16 @@ export class LoginComponent implements OnInit {
 
   user: userLogin = {
     email: '',
-    password: '',
+    hash: '',
   }
 
   public login(user: NgForm) {
-    // this.http.post('https://localhost:3000/auth/login', this.user).subscribe, para cuando este funcionando el backend
     this.loginRegisterService.login(this.user).subscribe(result =>{
-      if(result){
-        alert('login success')
+      if(result && result.success){
+        alert('Inicio sesion correctamente')
         this.router.navigateByUrl('home-stay-list')
       } else {
-        alert('no existe mi loco')
+        alert(result.message)
       }
     })
   }
@@ -45,5 +44,5 @@ export class LoginComponent implements OnInit {
 
 export interface userLogin {
   email: string,
-  password: string
+  hash: string
 }

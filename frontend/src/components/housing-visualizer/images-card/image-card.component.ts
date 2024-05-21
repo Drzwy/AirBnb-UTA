@@ -9,6 +9,7 @@ export class ImageCardComponent {
     @Input() imageUrls: ImageDTO[] = [];
 
     public getImages(): ImageDTO[] {
+      console.log(this.imageUrls)
       return this.imageUrls
     }
 
