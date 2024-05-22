@@ -14,11 +14,12 @@ export class LoginRegisterService {
 constructor(
   private router: Router,
   private http: HttpClient
-  
-) {this.checkTokenExpiration()}; 
+
+) {this.checkTokenExpiration()};
 
 // private url = 'http://localhost:3000/auth' no se uso por que agregue el proxy, me daba error de cors si no lo ponia
 public clientType = 'Guest'
+
 
 public register(user: userRegister): Observable<{ success: boolean, message?: string }> {
   return this.http.post<{ access_token: string }>('auth/register', user).pipe(
@@ -68,7 +69,7 @@ private checkTokenExpiration() {
     const currentTimeInSeconds: number = Math.floor(Date.now() / 1000);
 
     console.log(expirationTimeInSeconds)
-    console.log(currentTimeInSeconds)    
+    console.log(currentTimeInSeconds)
 
     if (currentTimeInSeconds > expirationTimeInSeconds) {
       this.logout();
@@ -106,8 +107,12 @@ public isLoggedIn(): Observable<boolean>{
   if (sessionStorage.getItem('token')) {
     this.router.navigateByUrl('home-stay-list');
     return of(false);
-  } 
+  }
   return of(true);
+}
+public userIsLoggedIn(): Observable<boolean> {
+  if(sessionStorage.getItem('token')) return of(true);
+  return of(false);
 }
 
 public isAdmin(): Observable<boolean>{
@@ -125,10 +130,10 @@ public isAdmin(): Observable<boolean>{
 
 public isHost(): Observable<boolean>{
   if (this.clientType == 'Host') {
-    return of(true);    
-  } 
+    return of(true);
+  }
   this.router.navigateByUrl('home-stay-list');
   return of(false);
-} 
+}
 
 }

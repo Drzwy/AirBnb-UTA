@@ -1,24 +1,51 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChangeOptionDTO, UserGlobalPreferencesService} from "../../services/user-global-preferences.service";
 import {Router} from "@angular/router";
+import {LoginRegisterService} from "../../services/login-register.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.bootstrap.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit , OnDestroy{
   private _isLoggedIn: boolean = true;
   private configVisibility: boolean = false;
+  private loginSub?: Subscription;
+
 
 
   constructor(
     private service: UserGlobalPreferencesService,
+    private loginService: LoginRegisterService,
     private router: Router
   ) {}
 
+  ngOnInit() {
+    this.loginSub = this.loginService.userIsLoggedIn().subscribe(
+      value => {
+        this._isLoggedIn = value;
+      }
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.loginSub!.unsubscribe();
+  }
+
+
+
+
   public navigateByURL(id: string ): void {
-    this.router.navigate([id]);
+    if (id == "logout") {
+      this.loginService.logout()
+    }
+    else {
+      this.router.navigate([id]);
+
+    }
+
   }
   readonly largeButton: UrlOption = {
     label: "Pon tu espacio en Airbnb",
@@ -40,7 +67,17 @@ export class NavbarComponent {
     {
       label: "Cuenta",
       url: ''
+    },
+    {
+      label: "Cerrar Sesión",
+      url: 'logout'
     }
+  ]
+  readonly noUserOptions: UrlOption[] = [
+    {label: "Inicia Sesión", url: "login"},
+    {label: "Regístrate", url: "register"},
+    {label: "Pon tu espacio en Airbnb", url: "add-home-stay"},
+
   ]
 
 

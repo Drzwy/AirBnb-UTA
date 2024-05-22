@@ -46,9 +46,11 @@
         }
         @else {
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            @for (configOption of userConfigOptions; track configOption) {
+            @for (configOption of noUserOptions; track configOption) {
 
-              <button class="user-config-element-button dropdown-item" (click)="this.navigateByURL(configOption.url)">
+              <button class="user-config-element-button dropdown-item"
+                      [attr.data-bs-toggle]="'modal'"
+                      [attr.data-bs-target]="'#'+configOption.url">
                 {{configOption.label}}
               </button>
             }
@@ -81,6 +83,18 @@
               <button type="button" class="btn btn-primary">Guardar cambios</button>
             </div>
           </div>
+        </div>
+      </div>
+      <!--  Modal de Login  -->
+      <div class="modal fade" id="login" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false" style="width:70vh">
+        <div class="modal-dialog my-modal">
+          <app-login/>
+        </div>
+      </div>
+      <!--  Modal de Register  -->
+      <div class="modal fade my-modal" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+        <div class="modal-dialog my-modal">
+          <app-register />
         </div>
       </div>
 

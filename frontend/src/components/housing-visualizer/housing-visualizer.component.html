@@ -1,4 +1,4 @@
-<app-navbar/>
+<app-navbar></app-navbar>
 
 
 <div class="container">
@@ -6,14 +6,14 @@
     <div class="row my-3">
         <app-images-card *ngIf="house.imagesUrl" [imageUrls]="house.imagesUrl" />
     </div>
-    
+
 </div>
 
 <div class="container">
     <div class="row justify-content-between border-bottom mt-4">
         <div class="col-12 col-lg-6 col-xl-7">
             <div class="border-bottom">
-                <h4 class="h4"> 
+                <h4 class="h4">
                     @if(house.location && house.houseType){
                         {{house.houseType}} {{TEXTS.locatedIn}} {{house.location}}
                     }
@@ -33,15 +33,15 @@
                         <p>
                             {{parragraphs}}
                         </p>
-                    }       
+                    }
                 </div>
-                
+
             </div>
             <div class="">
                 <h4 class="h4 mt-4">
                     {{TEXTS.servicesList}}
                 </h4>
-                
+
                 <div class="row">
                     @for (service of house.services; track service){
                         <div class="col-6 my-4">
@@ -57,9 +57,9 @@
                     <div class="row my-4 mx-1 ">
                         <app-housing-reservation [housingPrice]="this.house.prices" [rules]="this.house.rules"></app-housing-reservation>
                     </div>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -90,30 +90,30 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" style="margin-right: 1px;" [attr.fill]="star <= valuation.stars ? 'currentColor' : '#e2e2e2'"  class="bi bi-star-fill" viewBox="0 0 16 16">
                                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                             </svg>
-                            } 
+                            }
                         </div>
                         <div class="col-12 col-sm-8">
                             <p>
-                                {{valuation.date.toLocaleString('es-ES', {month: 'long', year: 'numeric'})}}    
+                                {{valuation.date.toLocaleString('es-ES', {month: 'long', year: 'numeric'})}}
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <p [ngClass]="{'show-more': isExpanded[i]}" class="text-container">{{valuation.text}}</p>    
+                            <p [ngClass]="{'show-more': isExpanded[i]}" class="text-container">{{valuation.text}}</p>
                         </div>
                         <div class="col-12">
                             @if (!isExpanded[i]){
-                                <a class="btn btn-link text-dark fw-bold" (click)="expand(i)">Mostrar mas</a> 
+                                <a class="btn btn-link text-dark fw-bold" (click)="expand(i)">Mostrar mas</a>
                             } @else {
-                                <a class="btn btn-link text-dark fw-bold" (click)="expand(i)">Mostrar menos</a> 
-                            }   
+                                <a class="btn btn-link text-dark fw-bold" (click)="expand(i)">Mostrar menos</a>
+                            }
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
-            }  
+            }
         </div>
     </div>
 </div>
@@ -150,37 +150,37 @@
                 <h2 class="house-description">
                     {{TEXTS.description}}
                 </h2>
-        
+
                 @for (parragraphs of house.houseDescriptionParagraphs; track parragraphs) {
                     <h3 class="house-detail">
                         {{parragraphs}}
                     </h3>
                 }
             </div>
-        
+
             <div class="valuations-container" *ngIf="house.services">
                 <h2 class="subtitle">
                     {{TEXTS.servicesList}}
                 </h2>
-        
+
                 <div class="services-container">
                     @for (service of house.services; track service) {
                         <h4 class="services"> {{service}} </h4>
                     }
                 </div>
-        
+
             </div>
-            
+
         </div>
         <div class="prueba3">
-            <app-housing-reservation [housingPrice]="this.house.prices" [rules]="this.house.rules"/> 
+            <app-housing-reservation [housingPrice]="this.house.prices" [rules]="this.house.rules"/>
         </div>
     </div>
-    
+
     <div class="valuations-container">
         <app-calendar [location]="this.house.location"></app-calendar>
     </div>
-    
+
 
     <div class="valuations-container">
 
@@ -214,13 +214,13 @@
                         </div>
                     </div>
                     <div class = "info-card">
-                        <h2 [ngClass]="{'valuation': !isExpanded[i], 'valuation2': isExpanded[i]}"> 
+                        <h2 [ngClass]="{'valuation': !isExpanded[i], 'valuation2': isExpanded[i]}">
                             {{valuation.text}}
                         </h2>
                         <a class="show-more" (click)="expand(i)">
                             {{ isExpanded[i] ? 'Mostrar menos': 'Mostrar mas' }}
                         </a>
-                        
+
                     </div>
                 </div>
             }

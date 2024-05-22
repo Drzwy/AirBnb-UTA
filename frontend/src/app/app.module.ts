@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CalendarModule } from 'primeng/calendar';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
 
 @NgModule({
   declarations: [
@@ -33,9 +34,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeStayFinderComponent,
     RegisterComponent,
     LoginComponent,
-    CalendarComponent
+    CalendarComponent,
+    AddHomeStayComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, CalendarModule, BrowserAnimationsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, CalendarModule, BrowserAnimationsModule,FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

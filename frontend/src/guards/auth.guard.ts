@@ -21,3 +21,8 @@ export const hostGuard: CanActivateFn = (route, state) =>{
   const login = inject(LoginRegisterService);
   return login.isHost();
 }
+
+export const userIsLoggedInGuard: CanActivateFn = (route, state) => {
+  const login = inject(LoginRegisterService);
+  return !login.userIsLoggedIn();
+}

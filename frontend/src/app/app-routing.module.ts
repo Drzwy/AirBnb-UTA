@@ -4,15 +4,15 @@ import { HousingVisualizerComponent } from '../components/housing-visualizer/hou
 import { HomeStayListComponent } from '../components/home-stay-list/home-stay-list.component';
 import { LoginComponent } from '../components/login/login.component';
 import { RegisterComponent } from '../components/register/register.component';
-import { adminGuard, authGuard, hostGuard, loginGuard } from '../guards/auth.guard';
+import {adminGuard, authGuard, hostGuard, loginGuard, userIsLoggedInGuard} from '../guards/auth.guard';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { HousingReservationComponent } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
-// import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
+import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home-stay-list',
     pathMatch:'full'
   },
   {
@@ -23,23 +23,23 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [loginGuard]
+    // canActivate: [loginGuard]
   },
   {
     path: 'home-stay-list',
     component: HomeStayListComponent,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'housing-visualizer',
     component: HousingVisualizerComponent,
     canActivate: [authGuard]
   },
-  // {
-  //   path: 'add-home-stay',
-  //   component: AddHomeStayComponent,
-  //   // canActivate: [authGuard, hostGuard]
-  // },
+   {
+    path: 'add-home-stay',
+    component: AddHomeStayComponent,
+    canActivate: [authGuard]
+   },
   {
     path: 'calendar',
     component: CalendarComponent,
@@ -50,7 +50,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'home-stay-list',
   },
 ];
 
