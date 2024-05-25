@@ -68,7 +68,7 @@ model Propiedad {
   ciudad  String
   calle   String
   nroCasa Int
-  nroDpto Int @default(0)
+  nroDpto Int    @default(0)
 
   comodidades         String[]
   opcionesDeSeguridad String[]
@@ -97,8 +97,8 @@ model Hospedaje {
   id Int @default(autoincrement())
 
   fechaCreacion    DateTime  @default(now())
-  estaActivo       Boolean
-  estadoAceptacion StayState
+  estaActivo       Boolean   @default(true)
+  estadoAceptacion StayState @default(EN_ESPERA)
 
   fechaIni DateTime @db.Date
   fechaFin DateTime @db.Date
