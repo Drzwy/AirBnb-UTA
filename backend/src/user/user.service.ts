@@ -35,11 +35,9 @@ export class UserService {
    */
   async createUser(dto: UserCreateDTO) {
     const hash: string = await argon.hash(dto.hash);
-    const hash: string = await argon.hash(dto.hash);
     dto.hash = hash;
 
     try {
-      const user: Usuario = await this.prismaService.usuario.create({
       const user: Usuario = await this.prismaService.usuario.create({
         data: dto,
       });
