@@ -21,14 +21,12 @@ export class UserService {
    * @returns Usuario con tipo Cliente creado
    */
   async registerUser(dto: UserRegisterDTO) {
-    const password = dto.password;
+    const password: string = dto.password;
     delete dto.password;
     const createDto: UserCreateDTO = Object.assign({}, dto, {
       tipo_usuario: UserTypes.Cliente,
       hash: password,
     });
-
-    console.log({ dto, createDto });
 
     return this.createUser(createDto);
   }
@@ -39,11 +37,11 @@ export class UserService {
    * @returns Usuario creado
    */
   async createUser(dto: UserCreateDTO) {
-    const hash = await argon.hash(dto.hash);
+    const hash: string = await argon.hash(dto.hash);
     dto.hash = hash;
 
     try {
-      const user = await this.prismaService.usuario.create({
+      const user: Usuario = await this.prismaService.usuario.create({
         data: dto,
       });
       return user;
@@ -82,7 +80,7 @@ export class UserService {
    * @returns Usuarios dentro de la BD
    */
   async getAllUsers() {
-    const users = await this.prismaService.usuario.findMany();
+    const users: Usuario[] = await this.prismaService.usuario.findMany();
     if (users.length == 0)
       throw new NotFoundException('No existen usuarios registrados');
     return users;
@@ -95,12 +93,10 @@ export class UserService {
    */
   async deleteUserById(userId: number) {
     try {
-      const deletedUser = await this.prismaService.usuario.delete({
+      const deletedUser: Usuario = await this.prismaService.usuario.delete({
         where: {
           id: userId,
         },
-        // TODO añadir delete cascade
-        // https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/referential-actions
       });
       return deletedUser;
     } catch (error) {
@@ -125,13 +121,12 @@ export class UserService {
   async updateUserById(userId: number, dto: UserUpdateDto) {
     try {
       if (dto.hash) dto.hash = await argon.hash(dto.hash);
-      console.log({ dto });
-      const user = await this.prismaService.usuario.update({
+
+      const user: Usuario = await this.prismaService.usuario.update({
         where: {
           id: userId,
         },
         data: dto,
-        // por alguna razon prisma updatea igual aunque tenga los mismos datos
       });
       return user;
     } catch (error) {
