@@ -35,9 +35,11 @@ export class UserService {
    */
   async createUser(dto: UserCreateDTO) {
     const hash: string = await argon.hash(dto.hash);
+    const hash: string = await argon.hash(dto.hash);
     dto.hash = hash;
 
     try {
+      const user: Usuario = await this.prismaService.usuario.create({
       const user: Usuario = await this.prismaService.usuario.create({
         data: dto,
       });
@@ -140,8 +142,8 @@ export class UserService {
   async updateUserById(userId: number, dto: UserUpdateDto) {
     try {
       if (dto.hash) dto.hash = await argon.hash(dto.hash);
-      console.log({ dto });
-      const user = await this.prismaService.usuario.update({
+
+      const user: Usuario = await this.prismaService.usuario.update({
         where: {
           id: userId,
         },

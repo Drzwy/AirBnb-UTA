@@ -18,6 +18,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('AirBnb UTA')
     .setDescription('airbnb para la uta')
+    .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
