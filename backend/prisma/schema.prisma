@@ -44,6 +44,8 @@ model Usuario {
 enum UserTypes {
   Cliente
   Administrador
+
+  @@map("TipoUsuario")
 }
 
 model Propiedad {
@@ -83,11 +85,20 @@ model Propiedad {
   @@unique(name: "ubicacion", [pais, ciudad, calle, nroCasa, nroDpto])
 }
 
+enum StayState {
+  EN_ESPERA
+  ACEPTADO
+  RECHAZADO
+
+  @@map("EstadoSolicitudHospedaje")
+}
+
 model Hospedaje {
   id Int @default(autoincrement())
 
-  fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  fechaCreacion    DateTime  @default(now())
+  estaActivo       Boolean
+  estadoAceptacion StayState
 
   fechaIni DateTime @db.Date
   fechaFin DateTime @db.Date

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {ImageDTO} from "./images-card/image-card.component";
 import {HousingInformation} from "./housing-info-displayer/housing-info-displayer.component";
 import { HousingPrice } from './housing-reservation/housing-reservation.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-housing-visualizer',
@@ -10,7 +11,17 @@ import { HousingPrice } from './housing-reservation/housing-reservation.componen
 })
 export class HousingVisualizerComponent {
 
+  constructor(
+    private router: Router
+  ){
+
+  }
+
   public isExpanded: boolean[] = [];
+
+  public volver(){
+    this.router.navigate(['home-stay-list'])
+  }
 
   public expand(index: number){
     this.isExpanded[index] = !this.isExpanded[index];

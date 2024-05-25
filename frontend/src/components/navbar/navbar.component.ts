@@ -7,6 +7,8 @@ import {ChangeOptionDTO, UserGlobalPreferencesService} from "../../services/user
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  private _isLoggedIn: boolean = false
+  private configVisibility: boolean = false
 
 
   constructor(private service: UserGlobalPreferencesService) {
@@ -15,12 +17,17 @@ export class NavbarComponent {
 
 
   readonly configOptionsButton = {
-    optionsLabels : [
+    loggedInOptionsLabels : [
       "Mensajes",
       "Notificaciones",
       "Viajes",
       "Pon tu espacio en Airbnb",
       "Cuenta"
+    ],
+    notLoggedInOptionLabels: [
+      "Regístrate",
+      "Inicia Sesión",
+      "Pon tu espacio en Airbnb"
     ],
     optionsDisplayClass: [
       "",
@@ -33,8 +40,10 @@ export class NavbarComponent {
   readonly userInfo: UserDto = {
     username : "tomascaca"
   }
-  private configVisibility: boolean = false
 
+  public isLoggedIn(): boolean {
+    return this._isLoggedIn
+  }
   public isVisible(): boolean {
     return this.configVisibility
   }
