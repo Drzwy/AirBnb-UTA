@@ -1,21 +1,36 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {HomeStayForm} from "../components/add-home-stay/add-home-stay.component";
-import {catchError, throwError} from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomestayApiService {
-  private url : string = "http://localhost:3000/homestay"
+  private url : string = "http://localhost:3000/homestay";
+  private getUrl: string = "http://localhost:3000/homestay";
+  private putUrl: string = "http://localhost:3000/homestay";
+  private deleteUrl: string = "http://localhost:3000/homestay"
 
   constructor(private http: HttpClient) {
 
   }
 
+  public getHomeStayOf(id: number): Observable<any> {
+    return this.http.get<HomeStayGetResponse[]>(
+      this.getUrl
+    )
+  }
+
+  public deleteHomeStay(id: number) {
+    const url = this.putUrl+"/"+id.toString()
+    return this.http.delete(
+      `${this.deleteUrl}/${id}`
+    )
+  }
 
 
-  public sendHomeStayForm(form: HomeStayForm) {
+  public sendHomeStayForm(form: HomeStayForm): Observable<HomeStayCreateDTOResponse> {
     if (!form.rooms || !form.beds || !form.bathrooms || !form.type || !form.desc || !form.street || !form.streetNumber || !form.depNumber || !form.services || !form.securityOptions || !form.arrivalOptions || !form.rules || !form.location || !form.initDate || !form.finishDate) {
       console.error('Formulario incompleto:', form);
       return throwError(() => new Error('Formulario incompleto. Por favor, completa todos los campos.'));
@@ -80,6 +95,15 @@ interface HomeStayCreateDTOResponse {
   fechasDisponibles: Date[]
 
 }
+
+export interface HomeStayGetResponse  extends  HomeStayCreateDTOResponse {
+  id: number,
+  fechaDeCreacion: string,
+  fechaActualizacion: string,
+  estaActivo: boolean,
+
+}
+
 
 
 

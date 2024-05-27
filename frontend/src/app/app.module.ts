@@ -16,6 +16,8 @@ import {HomeStayFinderComponent} from "../components/home-stay-list/home-stay-fi
 import {NavbarComponent} from "../components/navbar/navbar.component";
 import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
 import {HttpClientModule, provideHttpClient} from "@angular/common/http";
+import {EditHomeStayComponent} from "../components/edit-home-stay/edit-home-stay.component";
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -28,13 +30,15 @@ import {HttpClientModule, provideHttpClient} from "@angular/common/http";
     AdvancedFilterComponent,
     HomeStayFinderComponent,
     NavbarComponent,
-    AddHomeStayComponent
+    AddHomeStayComponent,
+    EditHomeStayComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgOptimizedImage
   ],
   providers: [
     provideHttpClient()

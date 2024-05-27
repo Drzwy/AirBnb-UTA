@@ -1,0 +1,147 @@
+
+<div class="container-lg flex-lg-nowrap">
+  <h2>{{HomeStayConstants.seeSavedHomeStaysHost}}</h2>
+
+
+  @for (homeStay of userHomeStays; track homeStay) {
+    <div class="col-lg-12 mx-auto">
+
+      <div class="d-flex flex-fill card">
+        <img [src]="alternativeImageUrl" [alt]="alternativeImageAlt"
+             class="card-img-top accordion-collapse dropdown-toggle mx-auto" style="max-width: 500px;max-height: 500px">
+
+        <div class="d-flex flex-wrap mx-auto">
+
+          <div class="d-flex align-content-center justify-content-lg-between card-body">
+
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label>{{HomeStayConstants.bedsNumberLabel}}</label>
+
+              <div class="card-group mx-auto">
+                <button class="card justify-content-center mx-auto rounded">-</button>
+                <input class="numeric-input text-center" style="border:none;" [(ngModel)]="homeStay.camas">
+                <button class="card justify-content-center mx-auto rounded">+</button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.roomsNumberLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <button class="card justify-content-center mx-auto rounded">-</button>
+                <input class="numeric-input text-center" style="border:none;" [(ngModel)]="homeStay.dormitorios">
+                <button class="card justify-content-center mx-auto rounded">+</button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.bathsNumberLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <button class="card justify-content-center mx-auto rounded">-</button>
+                <input class="numeric-input text-center" style="border:none;" [(ngModel)]="homeStay.banos">
+                <button class="card justify-content-center mx-auto rounded">+</button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.pricePerNightLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <button class="card justify-content-center mx-auto rounded">-</button>
+                <input class="numeric-input text-center" style="border:none;" [(ngModel)]="homeStay.precioNoche">
+                <button class="card justify-content-center mx-auto rounded">+</button>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.descriptionLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <textarea class="form-control" [(ngModel)]="homeStay.descripcion"></textarea>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.rulesLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <textarea class="form-control" [(ngModel)]="homeStay.reglas"></textarea>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+            <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+              <label >{{HomeStayConstants.securityOptionsLabel}}</label>
+
+
+              <div class="card-group w-40 flex-wrap m-auto">
+                <textarea class="form-control" [(ngModel)]="homeStay.opcionesDeSeguridad"></textarea>
+              </div>
+
+
+            </div>
+          </div>
+
+
+        </div>
+        <div class="form-group d-flex flex-lg-nowrap card-body m-1">
+          <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+            <label >{{HomeStayConstants.arrivalOptionsLabel}}</label>
+
+
+            <div class="card-group w-40 flex-wrap m-auto">
+              <textarea class="form-control" [(ngModel)]="homeStay.opcionesDeLlegada"></textarea>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="d-flex flex-lg-wrap card-body m-1">
+          <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
+
+            <button class="btn btn-primary">{{HomeStayConstants.saveChangesButtonLabel}}</button>
+            <button class="btn btn-danger" (click)="sendDeleteHomeStay(homeStay)">{{HomeStayConstants.deleteHomeStayButtonLabel}}</button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+</div>
