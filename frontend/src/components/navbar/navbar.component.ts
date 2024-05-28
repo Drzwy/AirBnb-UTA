@@ -6,7 +6,7 @@ import {
 } from '../../services/user-global-preferences.service';
 import { Router } from '@angular/router';
 import { LoginRegisterService } from '../../services/login-register.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -19,9 +19,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     id: 0,
     nombre: '',
   };
+  private _currentToken?: string;
   private configVisibility: boolean = false;
   private loginSub?: Subscription;
   private userSub?: Subscription;
+  private sessionSub?: Subscription;
 
   constructor(
     private service: UserGlobalPreferencesService,
@@ -55,6 +57,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public navigateByURL(id: string): void {
     if (id == 'logout') {
       this.loginService.logout();
+      window.location.reload();
     } else {
       this.router.navigate([id]);
     }
@@ -90,9 +93,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { label: 'Regístrate', url: 'register' },
     { label: 'Pon tu espacio en Airbnb', url: 'add-home-stay' },
   ];
-  readonly userInfo: UserDto = {
-    username: 'tomascaca',
-  };
 
   public isLoggedIn(): boolean {
     return this._isLoggedIn;
@@ -112,10 +112,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public getAllLanguages(): ChangeOptionDTO[] {
     return this.service.getAllLanguages();
   }
-}
-
-export interface UserDto {
-  username: string;
 }
 
 interface UrlOption {

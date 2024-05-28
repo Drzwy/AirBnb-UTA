@@ -37,11 +37,11 @@ export class HomestayApiService {
           ),
       );
     }
-    const request: HomeStayCreateDTOResponse = {
+    const request: HomeStayCreateDTORequest = {
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
-      precioNoche: 110000, // TODO CAMBIAR LUEGO
+      precioNoche: form.pricePerNight,
       tipo: form.type,
       descripcion: form.desc,
       calle: form.street,
@@ -51,13 +51,13 @@ export class HomestayApiService {
       opcionesDeSeguridad: [form.securityOptions],
       opcionesDeLlegada: [form.arrivalOptions],
       reglas: [form.rules],
-      anfitrionId: 1,
+      anfitrionId: form.userId,
       pais: form.location,
       ciudad: form.location,
       fechasDisponibles: [form.initDate, form.finishDate],
     };
     return this.http
-      .post<HomeStayCreateDTOResponse>(this.url, request)
+      .post<HomeStayCreateDTORequest>(this.url, request)
       .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
   }
 
@@ -77,11 +77,11 @@ export class HomestayApiService {
   }
 }
 
-interface HomeStayCreateDTOResponse {
+interface HomeStayCreateDTORequest {
   dormitorios: number;
   camas: number;
   banos: number;
-  precioNoche: number; // TODO CAMBIAR LUEGO
+  precioNoche: number;
   tipo: string;
   descripcion: string;
   calle: string;
@@ -91,8 +91,8 @@ interface HomeStayCreateDTOResponse {
   opcionesDeSeguridad: string[];
   opcionesDeLlegada: string[];
   reglas: string[];
-  anfitrionId: number;
   pais: string;
   ciudad: string;
   fechasDisponibles: Date[];
+  anfitrionId: number;
 }

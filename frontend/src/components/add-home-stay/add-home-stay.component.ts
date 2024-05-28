@@ -1,20 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   HomeDisplayService,
   HomeStayType,
 } from '../../services/home-display.service';
 import { HomestayApiService } from '../../services/homestay-api.service';
+import {
+  UserGlobalPreferencesService,
+  UserMeResponse,
+} from '../../services/user-global-preferences.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-home-stay',
   templateUrl: './add-home-stay.component.html',
   styleUrl: './add-home-stay.component.css',
 })
-export class AddHomeStayComponent {
+export class AddHomeStayComponent implements OnInit, OnDestroy {
+  private _userSub?: Subscription;
+  private _currentUser?: UserMeResponse;
+
   constructor(
     private serviceForHomeStayTypes: HomeDisplayService,
     private serviceForHttp: HomestayApiService,
+    private serviceForUser: UserGlobalPreferencesService,
   ) {}
+
+  ngOnInit() {
+    this._userSub = this.serviceForUser.getCurrentUser().subscribe((value) => {
+      this._currentUser = value;
+    });
+  }
+  ngOnDestroy(): void {
+    this._userSub?.unsubscribe();
+  }
 
   public currentRooms: number = 0;
   public currentBeds: number = 0;
@@ -69,6 +87,7 @@ export class AddHomeStayComponent {
       bathrooms: this.currentBathrooms,
       type: this.currentType,
       desc: this.currentDesc,
+      pricePerNight: this.currentPricePerNight,
       initDate: this.currentInitDate,
       finishDate: this.currentFinishDate,
       rules: this.currentRules,
@@ -79,6 +98,7 @@ export class AddHomeStayComponent {
       depNumber: this.currentDepNumber,
       securityOptions: this.currentSecurityOptions,
       arrivalOptions: this.currentArrivalOptions,
+      userId: this._currentUser!.id,
     };
 
     if (this.validateForm(form)) {
@@ -131,6 +151,7 @@ export interface HomeStayForm {
   bathrooms: number;
   type: string;
   desc: string;
+  pricePerNight: number;
   initDate: Date;
   finishDate: Date;
   rules: string;
@@ -141,4 +162,5 @@ export interface HomeStayForm {
   depNumber: number;
   securityOptions: string;
   arrivalOptions: string;
+  userId: number;
 }

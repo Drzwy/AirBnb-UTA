@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 const defaultChangeOption: ChangeOptionDTO = {
   name: 'Peso Chileno',
@@ -36,6 +36,8 @@ const availableChangeOptions: ChangeOptionDTO[] = [
 export class UserGlobalPreferencesService {
   private _currentChangeOption: ChangeOptionDTO = defaultChangeOption;
   private _getCurrentUserURL: string = 'http://localhost:3000/users/me';
+  private _currentToken: string | null = sessionStorage.getItem('token');
+
   constructor(private http: HttpClient) {}
 
   public getAllLanguages(): ChangeOptionDTO[] {
@@ -49,6 +51,9 @@ export class UserGlobalPreferencesService {
         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
       },
     });
+  }
+  public getCurrentToken(): Observable<string> {
+    return of(this._currentToken!);
   }
 }
 
