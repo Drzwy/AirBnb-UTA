@@ -21,6 +21,15 @@ export class HomeStayCreateDTO {
   banos: number;
 
   @IsNotEmpty()
+  @IsArray()
+  @Type(() => Date)
+  fechasDisponibles: Date[];
+
+  @IsNotEmpty()
+  @IsNumber()
+  precioNoche: number;
+
+  @IsNotEmpty()
   @IsString()
   tipo: string;
 
@@ -29,26 +38,16 @@ export class HomeStayCreateDTO {
   descripcion: string;
 
   @IsNotEmpty()
-  @IsArray()
-  @Type(() => Date)
-  fechas_disponibles: Date[];
-
-  @IsNotEmpty()
-  @IsArray()
-  @Type(() => String)
-  reglas: string[];
-
-  @IsNotEmpty()
   @IsString()
   calle: string;
 
   @IsNotEmpty()
   @IsNumber()
-  numero_casa: number;
+  nroCasa: number;
 
   @IsOptional()
   @IsNumber()
-  numero_dpto: number;
+  nroDpto: number;
 
   @IsOptional()
   @IsArray()
@@ -66,6 +65,26 @@ export class HomeStayCreateDTO {
   opciones_de_llegada: string[];
 
   @IsNotEmpty()
+  @IsArray()
+  @Type(() => String)
+  reglas: string[];
+
+  @IsNotEmpty()
   @IsNumber()
-  ownerId: number;
+  anfitrionId: number;
+
+  @IsNotEmpty()
+  @IsString()
+  pais: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ciudad: string;
+
+  /*
+  * @IsNotEmpty()
+  @IsString()
+  comuna: string;
+  * */
+
 }
