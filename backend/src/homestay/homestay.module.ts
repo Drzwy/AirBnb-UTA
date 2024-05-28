@@ -4,7 +4,7 @@ import { HomestayService } from './homestay.service';
 
 @Module({
   providers: [HomestayService],
-  exports: [],
+  exports: [HomestayService],
   controllers: [HomestayController],
 })
 export class HomestayModule {}

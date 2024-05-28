@@ -13,30 +13,32 @@ import {
 import { HomestayService } from './homestay.service';
 import { HomeStayCreateDTO } from './dto';
 import { HomeStayUpdateDTO } from './dto/homeStayUpdate.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('homestay')
+@ApiTags('Homestays')
+@Controller('homestays')
 export class HomestayController {
   constructor(private homeStayService: HomestayService) {}
 
-  @Get()
+  @Get('get')
   @HttpCode(HttpStatus.OK)
   public async getAllHomeStays() {
     return await this.homeStayService.getAllHomeStays();
   }
 
-  @Get(':id')
+  @Get('get/:id')
   @HttpCode(HttpStatus.OK)
   public async getHomeStayById(@Param('id', ParseIntPipe) id: number) {
     return await this.homeStayService.getHomeStayById(id);
   }
 
-  @Post()
+  @Post('create')
   @HttpCode(HttpStatus.CREATED)
   async createHomeStay(@Body() request: HomeStayCreateDTO) {
     return await this.homeStayService.createHomeStay(request);
   }
 
-  @Patch(':id')
+  @Patch('patch/:id')
   @HttpCode(HttpStatus.OK)
   async updateHomeStay(
     @Param('id', ParseIntPipe) id: number,
@@ -45,7 +47,7 @@ export class HomestayController {
     return await this.homeStayService.updateHomeStay(id, request);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   @HttpCode(HttpStatus.OK)
   async deleteHomeStay(@Param('id', ParseIntPipe) id: number) {
     return await this.homeStayService.deleteHomeStay(id);
