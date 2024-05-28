@@ -1,92 +1,98 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ChangeOptionDTO, UserGlobalPreferencesService} from "../../services/user-global-preferences.service";
-import {Router} from "@angular/router";
-import {LoginRegisterService} from "../../services/login-register.service";
-import {Subscription} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeOptionDTO,
+  UserGlobalPreferencesService,
+  UserMeResponse,
+} from '../../services/user-global-preferences.service';
+import { Router } from '@angular/router';
+import { LoginRegisterService } from '../../services/login-register.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.bootstrap.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit , OnDestroy{
+export class NavbarComponent implements OnInit, OnDestroy {
   private _isLoggedIn: boolean = true;
+  private _currentUser: UserMeResponse = {
+    id: 0,
+    nombre: '',
+  };
   private configVisibility: boolean = false;
   private loginSub?: Subscription;
-
-
+  private userSub?: Subscription;
 
   constructor(
     private service: UserGlobalPreferencesService,
     private loginService: LoginRegisterService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.loginSub = this.loginService.userIsLoggedIn().subscribe(
-      value => {
-        this._isLoggedIn = value;
-      }
-    )
+    this.loginSub = this.loginService.userIsLoggedIn().subscribe((value) => {
+      this._isLoggedIn = value;
+    });
+    this.userSub = this.service
+      .getCurrentUser()
+      .subscribe((value: UserMeResponse) => {
+        this._currentUser = value;
+      });
   }
 
   ngOnDestroy(): void {
     this.loginSub!.unsubscribe();
+    this.userSub!.unsubscribe();
   }
 
+  public getCurrentUserInfo() {
+    console.log(sessionStorage.getItem('token'));
+    this.service.getCurrentUser().subscribe((val) => {
+      alert(val.id); //TODO SEGUIR DESDE ACA
+    });
+  }
 
-
-
-  public navigateByURL(id: string ): void {
-    if (id == "logout") {
-      this.loginService.logout()
-    }
-    else {
+  public navigateByURL(id: string): void {
+    if (id == 'logout') {
+      this.loginService.logout();
+    } else {
       this.router.navigate([id]);
-
     }
-
   }
   readonly largeButton: UrlOption = {
-    label: "Pon tu espacio en Airbnb",
-    url: 'add-home-stay'
-  }
+    label: 'Pon tu espacio en Airbnb',
+    url: 'add-home-stay',
+  };
   readonly userConfigOptions: UrlOption[] = [
     {
-      label: "Mensajes",
-      url: ''
+      label: 'Mensajes',
+      url: '',
     },
     {
-      label: "Notificaciones",
-      url: ''
+      label: 'Notificaciones',
+      url: '',
     },
     {
-      label: "Pon tu espacio en Airbnb",
-      url: 'add-home-stay'
+      label: 'Pon tu espacio en Airbnb',
+      url: 'add-home-stay',
     },
     {
-      label: "Cuenta",
-      url: ''
+      label: 'Cuenta',
+      url: '',
     },
     {
-      label: "Cerrar Sesión",
-      url: 'logout'
-    }
-  ]
+      label: 'Cerrar Sesión',
+      url: 'logout',
+    },
+  ];
   readonly noUserOptions: UrlOption[] = [
-    {label: "Inicia Sesión", url: "login"},
-    {label: "Regístrate", url: "register"},
-    {label: "Pon tu espacio en Airbnb", url: "add-home-stay"},
-
-  ]
-
-
+    { label: 'Inicia Sesión', url: 'login' },
+    { label: 'Regístrate', url: 'register' },
+    { label: 'Pon tu espacio en Airbnb', url: 'add-home-stay' },
+  ];
   readonly userInfo: UserDto = {
-    username : "tomascaca"
-  }
-
-
-
+    username: 'tomascaca',
+  };
 
   public isLoggedIn(): boolean {
     return this._isLoggedIn;
@@ -99,23 +105,20 @@ export class NavbarComponent implements OnInit , OnDestroy{
   }
 
   public getFirstChar(): string | undefined {
-    if( this.userInfo.username == "" || !this._isLoggedIn) return undefined;
-    return this.userInfo.username.charAt(0).toUpperCase();
+    if (this._currentUser.nombre == '' || !this._isLoggedIn) return undefined;
+    return this._currentUser.nombre.charAt(0).toUpperCase();
   }
 
   public getAllLanguages(): ChangeOptionDTO[] {
     return this.service.getAllLanguages();
   }
-
-
-
 }
 
 export interface UserDto {
-  username: string
+  username: string;
 }
 
 interface UrlOption {
-  label: string,
-  url: string
+  label: string;
+  url: string;
 }

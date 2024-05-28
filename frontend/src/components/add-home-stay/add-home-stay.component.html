@@ -3,112 +3,280 @@
   <h2>Formulario de Inscripción de Propiedad</h2>
   <form>
     <div class="align-content-lg-stretch" style="margin: 10px">
-      <div class="form-group ">
+      <div class="form-group">
         <div class="numeric-input-holder justify-content-lg-between">
-          <label for="numDormitorios" class="text-body-emphasis">{{CONSTANTS.roomsNumberLabel}}</label>
+          <label for="numDormitorios" class="text-body-emphasis">{{
+            CONSTANTS.roomsNumberLabel
+          }}</label>
           <div class="card-group">
-            <button class="card justify-content-center numeric-input" (click)="currentRooms <= 0? currentRooms = 0: currentRooms = currentRooms-1">-</button>
-            <input class="form-control numeric-input text-center" id="numDormitorios"  style="border:none" name="numDormitorios" [(ngModel)]="currentRooms">
-            <button class="card justify-content-center numeric-input" (click)="currentRooms = currentRooms + 1">+</button>
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="
+                currentRooms <= 0
+                  ? (currentRooms = 0)
+                  : (currentRooms = currentRooms - 1)
+              "
+            >
+              -
+            </button>
+            <input
+              class="form-control numeric-input text-center"
+              id="numDormitorios"
+              style="border: none"
+              name="numDormitorios"
+              [(ngModel)]="currentRooms"
+            />
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="currentRooms = currentRooms + 1"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="numeric-input-holder justify-content-lg-between">
-          <label for="camasDisponibles" class="text-body-emphasis">{{CONSTANTS.bedsNumberLabel}}</label>
-          <div class="card-group ">
-            <button class="card justify-content-center numeric-input" (click)="currentBeds <= 0? currentBeds = 0: currentBeds = currentBeds-1">-</button>
-            <input class="form-control numeric-input text-center" id="camasDisponibles" style="border:none" name="camasDisponibles" [(ngModel)]="currentBeds">
-            <button class="card justify-content-center numeric-input" (click)="currentBeds = currentBeds + 1">+</button>
+          <label for="camasDisponibles" class="text-body-emphasis">{{
+            CONSTANTS.bedsNumberLabel
+          }}</label>
+          <div class="card-group">
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="
+                currentBeds <= 0
+                  ? (currentBeds = 0)
+                  : (currentBeds = currentBeds - 1)
+              "
+            >
+              -
+            </button>
+            <input
+              class="form-control numeric-input text-center"
+              id="camasDisponibles"
+              style="border: none"
+              name="camasDisponibles"
+              [(ngModel)]="currentBeds"
+            />
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="currentBeds = currentBeds + 1"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="numeric-input-holder justify-content-lg-between">
-          <label for="banosDisponibles" class="text-body-emphasis">{{CONSTANTS.bathsNumberLabel}}</label>
-          <div class="card-group ">
-            <button class="card justify-content-center numeric-input" (click)="currentBathrooms <= 0? currentBathrooms = 0: currentBathrooms = currentBathrooms-1">-</button>
-            <input class="form-control numeric-input text-center" style="border:none" id="banosDisponibles" name="banosDisponibles" [(ngModel)]="currentBathrooms">
-            <button class="card justify-content-center numeric-input" (click)="currentBathrooms = currentBathrooms + 1">+</button>
+          <label for="banosDisponibles" class="text-body-emphasis">{{
+            CONSTANTS.bathsNumberLabel
+          }}</label>
+          <div class="card-group">
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="
+                currentBathrooms <= 0
+                  ? (currentBathrooms = 0)
+                  : (currentBathrooms = currentBathrooms - 1)
+              "
+            >
+              -
+            </button>
+            <input
+              class="form-control numeric-input text-center"
+              style="border: none"
+              id="banosDisponibles"
+              name="banosDisponibles"
+              [(ngModel)]="currentBathrooms"
+            />
+            <button
+              class="card justify-content-center numeric-input"
+              (click)="currentBathrooms = currentBathrooms + 1"
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-
     <div class="form-group justify-content-sm-center">
-      <label for="tipoPropiedad">{{CONSTANTS.homeStayTypeLabel}}</label>
-      <select class="form-control" id="tipoPropiedad" name="tipoPropiedad" [(ngModel)]="currentType">
-        <option *ngFor="let types of getHomeStayTypes()">{{types.type}}</option>
+      <label for="tipoPropiedad">{{ CONSTANTS.homeStayTypeLabel }}</label>
+      <select
+        class="form-control"
+        id="tipoPropiedad"
+        name="tipoPropiedad"
+        [(ngModel)]="currentType"
+      >
+        <option *ngFor="let types of getHomeStayTypes()">
+          {{ types.type }}
+        </option>
       </select>
     </div>
 
     <div class="form-group justify-content-sm-center">
-      <label for="descripcion">{{CONSTANTS.descriptionLabel}}:</label>
-      <textarea class="form-control" id="descripcion" name="descripcion" rows="3" [(ngModel)]="currentDesc"></textarea>
+      <label for="descripcion">{{ CONSTANTS.descriptionLabel }}:</label>
+      <textarea
+        class="form-control"
+        id="descripcion"
+        name="descripcion"
+        rows="3"
+        [(ngModel)]="currentDesc"
+      ></textarea>
     </div>
 
-
     <div class="form-group justify-content-sm-center">
-      <label>{{CONSTANTS.availableDateLabel}}</label>
+      <label>{{ CONSTANTS.availableDateLabel }}</label>
       <div class="row">
         <div class="col">
-          <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" [(ngModel)]="currentInitDate">
+          <input
+            type="date"
+            class="form-control"
+            id="fechaInicio"
+            name="fechaInicio"
+            [(ngModel)]="currentInitDate"
+          />
         </div>
         <div class="col">
-          <input type="date" class="form-control" id="fechaFin" name="fechaFin" [(ngModel)]="currentFinishDate">
+          <input
+            type="date"
+            class="form-control"
+            id="fechaFin"
+            name="fechaFin"
+            [(ngModel)]="currentFinishDate"
+          />
         </div>
       </div>
     </div>
     <div class="form-group justify-content-sm-center">
-      <label for="reglas">{{CONSTANTS.rulesLabel}}</label>
-      <textarea class="form-control" id="reglas" name="reglas" rows="3" [(ngModel)]="currentRules"></textarea>
+      <label for="reglas">{{ CONSTANTS.rulesLabel }}</label>
+      <textarea
+        class="form-control"
+        id="reglas"
+        name="reglas"
+        rows="3"
+        [(ngModel)]="currentRules"
+      ></textarea>
     </div>
     <div class="form-group">
-      <label for="calle">{{CONSTANTS.streetAddressLabel}}</label>
-      <input type="text" class="form-control" id="calle" name="calle" [(ngModel)]="currentStreetAddress">
+      <label for="calle">{{ CONSTANTS.streetAddressLabel }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="calle"
+        name="calle"
+        [(ngModel)]="currentStreetAddress"
+      />
     </div>
     <div class="form-group">
-      <label for="ubicacion">{{CONSTANTS.locationLabel}}</label>
-      <input type="text" class="form-control" id="ubicacion" name="ubicacion" [(ngModel)]="currentLocation">
+      <label for="ubicacion">{{ CONSTANTS.locationLabel }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="ubicacion"
+        name="ubicacion"
+        [(ngModel)]="currentLocation"
+      />
     </div>
     <div class="form-group">
-      <label for="numCasa">{{CONSTANTS.homeStayNumberAddress}}</label>
-      <input type="text" class="form-control" id="numCasa" name="numCasa" [(ngModel)]="currentStreetNumber">
+      <label for="numCasa">{{ CONSTANTS.homeStayNumberAddress }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="numCasa"
+        name="numCasa"
+        [(ngModel)]="currentStreetNumber"
+      />
     </div>
     <div class="form-group">
-      <label for="numDepto">{{CONSTANTS.homeStayDeptNumberAddress}}</label>
-      <input type="text" class="form-control" id="numDepto" name="numDepto" [(ngModel)]="currentDepNumber">
+      <label for="numDepto">{{ CONSTANTS.homeStayDeptNumberAddress }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="numDepto"
+        name="numDepto"
+        [(ngModel)]="currentDepNumber"
+      />
     </div>
     <div class="form-group">
-      <label for="comodidades">{{CONSTANTS.servicesAvailableLabel}}</label>
-      <textarea class="form-control" id="comodidades" name="comodidades" rows="3" [(ngModel)]="currentServices"></textarea>
+      <label for="comodidades">{{ CONSTANTS.servicesAvailableLabel }}</label>
+      <textarea
+        class="form-control"
+        id="comodidades"
+        name="comodidades"
+        rows="3"
+        [(ngModel)]="currentServices"
+      ></textarea>
     </div>
     <div class="form-group">
-      <label for="opcionesSeguridad">{{CONSTANTS.securityOptionsLabel}}</label>
-      <textarea class="form-control" id="opcionesSeguridad" name="opcionesSeguridad" rows="3" [(ngModel)]="currentSecurityOptions"></textarea>
+      <label for="opcionesSeguridad">{{
+        CONSTANTS.securityOptionsLabel
+      }}</label>
+      <textarea
+        class="form-control"
+        id="opcionesSeguridad"
+        name="opcionesSeguridad"
+        rows="3"
+        [(ngModel)]="currentSecurityOptions"
+      ></textarea>
     </div>
     <div class="form-group">
-      <label for="opcionesLlegada">{{CONSTANTS.arrivalOptionsLabel}}</label>
-      <textarea class="form-control" id="opcionesLlegada" name="opcionesLlegada" rows="3" [(ngModel)]="currentArrivalOptions"></textarea>
+      <label for="opcionesLlegada">{{ CONSTANTS.arrivalOptionsLabel }}</label>
+      <textarea
+        class="form-control"
+        id="opcionesLlegada"
+        name="opcionesLlegada"
+        rows="3"
+        [(ngModel)]="currentArrivalOptions"
+      ></textarea>
     </div>
-    <div class="form-group ">
+    <div class="form-group">
       <div class="numeric-input-holder justify-content-lg-between">
-        <label for="precioPorNoche" class="text-body-emphasis">{{CONSTANTS.pricePerNightLabel}}</label>
+        <label for="precioPorNoche" class="text-body-emphasis">{{
+          CONSTANTS.pricePerNightLabel
+        }}</label>
         <div class="card-group">
-          <button class="card justify-content-center numeric-input" (click)="currentPricePerNight <= 0? currentPricePerNight = 0: currentPricePerNight = currentPricePerNight-10000">-</button>
-          <input class="form-control numeric-input text-center" id="precioPorNoche"  style="border:none" name="precioPorNoche" [(ngModel)]="currentPricePerNight">
-          <button class="card justify-content-center numeric-input" (click)="currentPricePerNight = currentPricePerNight + 10000">+</button>
+          <button
+            class="card justify-content-center numeric-input"
+            (click)="
+              currentPricePerNight <= 0
+                ? (currentPricePerNight = 0)
+                : (currentPricePerNight = currentPricePerNight - 10000)
+            "
+          >
+            -
+          </button>
+          <input
+            class="form-control numeric-input text-center"
+            id="precioPorNoche"
+            style="border: none"
+            name="precioPorNoche"
+            [(ngModel)]="currentPricePerNight"
+          />
+          <button
+            class="card justify-content-center numeric-input"
+            (click)="currentPricePerNight = currentPricePerNight + 10000"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" (click)="sendDataToValidation()">{{CONSTANTS.submitButtonLabel}}</button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="sendDataToValidation()"
+    >
+      {{ CONSTANTS.submitButtonLabel }}
+    </button>
   </form>
-  <div class="alert alert-warning" role="alert" [hidden]="!this.getFormIsValid()">
+  <div
+    class="alert alert-warning"
+    role="alert"
+    [hidden]="!this.getFormIsValid()"
+  >
     This is a warning alert—check it out!
   </div>
 </div>
-
-
-

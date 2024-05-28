@@ -8,10 +8,9 @@ describe('HostInfoViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HostInfoViewComponent]
-    })
-    .compileComponents();
-    
+      declarations: [HostInfoViewComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HostInfoViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

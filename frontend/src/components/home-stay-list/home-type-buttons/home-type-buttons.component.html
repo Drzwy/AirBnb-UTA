@@ -1,20 +1,21 @@
-
-
 <div class="home-stay-type-buttons-container">
-    <div class="home-stay-type-buttons-container">
-        @for (category of homeStayTypes; track category) {
-            <button class="home-stay-type-button" (click)="changeHomeStayType(category.type)">
-                <img [src]="category.vectorImage.url"
-                     [alt]="category.vectorImage.alt"
-                     [width]="this.getVectorImageSize()"
-                     [height]="this.getVectorImageSize()"
-                >
-                {{category.type}}
-            </button>
-        }
-    </div>
-    <div>
-        <app-advanced-filter />
-    </div>
-
+  <div class="home-stay-type-buttons-container">
+    @for (category of homeStayTypes; track category) {
+      <button
+        class="home-stay-type-button"
+        (click)="changeHomeStayType(category.type)"
+      >
+        <img
+          [src]="category.vectorImage.url"
+          [alt]="category.vectorImage.alt"
+          [width]="this.getVectorImageSize()"
+          [height]="this.getVectorImageSize()"
+        />
+        {{ category.type }}
+      </button>
+    }
+  </div>
+  <div>
+    <app-advanced-filter />
+  </div>
 </div>

@@ -1,7 +1,6 @@
 .numeric-input-holder {
   display: flex;
   flex-wrap: wrap;
-
 }
 .numeric-input {
   width: 40%;

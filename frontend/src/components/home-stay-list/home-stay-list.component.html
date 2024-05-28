@@ -1,40 +1,38 @@
 <app-navbar></app-navbar>
 <div class="page-center">
   <app-home-stay-finder />
-  <app-home-type-buttons class="element"/>
+  <app-home-type-buttons class="element" />
 
   <div class="home-stay-container element">
-
     @for (homeStay of currentHomeStayList; track homeStay) {
-
       <div class="home-stay-display">
         <div>
-          <img (click)="homeVisualizer()" [src]="homeStay.imageUrl.url"
-               [alt]="homeStay.imageUrl.alt"
-               [width]="IMAGE_DIMENSIONS"
-               [height]="IMAGE_DIMENSIONS"
-               class="home-images-display"
-          >
+          <img
+            (click)="homeVisualizer()"
+            [src]="homeStay.imageUrl.url"
+            [alt]="homeStay.imageUrl.alt"
+            [width]="IMAGE_DIMENSIONS"
+            [height]="IMAGE_DIMENSIONS"
+            class="home-images-display"
+          />
         </div>
 
         <div class="font-container">
           <h2 class="secondary location-font">
-            {{homeStay.location}}
+            {{ homeStay.location }}
           </h2>
           <h2 class="secondary">
-            {{homeStay.meanRating}}
+            {{ homeStay.meanRating }}
           </h2>
         </div>
 
         <h2 class="secondary">
-          {{homeStay.availableDate}}
+          {{ homeStay.availableDate }}
         </h2>
         <h2 class="secondary">
-          {{getPriceOf(homeStay)}}  {{CONSTANTS.perNightText}}
+          {{ getPriceOf(homeStay) }} {{ CONSTANTS.perNightText }}
         </h2>
       </div>
     }
-
   </div>
-
 </div>

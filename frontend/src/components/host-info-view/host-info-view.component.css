@@ -17,20 +17,15 @@ div.main-info-container {
   padding-left: 30px;
 }
 
-
-
 div.host-info-card {
   display: flex;
   flex-wrap: nowrap;
   width: 50%;
-
-
 }
 img.host-image {
   width: 120px;
   height: 120px;
   border-radius: 100%;
-
 }
 
 div.host-info-container {
@@ -51,15 +46,15 @@ div.languages-and-livesIn {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  font-size: .6rem;
+  font-size: 0.6rem;
 }
 div.description-paragraph {
-  font-size: .7rem;
+  font-size: 0.7rem;
   text-align: justify;
 }
 
 .secondary {
-  font-size: .6rem;
+  font-size: 0.6rem;
   font-family: Roboto, sans-serif;
   color: #5f5959;
   margin-left: 3px;
@@ -69,11 +64,7 @@ div.description-paragraph {
   color: black;
 }
 .ratings-font {
-
 }
-
-
-
 
 .font-container {
   display: flex;
@@ -94,14 +85,13 @@ div.description-paragraph {
   justify-content: center;
 }
 
-
 div.host-image-container {
   padding: 10px 20px;
-  width: 100%
+  width: 100%;
 }
 
 .empty-homestays {
-  font-size: .8rem;
+  font-size: 0.8rem;
   display: flex;
   flex-wrap: nowrap;
   padding: 40px;
@@ -111,4 +101,3 @@ div.host-image-container {
   white-space: nowrap;
   overflow-x: auto; /* Habilita el desplazamiento vertical cuando el contenido es más grande que el contenedor */
 }
-

@@ -3,16 +3,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
 })
 export class CalendarComponent implements OnInit {
+  constructor() {}
 
-  constructor() {
-    
-   }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   @Output() startDate: any = new EventEmitter<Date>();
   @Output() endDate: any = new EventEmitter<Date>();
@@ -20,21 +16,21 @@ export class CalendarComponent implements OnInit {
   @Input() location: any;
 
   //fechas minima y maxima para seleccionar (maxDate puede ser Date o undefined para evitar selecionar fechas deshabilitadas en el rango)
-  minDate: Date = new Date()
+  minDate: Date = new Date();
   maxDate: Date | undefined;
 
   //Aqui se guardan las fechas seleccionadas
   rangeDates: Date[] = [];
-  date1: Date = new Date('05/26/2024') // ejemplos para desactivar fechas en el calendario
-  date2: Date = new Date('05/28/2024')
-  invalidDate: Date[] = [this.date1,this.date2]
+  date1: Date = new Date('05/26/2024'); // ejemplos para desactivar fechas en el calendario
+  date2: Date = new Date('05/28/2024');
+  invalidDate: Date[] = [this.date1, this.date2];
   selectedNights: number = 0;
 
-  public clearSelection(){
-    this.rangeDates = []
-    this.maxDate = undefined
-    this.minDate = new Date()
-    this.selectedNights = 0
+  public clearSelection() {
+    this.rangeDates = [];
+    this.maxDate = undefined;
+    this.minDate = new Date();
+    this.selectedNights = 0;
     this.startDate.emit(this.rangeDates[0]);
     this.endDate.emit(this.rangeDates[1]);
     this.nights.emit(this.selectedNights);
@@ -45,8 +41,8 @@ export class CalendarComponent implements OnInit {
       // Primer día seleccionado, calcular la fecha máxima
       this.updateMinMaxDate(this.rangeDates[0]);
       this.startDate.emit(this.rangeDates[0]);
-      if (this.rangeDates[1]){
-        this.minDate = new Date()
+      if (this.rangeDates[1]) {
+        this.minDate = new Date();
         this.maxDate = undefined;
 
         const startDate = this.rangeDates[0];
@@ -61,11 +57,10 @@ export class CalendarComponent implements OnInit {
         this.nights.emit(this.selectedNights);
       }
     }
-  } 
-  
+  }
 
   updateMinMaxDate(startDate: Date) {
-    this.minDate = startDate
+    this.minDate = startDate;
     for (let invalidDate of this.invalidDate) {
       if (invalidDate > startDate) {
         this.maxDate = new Date(invalidDate); // Un día antes del primer día deshabilitado
@@ -74,5 +69,4 @@ export class CalendarComponent implements OnInit {
       }
     }
   }
-
 }

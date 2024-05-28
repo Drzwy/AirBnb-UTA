@@ -7,42 +7,39 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   constructor(
     private router: Router,
     private loginRegisterService: LoginRegisterService,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   user: userLogin = {
     email: '',
     hash: '',
-  }
+  };
 
   public login(user: NgForm) {
-    this.loginRegisterService.login(this.user).subscribe(result =>{
-      if(result && result.success){
-        alert('Inicio sesion correctamente')
-        this.router.navigateByUrl('home-stay-list')
+    this.loginRegisterService.login(this.user).subscribe((result) => {
+      if (result && result.success) {
+        alert('Inicio sesion correctamente');
+        this.router.navigateByUrl('home-stay-list');
       } else {
-        alert(result.message)
+        alert(result.message);
       }
-    })
+    });
   }
 
-  public register(){
+  public register() {
     this.router.navigateByUrl('register');
   }
-
 }
 
 export interface userLogin {
-  email: string,
-  hash: string
+  email: string;
+  hash: string;
 }

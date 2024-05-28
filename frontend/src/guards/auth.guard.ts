@@ -10,19 +10,19 @@ export const authGuard: CanActivateFn = (route, state) => {
 export const loginGuard: CanActivateFn = (route, state) => {
   const login = inject(LoginRegisterService);
   return login.isLoggedIn();
-}
+};
 
 export const adminGuard: CanActivateFn = (route, state) => {
   const login = inject(LoginRegisterService);
   return login.isAdmin();
-}
+};
 
-export const hostGuard: CanActivateFn = (route, state) =>{
+export const hostGuard: CanActivateFn = (route, state) => {
   const login = inject(LoginRegisterService);
   return login.isHost();
-}
+};
 
 export const userIsLoggedInGuard: CanActivateFn = (route, state) => {
   const login = inject(LoginRegisterService);
   return !login.userIsLoggedIn();
-}
+};

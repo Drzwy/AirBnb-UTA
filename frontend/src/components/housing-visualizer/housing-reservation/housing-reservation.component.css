@@ -1,13 +1,13 @@
-.btn-primary{
-    background-color:#df1461;
-    border-color: #df1461;
+.btn-primary {
+  background-color: #df1461;
+  border-color: #df1461;
 }
 
-.btn-primary:hover{
-    background-color: rgb(206, 21, 92);
-    border-color:  rgb(206, 21, 92);
+.btn-primary:hover {
+  background-color: rgb(206, 21, 92);
+  border-color: rgb(206, 21, 92);
 }
 
-.rules{
-    font-size: 12px;
+.rules {
+  font-size: 12px;
 }

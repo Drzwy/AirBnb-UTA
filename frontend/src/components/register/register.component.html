@@ -1,68 +1,188 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6 col-xl-5"> <!-- Ajustado para diferentes tamaños de pantalla -->
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <!-- Ajustado para diferentes tamaños de pantalla -->
         <div class="card">
           <div class="card-body">
             <h2 class="h4 card-title text-center mt-4 mb-4">Registrarse</h2>
             <div class="border-bottom mb-4"></div>
             <p class="h3 text-left mb-3">Te damos la bienvenida a Airbnb</p>
             <form #form="ngForm" (ngSubmit)="register(form)" class="mt-4">
-              <div class="overflow-auto" style="max-height: 400px;">
+              <div class="overflow-auto" style="max-height: 400px">
                 <div class="form-group">
                   <label class="mt-2" for="email">Correo electrónico:</label>
-                  <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" placeholder="ejemplo@correo.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
-                  <div *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)">
-                    <small class="text-danger">Ingrese un correo electrónico válido</small>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    [(ngModel)]="user.email"
+                    placeholder="ejemplo@correo.com"
+                    pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                    required
+                  />
+                  <div
+                    *ngIf="
+                      form.controls['email'].invalid &&
+                      (form.controls['email'].dirty ||
+                        form.controls['email'].touched)
+                    "
+                  >
+                    <small class="text-danger"
+                      >Ingrese un correo electrónico válido</small
+                    >
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="mt-2" for="password">Contraseña:</label>
-                  <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.hash" placeholder="contraseña" pattern="(?=.*[A-Z])(?=.*\d).{6,}" required>
-                  <div *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)">
-                      <small class="text-danger">La contraseña debe tener al menos 6 caracteres, una letra mayúscula y un número</small>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    [(ngModel)]="user.hash"
+                    placeholder="contraseña"
+                    pattern="(?=.*[A-Z])(?=.*\d).{6,}"
+                    required
+                  />
+                  <div
+                    *ngIf="
+                      form.controls['password'].invalid &&
+                      (form.controls['password'].dirty ||
+                        form.controls['password'].touched)
+                    "
+                  >
+                    <small class="text-danger"
+                      >La contraseña debe tener al menos 6 caracteres, una letra
+                      mayúscula y un número</small
+                    >
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="mt-2" for="run">RUN:</label>
-                  <input type="text" class="form-control" id="run" name="run" [(ngModel)]="user.run" placeholder="12345678-9" pattern="\d{3,8}-[\d|kK]{1}" required>
-                  <div *ngIf="(form.controls['run'].invalid || !checkRun(user.run)) && (form.controls['run'].dirty || form.controls['run'].touched)">
-                      <small class="text-danger">Ingrese un RUN válido, ej: 12345678-9</small>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="run"
+                    name="run"
+                    [(ngModel)]="user.run"
+                    placeholder="12345678-9"
+                    pattern="\d{3,8}-[\d|kK]{1}"
+                    required
+                  />
+                  <div
+                    *ngIf="
+                      (form.controls['run'].invalid || !checkRun(user.run)) &&
+                      (form.controls['run'].dirty ||
+                        form.controls['run'].touched)
+                    "
+                  >
+                    <small class="text-danger"
+                      >Ingrese un RUN válido, ej: 12345678-9</small
+                    >
                   </div>
-                </div>                              
+                </div>
                 <div class="form-group">
                   <label class="mt-2" for="name">Nombre:</label>
-                  <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.nombre" placeholder="nombre" required>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    [(ngModel)]="user.nombre"
+                    placeholder="nombre"
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label class="mt-2" for="lastName">Apellido paterno:</label>
-                  <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.apellidoPat" placeholder="apellido paterno" required>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lastName"
+                    name="lastName"
+                    [(ngModel)]="user.apellidoPat"
+                    placeholder="apellido paterno"
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label class="mt-2" for="moLastName">Apellido materno:</label>
-                  <input type="text" class="form-control" id="moLastName" name="moLastName" [(ngModel)]="user.apellidoMat" placeholder="apellido materno" required>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="moLastName"
+                    name="moLastName"
+                    [(ngModel)]="user.apellidoMat"
+                    placeholder="apellido materno"
+                    required
+                  />
                 </div>
                 <div class="form-group">
                   <label class="mt-2" for="description">Descripción:</label>
-                  <input type="text" class="form-control" id="description" name="description" [(ngModel)]="user.descripcion" placeholder="descripcion">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    [(ngModel)]="user.descripcion"
+                    placeholder="descripcion"
+                  />
                 </div>
                 <div class="form-group d-flex flex-column">
                   <label class="mt-2" for="languages">Idiomas:</label>
-                  <select class="form-select" id="languages" name="languages" multiple required>
-                    <option *ngFor="let language of availableLanguages">{{ language }}</option>
+                  <select
+                    class="form-select"
+                    id="languages"
+                    name="languages"
+                    multiple
+                    required
+                  >
+                    <option *ngFor="let language of availableLanguages">
+                      {{ language }}
+                    </option>
                   </select>
-                </div>                                                 
+                </div>
                 <div class="form-group">
                   <label class="mt-2" for="details">Detalles:</label>
-                  <input type="text" class="form-control" id="details" name="details" [(ngModel)]="detail" placeholder="detalles" required>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="details"
+                    name="details"
+                    [(ngModel)]="detail"
+                    placeholder="detalles"
+                    required
+                  />
                 </div>
               </div>
               <div class="text-center mt-4">
-                <button type="submit" class="btn" style="background-color: #db0c63; color: white; width: 100%; height: 50px;" [disabled]="!form.valid">Registrarse</button>
+                <button
+                  type="submit"
+                  class="btn"
+                  style="
+                    background-color: #db0c63;
+                    color: white;
+                    width: 100%;
+                    height: 50px;
+                  "
+                  [disabled]="!form.valid"
+                >
+                  Registrarse
+                </button>
               </div>
             </form>
             <div class="text-center mt-3">
-              <p class="d-flex align-items-center justify-content-center">¿Ya tienes cuenta? <a class="btn btn-link" style="color: black; font-weight: bold;" (click)="login()">Inicia sesión</a></p>
+              <p class="d-flex align-items-center justify-content-center">
+                ¿Ya tienes cuenta?
+                <a
+                  class="btn btn-link"
+                  style="color: black; font-weight: bold"
+                  (click)="login()"
+                  >Inicia sesión</a
+                >
+              </p>
             </div>
           </div>
         </div>

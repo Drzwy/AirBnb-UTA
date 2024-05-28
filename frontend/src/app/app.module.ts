@@ -18,8 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CalendarModule } from 'primeng/calendar';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
-import {HostInfoViewComponent} from "../components/host-info-view/host-info-view.component";
+import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
+import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +37,17 @@ import {HostInfoViewComponent} from "../components/host-info-view/host-info-view
     RegisterComponent,
     LoginComponent,
     CalendarComponent,
-    AddHomeStayComponent
+    AddHomeStayComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, CalendarModule, BrowserAnimationsModule,FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    CalendarModule,
+    BrowserAnimationsModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

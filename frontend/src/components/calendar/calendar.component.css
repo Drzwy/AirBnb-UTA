@@ -1,11 +1,10 @@
 /* Estilo para todos los días seleccionados */
 ::ng-deep .p-datepicker table td > span.p-highlight {
-  background-color: rgb(0, 0, 0) !important; 
+  background-color: rgb(0, 0, 0) !important;
   color: rgb(255, 255, 255) !important;
 }
 
-
-::ng-deep .p-datepicker table td.p-datepicker-today > span{
+::ng-deep .p-datepicker table td.p-datepicker-today > span {
   background-color: rgb(217, 9, 100);
   color: black;
 }

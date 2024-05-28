@@ -10,7 +10,7 @@ button.home-stay-type-button {
   display: flex;
   flex-direction: column;
   place-items: center;
-  font-size: .6rem;
+  font-size: 0.6rem;
   font-family: "Liberation Sans", sans-serif;
   border: transparent;
   margin-right: 10px;

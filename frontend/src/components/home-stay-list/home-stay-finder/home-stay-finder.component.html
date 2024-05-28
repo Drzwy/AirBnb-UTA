@@ -1,23 +1,29 @@
 <div class="finder-container">
   <div class="finder-place-holder">
     <label>Dónde</label>
-    <input type = text [placeholder]="CONSTANTS.wherePlaceHolder" [(ngModel)]="currentWhere">
+    <input
+      type="text"
+      [placeholder]="CONSTANTS.wherePlaceHolder"
+      [(ngModel)]="currentWhere"
+    />
   </div>
   <div class="finder-place-holder">
     <label>Llegada</label>
-    <input type = date [(ngModel)]="currentArrival">
+    <input type="date" [(ngModel)]="currentArrival" />
   </div>
   <div class="finder-place-holder">
     <label>Salida</label>
-    <input type = date [(ngModel)]="currentFinish">
+    <input type="date" [(ngModel)]="currentFinish" />
   </div>
   <div class="finder-place-holder">
     <label>Quién</label>
-    <input type = text [placeholder]="CONSTANTS.howManyPlaceHolder" [(ngModel)]="currentHowMany">
+    <input
+      type="text"
+      [placeholder]="CONSTANTS.howManyPlaceHolder"
+      [(ngModel)]="currentHowMany"
+    />
   </div>
   <div class="lupa">
-    <button class="finder-button"> Buscar </button>
+    <button class="finder-button">Buscar</button>
   </div>
-
-
 </div>

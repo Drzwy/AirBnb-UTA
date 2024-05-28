@@ -1,9 +1,6 @@
-
-
 div.advanced-filter-container {
   display: block;
   wrap-option: column;
-
 }
 div.advanced-filter-category-container {
   display: flex;
@@ -13,4 +10,3 @@ div.advanced-filter-category-container {
 input.advanced-filter-number-place {
   max-width: 20%;
 }
-
