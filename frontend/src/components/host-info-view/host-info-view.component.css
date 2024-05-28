@@ -1,0 +1,114 @@
+div.main-info-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  padding: 30px;
+}
+
+.left-column {
+  background-color: #f8f9fa; /* Color de fondo de la columna izquierda */
+  padding: 20px; /* Añade un poco de espacio al contenido */
+  width: 500px;
+  height: max-content;
+}
+
+.right-column {
+  width: 50%;
+  padding-left: 30px;
+}
+
+
+
+div.host-info-card {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 50%;
+
+
+}
+img.host-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+
+}
+
+div.host-info-container {
+  align-content: space-between;
+  margin-left: 40px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.info-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+div.languages-and-livesIn {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  font-size: .6rem;
+}
+div.description-paragraph {
+  font-size: .7rem;
+  text-align: justify;
+}
+
+.secondary {
+  font-size: .6rem;
+  font-family: Roboto, sans-serif;
+  color: #5f5959;
+  margin-left: 3px;
+}
+
+.location-font {
+  color: black;
+}
+.ratings-font {
+
+}
+
+
+
+
+.font-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.home-stay-container {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: space-between;
+  border: #5f5959 5px solid;
+}
+.home-stay-card {
+  padding: 10px 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+
+div.host-image-container {
+  padding: 10px 20px;
+  width: 100%
+}
+
+.empty-homestays {
+  font-size: .8rem;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 40px;
+  text-align: center;
+}
+.scrollable-content {
+  white-space: nowrap;
+  overflow-x: auto; /* Habilita el desplazamiento vertical cuando el contenido es más grande que el contenedor */
+}
+
