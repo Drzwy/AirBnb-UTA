@@ -19,6 +19,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.component";
+import {HostInfoViewComponent} from "../components/host-info-view/host-info-view.component";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {AddHomeStayComponent} from "../components/add-home-stay/add-home-stay.co
     ImageCardComponent,
     HousingInfoDisplayerComponent,
     HousingReservationComponent,
+    HostInfoViewComponent,
     NavbarComponent,
     HomeStayListComponent,
     HomeTypeButtonsComponent,

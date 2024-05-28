@@ -8,6 +8,7 @@ import {adminGuard, authGuard, hostGuard, loginGuard, userIsLoggedInGuard} from 
 import { CalendarComponent } from '../components/calendar/calendar.component';
 import { HousingReservationComponent } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
+import {HostInfoViewComponent} from "../components/host-info-view/host-info-view.component";
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
     component: AddHomeStayComponent,
     canActivate: [authGuard]
    },
+  {
+    path: 'about-host',
+    component: HostInfoViewComponent,
+    canActivate: [authGuard]
+  },
   {
     path: 'calendar',
     component: CalendarComponent,

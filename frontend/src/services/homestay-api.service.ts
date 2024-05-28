@@ -7,7 +7,7 @@ import {catchError, throwError} from "rxjs";
   providedIn: 'root'
 })
 export class HomestayApiService {
-  private url : string = "http://localhost:3000/homestay"
+  private url : string = "http://localhost:3000/homestays/create"
 
   constructor(private http: HttpClient) {
 
