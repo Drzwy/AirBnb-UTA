@@ -47,12 +47,14 @@ enum UserTypes {
 
 model Propiedad {
   id Int @id @default(autoincrement())
+  estado Boolean @default(true)
 
   dormitorios       Int
   camas             Int
   banos             Int
   fechasDisponibles DateTime[] @db.Date
   precioNoche       Float
+  maxPersonas       Int
 
   tipo        String
   descripcion String

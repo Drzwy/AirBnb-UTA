@@ -13,12 +13,14 @@ export class HomestayService {
   constructor(private prisma: PrismaService) {}
 
   public async getAllHomeStays(): Promise<Propiedad[]> {
-    return this.prisma.propiedad.findMany();
+    return this.prisma.propiedad.findMany({
+      where: { estado: true },
+    });
   }
 
   public async getHomeStayById(id: number): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
@@ -52,7 +54,7 @@ export class HomestayService {
 
   public async updateHomeStay(id: number, data: Prisma.PropiedadUpdateInput) {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
@@ -74,13 +76,16 @@ export class HomestayService {
 
   public async deleteHomeStay(id: number) {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
       throw new NotFoundException('No se encontro la propiedad');
     }
 
-    return this.prisma.propiedad.delete({ where: { id } });
+    return this.prisma.propiedad.update({
+      where: { id },
+      data: { estado: false },
+    });
   }
 }

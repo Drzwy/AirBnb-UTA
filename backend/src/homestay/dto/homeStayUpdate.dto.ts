@@ -24,12 +24,24 @@ export class HomeStayUpdateDTO {
   precioNoche: number;
 
   @IsOptional()
+  @IsNumber()
+  maxPersonas: number;
+
+  @IsOptional()
   @IsString()
   tipo: string;
 
   @IsOptional()
   @IsString()
   descripcion: string;
+
+  @IsOptional()
+  @IsString()
+  pais: string;
+
+  @IsOptional()
+  @IsString()
+  ciudad: string;
 
   @IsOptional()
   @IsString()
@@ -51,12 +63,12 @@ export class HomeStayUpdateDTO {
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  opciones_de_seguridad: string[];
+  opcionesDeSeguridad: string[];
 
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  opciones_de_llegada: string[];
+  opcionesDeLlegada: string[];
 
   @IsOptional()
   @IsArray()
@@ -66,12 +78,4 @@ export class HomeStayUpdateDTO {
   @IsOptional()
   @IsNumber()
   anfitrionId: number;
-
-  @IsOptional()
-  @IsString()
-  pais: string;
-
-  @IsOptional()
-  @IsString()
-  ciudad: string;
 }
