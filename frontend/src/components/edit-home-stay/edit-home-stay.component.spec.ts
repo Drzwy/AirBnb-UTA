@@ -8,9 +8,10 @@ describe('EditHomeStayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditHomeStayComponent],
-    }).compileComponents();
-
+      declarations: [EditHomeStayComponent]
+    })
+    .compileComponents();
+    
     fixture = TestBed.createComponent(EditHomeStayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
