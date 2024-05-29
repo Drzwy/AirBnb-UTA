@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, Propiedad, Usuario } from '@prisma/client';
-import { HomeStayCreateDTO } from './dto';
+import { Propiedad, Usuario } from '@prisma/client';
+import { HomeStayCreateDTO, HomeStayUpdateDTO } from './dto';
 
 @Injectable()
 export class HomestayService {
@@ -28,6 +28,20 @@ export class HomestayService {
     }
 
     return homeStay;
+  }
+
+  public async getHomeStayByUserId(id: number): Promise<Propiedad[]> {
+    const ownerExists: Usuario = await this.prisma.usuario.findUnique({
+      where: { id: id },
+    });
+
+    if (!ownerExists) {
+      throw new NotFoundException('El propietario no existe');
+    }
+
+    return this.prisma.propiedad.findMany({
+      where: { estado: true, anfitrionId: id },
+    });
   }
 
   public async createHomeStay(data: HomeStayCreateDTO): Promise<Propiedad> {
@@ -52,7 +66,10 @@ export class HomestayService {
     }
   }
 
-  public async updateHomeStay(id: number, data: Prisma.PropiedadUpdateInput) {
+  public async updateHomeStay(
+    id: number,
+    data: HomeStayUpdateDTO,
+  ): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
       where: { id, estado: true },
     });

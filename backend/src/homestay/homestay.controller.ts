@@ -32,6 +32,12 @@ export class HomestayController {
     return await this.homeStayService.getHomeStayById(id);
   }
 
+  @Get('get/userHouses/:id')
+  @HttpCode(HttpStatus.OK)
+  public async getHomeStayByUserId(@Param('id', ParseIntPipe) id: number) {
+    return await this.homeStayService.getHomeStayByUserId(id);
+  }
+
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   async createHomeStay(@Body() request: HomeStayCreateDTO) {
