@@ -20,6 +20,7 @@ import { CalendarComponent } from '../components/calendar/calendar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
+import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { HostInfoViewComponent } from '../components/host-info-view/host-info-vi
     LoginComponent,
     CalendarComponent,
     AddHomeStayComponent,
+    EditHomeStayComponent,
   ],
   imports: [
     BrowserModule,

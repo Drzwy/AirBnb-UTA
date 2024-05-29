@@ -6,7 +6,7 @@ import {
 } from '../../services/user-global-preferences.service';
 import { Router } from '@angular/router';
 import { LoginRegisterService } from '../../services/login-register.service';
-import { interval, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private _currentUser: UserMeResponse = {
     id: 0,
     nombre: '',
+    anfitrionDe: [],
   };
   private _currentToken?: string;
   private configVisibility: boolean = false;
@@ -54,6 +55,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  public currentUserHasHomestays(): boolean {
+    return this._currentUser.anfitrionDe.length > 0;
+  }
+
   public navigateByURL(id: string): void {
     if (id == 'logout') {
       this.loginService.logout();
@@ -62,9 +67,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.router.navigate([id]);
     }
   }
-  readonly largeButton: UrlOption = {
+  readonly largeButtonHasHomestays: UrlOption = {
     label: 'Pon tu espacio en Airbnb',
     url: 'add-home-stay',
+  };
+  readonly largeButtonHostMode: UrlOption = {
+    label: 'Modo Anfitrión',
+    url: 'about-me',
   };
   readonly userConfigOptions: UrlOption[] = [
     {

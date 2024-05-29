@@ -3,22 +3,31 @@
     <!-- Elemento a la izquierda -->
     <div class="navbar-brand" (click)="navigateByURL('')">
       <img
-        src="assets/images/airbnb-logo.png"
+        src="assets/images/logo.webp"
         alt="Logo"
-        width="50"
-        height="50"
+        width="100"
       />
     </div>
 
     <!-- Botones a la derecha -->
     <div class="navbar-buttons-container">
       <!-- Boton de Añadir espacio a Airbnb -->
-      <button
-        class="text-option nav-item btn"
-        (click)="navigateByURL(largeButton.url)"
-      >
-        {{ largeButton.label }}
-      </button>
+      @if (currentUserHasHomestays()) {
+        <button
+          class="text-option nav-item btn"
+          (click)="navigateByURL(largeButtonHostMode.url)"
+        >
+          {{ largeButtonHostMode.label }}
+        </button>
+      } @else {
+        <button
+          class="text-option nav-item btn"
+          (click)="navigateByURL(largeButtonHasHomestays.url)"
+        >
+          {{ largeButtonHasHomestays.label }}
+        </button>
+      }
+
 
       <!-- Boton de Selección de Moneda -->
       <button

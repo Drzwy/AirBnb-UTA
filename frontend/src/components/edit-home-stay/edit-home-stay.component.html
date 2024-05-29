@@ -1,9 +1,10 @@
+<app-navbar />
 
-<div class="container-lg flex-lg-nowrap">
+<div class="container-lg flex-lg-nowrap py-5">
   <h2>{{HomeStayConstants.seeSavedHomeStaysHost}}</h2>
 
 
-  @for (homeStay of userHomeStays; track homeStay) {
+  @for (homeStay of getHomeStaysOfUser(); track homeStay) {
     <div class="col-lg-12 mx-auto">
 
       <div class="d-flex flex-fill card">
@@ -132,7 +133,7 @@
           <div class="justify-content-lg-between justify-content-sm-between justify-content-lg-center">
 
             <button class="btn btn-primary">{{HomeStayConstants.saveChangesButtonLabel}}</button>
-            <button class="btn btn-danger" (click)="sendDeleteHomeStay(homeStay)">{{HomeStayConstants.deleteHomeStayButtonLabel}}</button>
+            <button class="btn btn-danger" (click)="sendDeleteHomeStay(homeStay);">{{HomeStayConstants.deleteHomeStayButtonLabel}}</button>
 
           </div>
         </div>
