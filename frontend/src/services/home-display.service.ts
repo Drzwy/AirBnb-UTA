@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ImageDTO } from '../components/housing-visualizer/images-card/image-card.component';
 import { HomeStayInformation } from '../components/home-stay-list/home-stay-list.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FilterState } from '../components/home-stay-list/advanced-filter/advanced-filter.component';
+import { HttpClient } from '@angular/common/http';
 
 const _test = {
   imageUrl: {
@@ -65,15 +66,54 @@ export const emptyFilter: FilterState = {
   providedIn: 'root',
 })
 export class HomeDisplayService {
+  private url: string = 'http://localhost:3000/homestays/get'
+
+  constructor(private http: HttpClient){}
+
   readonly HOUSE_TYPE_VECTOR_SIZE: number = 30;
-  readonly availableHomeStays: HomeStayInformation[] = [
-    _test,
-    _test2,
-    _test3,
-    _test3,
-    _test2,
-    _test,
-  ];
+  public availableHomeStays: HomeStayInformation[] = []; //borre los ejemplos y esto hace que cambie para los demas metodos
+  public images = [
+    [{url:"https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/87249781-c250-463e-92e6-82391681da29.jpeg?im_w=1200", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/896501f7-3435-4274-8e0f-d8a399cc0c9b.jpeg?im_w=1440", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/38595f52-f747-42c4-9155-27e742a4bd21.jpeg?im_w=1440", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/061e7561-3d88-4c47-b258-101c5b15fb84.jpeg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/miso/Hosting-913065006707124582/original/ccb1eda3-9de3-45aa-8055-527c4ad16a3f.jpeg?im_w=1440", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6OTEzMDY1MDA2NzA3MTI0NTgy/original/f167b5db-8195-4146-baec-3ca579779dc5.jpeg?im_w=1440", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/miso/Hosting-913065006707124582/original/1cedf0a3-91d3-43e8-9d4d-1eda76a28624.jpeg?im_w=1440", alt:"alt"},
+      {url:"https://a0.muscache.com/im/pictures/miso/Hosting-913065006707124582/original/baf73e21-6282-4d68-bb94-5a5a88d455cd.jpeg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/miso/Hosting-856575418570950976/original/7e4f0998-7a54-41a6-8554-74af5b6fc176.jpeg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-856575418570950976/original/f889d7a8-ff91-45ba-83c0-96eca5fe99eb.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-856575418570950976/original/0aaefcd2-395c-45c8-bb6d-a57275e26e55.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-856575418570950976/original/43e32fd7-b9cf-421b-97b0-1cbf6be846f3.jpeg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/997261b3-1645-4766-bb72-dae4caca150c.jpg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/3428ed39-728f-4599-b643-5f7ca7b8c25a.jpg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/4422660e-9869-491a-81aa-4d4ec25f6e5f.jpg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/293355a2-32aa-448f-acf6-4343094a77b4.jpg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/miso/Hosting-25178105/original/12bc582a-d987-4ab1-9ac8-da16c5f4fc6e.jpeg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-25178105/original/0686f3f4-972f-4b52-9ba2-176524566d7e.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-25178105/original/433583d0-385b-47ab-b743-ec8ef07a6c7d.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-25178105/original/15fe6c94-cea3-470e-9644-4fff84ac4b28.jpeg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/10107995-8a8e-4354-83d2-1840269dae88.jpg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/c8292ab2-7489-47d9-9c6e-371da6ee9e28.jpg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/dbe4dd08-2119-4b3f-b96f-19987fd0ee95.jpg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/10e6ca5a-fbc0-4c53-8631-4c1f06843ff8.jpg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/miso/Hosting-53968461/original/e3e8c6ba-4cb8-43bd-95b5-134b91b7310e.jpeg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-53968461/original/1efd46ce-3c17-488d-b580-fcb973a003da.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-53968461/original/0ce18f13-833b-4f8f-9086-6f04fe189274.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/8312f16e-e0d8-4465-885d-e3847793eb47.jpg?im_w=1440", alt:"alt"}
+    ],
+    [{url:"https://a0.muscache.com/im/pictures/abaf8b89-5850-455b-8ade-653664fe9405.jpg?im_w=1200", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-53572443/original/b8569157-5815-4cb3-8562-e058397c9402.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-53572443/original/45e31d62-5348-44a8-9561-f21619404ef6.jpeg?im_w=1440", alt:"alt"},
+    {url:"https://a0.muscache.com/im/pictures/miso/Hosting-53572443/original/e5462a3b-bf80-4319-abe6-7512c87a648c.jpeg?im_w=1440", alt:"alt"}
+    ],
+  ]
 
   //observable type
   public currentType: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -97,6 +137,14 @@ export class HomeDisplayService {
   ): BehaviorSubject<HomeStayInformation[]> {
     this.availableHomeStays.forEach((homeStay) => {});
     return new BehaviorSubject<HomeStayInformation[]>(this.availableHomeStays);
+  }
+
+  public getAvailableHomeStay(): Observable<HomeStayInformation[]>{
+    return this.http.get<HomeStayInformation[]>(this.url)
+  }
+
+  public getHomeStay(id: number){ 
+    return this.http.get<HomeStayInformation>(`${this.url}/${id}`)
   }
 
   /*
@@ -137,7 +185,7 @@ export class HomeDisplayService {
       {
         type: 'Cabaña',
         vectorImage: {
-          url: 'https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg',
+          url: 'https://a0.muscache.com/pictures/732edad8-3ae0-49a8-a451-29a8010dcc0c.jpg',
           alt: '',
           height: 20,
           width: 20,
@@ -146,7 +194,7 @@ export class HomeDisplayService {
       {
         type: 'Casa Chica',
         vectorImage: {
-          url: 'https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg',
+          url: 'https://a0.muscache.com/pictures/3271df99-f071-4ecf-9128-eb2d2b1f50f0.jpg',
           alt: '',
           height: 20,
           width: 20,
@@ -155,7 +203,7 @@ export class HomeDisplayService {
       {
         type: 'Casa Grande',
         vectorImage: {
-          url: 'https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg',
+          url: 'https://a0.muscache.com/pictures/78ba8486-6ba6-4a43-a56d-f556189193da.jpg',
           alt: '',
           height: 20,
           width: 20,
@@ -164,7 +212,7 @@ export class HomeDisplayService {
       {
         type: 'Ruca',
         vectorImage: {
-          url: 'https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg',
+          url: 'https://a0.muscache.com/pictures/1d477273-96d6-4819-9bda-9085f809dad3.jpg',
           alt: '',
           height: 20,
           width: 20,
@@ -173,7 +221,7 @@ export class HomeDisplayService {
       {
         type: 'Apartamento Pequeño',
         vectorImage: {
-          url: 'https://static.vecteezy.com/system/resources/previews/000/366/438/original/home-vector-icon.jpg',
+          url: 'https://a0.muscache.com/pictures/251c0635-cc91-4ef7-bb13-1084d5229446.jpg',
           alt: '',
           height: 20,
           width: 20,

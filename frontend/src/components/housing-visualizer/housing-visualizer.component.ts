@@ -1,26 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ImageDTO } from './images-card/image-card.component';
 import { HousingInformation } from './housing-info-displayer/housing-info-displayer.component';
 import { HousingPrice } from './housing-reservation/housing-reservation.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HomeDisplayService } from '../../services/home-display.service';
+import { HomeStayInformation } from '../home-stay-list/home-stay-list.component';
 
 @Component({
   selector: 'app-housing-visualizer',
   templateUrl: './housing-visualizer.component.html',
   styleUrl: './housing-visualizer.component.css',
 })
-export class HousingVisualizerComponent {
-  constructor(private router: Router) {}
+export class HousingVisualizerComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private homeStayservice: HomeDisplayService,
+  ) {}
 
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.id = +params['id'];
+    });
+    this.img = this.homeStayservice.images[this.id - 1];
+    this.homeStayservice.getHomeStay(this.id).subscribe((value) => {
+      this.homeStay = value;
+    });
+  }
+
+  public id: number = 0;
+  public img: ImageDTO[] = [];
+  public homeStay!: HomeStayInformation;
   public isExpanded: boolean[] = [];
-
-  public volver() {
-    this.router.navigate(['home-stay-list']);
-  }
-
-  public expand(index: number) {
-    this.isExpanded[index] = !this.isExpanded[index];
-  }
 
   public house: HouseExample = {
     imagesUrl: [
@@ -123,6 +134,32 @@ export class HousingVisualizerComponent {
     locatedIn: 'en',
     servicesList: 'Lo que este lugar ofrece',
   };
+
+  public volver() {
+    this.router.navigate(['home-stay-list']);
+  }
+
+  public expand(index: number) {
+    this.isExpanded[index] = !this.isExpanded[index];
+  }
+
+  public housingInformation(): HousingInformation {
+    const housingInformation: HousingInformation = {
+      numberOfGuests: this.homeStay.dormitorios,
+      numberOfBathrooms: this.homeStay.banos,
+      numberOfBeds: this.homeStay.camas,
+      numberOfRooms: this.homeStay.dormitorios,
+    };
+    return housingInformation;
+  }
+  public housingPrices(): HousingPrice {
+    const housingPrices: HousingPrice = {
+      pricePerNight: this.homeStay.precioNoche,
+      cleaningFee: 0.08,
+      airbnbServiceFee: 0.14,
+    };
+    return housingPrices;
+  }
 }
 
 interface HouseExample {

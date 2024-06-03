@@ -7,10 +7,20 @@ import {
 import { Router } from '@angular/router';
 import { LoginRegisterService } from '../../services/login-register.service';
 import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeOptionDTO,
+  UserGlobalPreferencesService,
+  UserMeResponse,
+} from '../../services/user-global-preferences.service';
+import { Router } from '@angular/router';
+import { LoginRegisterService } from '../../services/login-register.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.bootstrap.component.html',
+  styleUrl: './navbar.component.css',
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
@@ -105,20 +115,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public isLoggedIn(): boolean {
     return this._isLoggedIn;
+    return this._isLoggedIn;
   }
   public isVisible(): boolean {
     return this.configVisibility;
+    return this.configVisibility;
   }
   public toggleVisibility() {
+    this.configVisibility = !this.configVisibility;
     this.configVisibility = !this.configVisibility;
   }
 
   public getFirstChar(): string | undefined {
     if (this._currentUser.nombre == '' || !this._isLoggedIn) return undefined;
     return this._currentUser.nombre.charAt(0).toUpperCase();
+  public getFirstChar(): string | undefined {
+    if (this._currentUser.nombre == '' || !this._isLoggedIn) return undefined;
+    return this._currentUser.nombre.charAt(0).toUpperCase();
   }
 
   public getAllLanguages(): ChangeOptionDTO[] {
+    return this.service.getAllLanguages();
     return this.service.getAllLanguages();
   }
 }

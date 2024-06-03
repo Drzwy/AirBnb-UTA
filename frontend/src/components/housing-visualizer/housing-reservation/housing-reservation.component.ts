@@ -13,9 +13,7 @@ export class HousingReservationComponent implements OnInit {
     this.rules = '';
   }
 
-  ngOnInit(): void {
-    this.getPrice();
-  }
+  ngOnInit(): void {}
 
   @Input() public housingPrice: HousingPrice = {
     pricePerNight: 0,
@@ -52,25 +50,51 @@ export class HousingReservationComponent implements OnInit {
     let prices: string[] = [];
     let text: string;
 
+    console.log(
+      this.housingPrice.pricePerNight *
+        this.nights *
+        this.housingPrice.cleaningFee,
+    );
+
     text =
-      '$' + this.housingPrice.pricePerNight.toLocaleString('en-US') + ' CLP';
+      '$' +
+      (this.housingPrice.pricePerNight * this.nights).toLocaleString('en-US') +
+      ' CLP';
     prices.push(text);
 
-    text = '$' + this.housingPrice.cleaningFee.toLocaleString('en-US') + ' CLP';
+    text =
+      '$' +
+      (
+        this.housingPrice.pricePerNight *
+        this.nights *
+        this.housingPrice.cleaningFee
+      ).toLocaleString('en-US') +
+      ' CLP';
     prices.push(text);
 
     text =
-      '$' + this.housingPrice.airbnbServiceFee.toLocaleString('en-US') + ' CLP';
+      '$' +
+      (
+        this.housingPrice.pricePerNight *
+        this.nights *
+        this.housingPrice.airbnbServiceFee
+      ).toLocaleString('en-US') +
+      ' CLP';
     prices.push(text);
 
     this.partialHousingPrices = prices;
   }
 
   public priceWithoutTaxes(): string {
-    let priceWithTaxes: number =
+    let priceWithTaxes: number = Math.round(
       this.housingPrice.pricePerNight * this.nights +
-      this.housingPrice.cleaningFee * this.nights +
-      this.housingPrice.airbnbServiceFee * this.nights;
+        this.housingPrice.cleaningFee *
+          this.housingPrice.pricePerNight *
+          this.nights +
+        this.housingPrice.airbnbServiceFee *
+          this.housingPrice.pricePerNight *
+          this.nights,
+    );
     return '$' + priceWithTaxes.toLocaleString('en-US') + ' CLP';
   }
 
@@ -108,22 +132,16 @@ export class HousingReservationComponent implements OnInit {
   }
 
   public onStartDateSelected(date: any) {
-    console.log('entro');
     this.startDate = date;
-    console.log('Fecha de inicio seleccionada:', this.startDate);
-    // Aquí puedes realizar cualquier acción necesaria con la fecha de inicio seleccionada
   }
 
   public onEndDateSelected(date: any) {
     this.endDate = date;
-    console.log('Fecha de fin seleccionada:', this.endDate);
-    // Aquí puedes realizar cualquier acción necesaria con la fecha de fin seleccionada
   }
 
   public onNightsSelected(nigths: any) {
     this.nights = nigths;
-    console.log('Fecha de fin seleccionada:', this.nights);
-    // Aquí puedes realizar cualquier acción necesaria con la fecha de fin seleccionada
+    this.getPrice();
   }
 
   public reserve() {

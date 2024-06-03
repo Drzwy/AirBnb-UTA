@@ -30,8 +30,35 @@ const availableChangeOptions: ChangeOptionDTO[] = [
     symbol: '$',
   },
 ];
+  name: 'Peso Chileno',
+  symbol: '$',
+  abbreviation: 'CLP',
+};
+const availableChangeOptions: ChangeOptionDTO[] = [
+  {
+    name: 'Peso Chileno',
+    abbreviation: 'CLP',
+    symbol: '$',
+  },
+  {
+    name: 'Peso Mexicano',
+    abbreviation: 'MXN',
+    symbol: '$',
+  },
+  {
+    name: 'Dólar Estadounidense',
+    abbreviation: 'USD',
+    symbol: '$',
+  },
+  {
+    name: 'Dólar de HongKong',
+    abbreviation: 'HKN',
+    symbol: '$',
+  },
+];
 
 @Injectable({
+  providedIn: 'root',
   providedIn: 'root',
 })
 export class UserGlobalPreferencesService {
@@ -42,6 +69,7 @@ export class UserGlobalPreferencesService {
   constructor(private http: HttpClient) {}
 
   public getAllLanguages(): ChangeOptionDTO[] {
+    return availableChangeOptions;
     return availableChangeOptions;
   }
 

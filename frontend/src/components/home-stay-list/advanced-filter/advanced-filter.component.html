@@ -1,46 +1,145 @@
-<button (click)="switchFiltersOption()">{{ filterButtonText }}</button>
-<div *ngIf="showFilterDiv" class="advanced-filter-container">
-  <div class="advanced-filter-category-container">
-    <label>{{ CONSTANTS.minPriceLabel }}</label>
-    <input
-      type="number"
-      [(ngModel)]="currentMinPricePerNight"
-      class="advanced-filter-number-place"
+<button
+  type="button"
+  class="btn btn-outline-light"
+  data-bs-toggle="modal"
+  data-bs-target="#filterModal"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    class="bi bi-filter-square-fill"
+    viewBox="0 0 16 16"
+  >
+    <path
+      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm.5 5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1 0-1M4 8.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m2 3a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5"
     />
+  </svg>
+  Filtros
+</button>
+
+<div
+  class="modal fade"
+  id="filterModal"
+  tabindex="-1"
+  aria-labelledby="filterModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="filterModalLabel">Filtros</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <h4 class="">Rango de precios</h4>
+          <p-slider
+            [(ngModel)]="rangePrice"
+            [range]="true"
+            [min]="9100"
+            [max]="92000"
+          />
+          <div class="col-6 my-3">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                readonly
+                [(value)]="rangePrice[0]"
+                [(ngModel)]="rangePrice[0]"
+              />
+              <label for="floatingInputValue">Minimo</label>
+            </div>
+          </div>
+          <div class="col-6 my-3">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                readonly
+                [(value)]="rangePrice[1]"
+                [(ngModel)]="rangePrice[1]"
+              />
+              @if (rangePrice[1] == 92000) {
+                <h6>+</h6>
+              }
+              <label for="floatingInputValue">Maximo</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <h4 class="">Habitaciones</h4>
+          <div class="row">
+            <div class="col-12">
+              <label>{{ CONSTANTS.numberOfGuestsLabel }}</label>
+            </div>
+            <div class="col-12">
+              @for (number of numbers; track number) {
+                <button
+                  class="btn btn-outline-dark rounded-pill"
+                  [(ngModel)]="currentNumberOfGuests"
+                  data-bs-toggle="button"
+                  aria-pressed="true"
+                >
+                  {{ number }}
+                </button>
+              }
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label>{{ CONSTANTS.numberOfRoomsLabel }}</label>
+            </div>
+            <div class="col-12">
+              @for (number of numbers; track number) {
+                <button
+                  class="btn btn-outline-dark rounded-pill"
+                  [(ngModel)]="currentNumberOfRooms"
+                  data-bs-toggle="button"
+                  aria-pressed="true"
+                >
+                  {{ number }}
+                </button>
+              }
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label>{{ CONSTANTS.numberOfBathroomsLabel }}</label>
+            </div>
+            <div class="col-12">
+              @for (number of numbers; track number) {
+                <button
+                  class="btn btn-outline-dark rounded-pill"
+                  [(ngModel)]="currentNumberOfRooms"
+                  data-bs-toggle="button"
+                  aria-pressed="true"
+                >
+                  {{ number }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link">Quitar todos</button>
+        <button
+          type="button"
+          (click)="sendCurrentFilterState()"
+          class="btn btn-dark"
+        >
+          {{ CONSTANTS.applyFilters }}
+        </button>
+      </div>
+    </div>
   </div>
-  <div class="advanced-filter-category-container">
-    <label>{{ CONSTANTS.maxPriceLabel }}</label>
-    <input
-      type="number"
-      [(ngModel)]="currentMaxPricePerNight"
-      class="advanced-filter-number-place"
-    />
-  </div>
-  <div class="advanced-filter-category-container">
-    <label>{{ CONSTANTS.numberOfGuestsLabel }}</label>
-    <input
-      type="number"
-      [(ngModel)]="currentNumberOfGuests"
-      class="advanced-filter-number-place"
-    />
-  </div>
-  <div class="advanced-filter-category-container">
-    <label>{{ CONSTANTS.numberOfRoomsLabel }}</label>
-    <input
-      type="number"
-      [(ngModel)]="currentNumberOfRooms"
-      class="advanced-filter-number-place"
-    />
-  </div>
-  <div class="advanced-filter-category-container">
-    <label>{{ CONSTANTS.numberOfBathroomsLabel }}</label>
-    <input
-      type="number"
-      [(ngModel)]="currentNumberOfBathrooms"
-      class="advanced-filter-number-place"
-    />
-  </div>
-  <button (click)="sendCurrentFilterState()">
-    {{ CONSTANTS.applyFilters }}
-  </button>
 </div>

@@ -9,7 +9,7 @@ import { HousingReservationComponent } from '../components/housing-visualizer/ho
 import { HomeStayListComponent } from '../components/home-stay-list/home-stay-list.component';
 import { HomeTypeButtonsComponent } from '../components/home-stay-list/home-type-buttons/home-type-buttons.component';
 import { AdvancedFilterComponent } from '../components/home-stay-list/advanced-filter/advanced-filter.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeStayFinderComponent } from '../components/home-stay-list/home-stay-finder/home-stay-finder.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
@@ -20,6 +20,7 @@ import { CalendarComponent } from '../components/calendar/calendar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
+import { SliderModule } from 'primeng/slider';
 import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 
 @NgModule({
@@ -49,6 +50,8 @@ import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-st
     CalendarModule,
     BrowserAnimationsModule,
     FormsModule,
+    SliderModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

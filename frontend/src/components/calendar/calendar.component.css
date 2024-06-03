@@ -8,3 +8,7 @@
   background-color: rgb(217, 9, 100);
   color: black;
 }
+
+::ng-deep .p-datepicker{
+  border: 0px
+}
