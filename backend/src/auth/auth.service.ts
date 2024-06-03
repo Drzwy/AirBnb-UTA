@@ -51,8 +51,9 @@ export class AuthService {
     // si no existe throw error
     if (!user)
       throw new ForbiddenException('El correo no se encuentra registrado');
-    // comparar la contraseña
+    // comparar la contraseñas
     const passwordsMatch: boolean = await argon.verify(user.hash, dto.hash);
+
     // si no coincide throw error
     if (!passwordsMatch)
       throw new ForbiddenException('La contraseña introducida es incorrecta');

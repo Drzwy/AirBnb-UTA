@@ -4,21 +4,23 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, Propiedad, Usuario } from '@prisma/client';
-import { HomeStayCreateDTO } from './dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { Propiedad, Usuario } from '@prisma/client';
+import { HomeStayCreateDTO, HomeStayUpdateDTO } from './dto';
 
 @Injectable()
 export class HomestayService {
   constructor(private prisma: PrismaService) {}
 
   public async getAllHomeStays(): Promise<Propiedad[]> {
-    return this.prisma.propiedad.findMany();
+    return this.prisma.propiedad.findMany({
+      where: { estado: true },
+    });
   }
 
   public async getHomeStayById(id: number): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
@@ -26,6 +28,20 @@ export class HomestayService {
     }
 
     return homeStay;
+  }
+
+  public async getAllHomeStaysByUserId(id: number): Promise<Propiedad[]> {
+    const ownerExists: Usuario = await this.prisma.usuario.findUnique({
+      where: { id: id },
+    });
+
+    if (!ownerExists) {
+      throw new NotFoundException('El propietario no existe');
+    }
+
+    return this.prisma.propiedad.findMany({
+      where: { estado: true, anfitrionId: id },
+    });
   }
 
   public async createHomeStay(data: HomeStayCreateDTO): Promise<Propiedad> {
@@ -50,9 +66,12 @@ export class HomestayService {
     }
   }
 
-  public async updateHomeStay(id: number, data: Prisma.PropiedadUpdateInput) {
+  public async updateHomeStay(
+    id: number,
+    data: HomeStayUpdateDTO,
+  ): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
@@ -74,13 +93,16 @@ export class HomestayService {
 
   public async deleteHomeStay(id: number) {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id },
+      where: { id, estado: true },
     });
 
     if (!homeStay) {
       throw new NotFoundException('No se encontro la propiedad');
     }
 
-    return this.prisma.propiedad.delete({ where: { id } });
+    return this.prisma.propiedad.update({
+      where: { id },
+      data: { estado: false },
+    });
   }
 }
