@@ -54,11 +54,11 @@ export class StayService {
     return stays;
   }
 
-  async getStayById(stayId: number, ids: StayIdsDTO): Promise<Hospedaje> {
+  async getStayById(ids: StayIdsDTO): Promise<Hospedaje> {
     const stay: Hospedaje = await this.prismaService.hospedaje.findUnique({
       where: {
         id_huespedId_propiedadId: {
-          id: stayId,
+          id: ids.id,
           huespedId: ids.huespedId,
           propiedadId: ids.propiedadId,
         },
