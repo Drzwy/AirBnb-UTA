@@ -11,8 +11,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { HomestayService } from './homestay.service';
-import { HomeStayCreateDTO } from './dto';
-import { HomeStayUpdateDTO } from './dto/homeStayUpdate.dto';
+import { HomeStayUpdateDTO, HomeStayCreateDTO } from './dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Homestays')
