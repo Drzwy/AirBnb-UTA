@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HomeStayInformation } from '../home-stay-list/home-stay-list.component';
 import { HomeDisplayService } from '../../services/home-display.service';
 
 @Component({

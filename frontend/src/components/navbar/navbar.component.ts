@@ -7,20 +7,10 @@ import {
 import { Router } from '@angular/router';
 import { LoginRegisterService } from '../../services/login-register.service';
 import { Subscription } from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ChangeOptionDTO,
-  UserGlobalPreferencesService,
-  UserMeResponse,
-} from '../../services/user-global-preferences.service';
-import { Router } from '@angular/router';
-import { LoginRegisterService } from '../../services/login-register.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.bootstrap.component.html',
-  styleUrl: './navbar.component.css',
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
@@ -61,7 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public getCurrentUserInfo() {
     console.log(sessionStorage.getItem('token'));
     this.service.getCurrentUser().subscribe((val) => {
-      alert(val.id); //TODO SEGUIR DESDE ACA
+      alert(val.id);
     });
   }
 
@@ -126,9 +116,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.configVisibility = !this.configVisibility;
   }
 
-  public getFirstChar(): string | undefined {
-    if (this._currentUser.nombre == '' || !this._isLoggedIn) return undefined;
-    return this._currentUser.nombre.charAt(0).toUpperCase();
   public getFirstChar(): string | undefined {
     if (this._currentUser.nombre == '' || !this._isLoggedIn) return undefined;
     return this._currentUser.nombre.charAt(0).toUpperCase();

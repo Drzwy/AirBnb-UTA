@@ -1,38 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   HomeDisplayService,
   HomeStayType,
 } from '../../services/home-display.service';
 import { HomestayApiService } from '../../services/homestay-api.service';
-import {
-  UserGlobalPreferencesService,
-  UserMeResponse,
-} from '../../services/user-global-preferences.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-home-stay',
   templateUrl: './add-home-stay.component.html',
   styleUrl: './add-home-stay.component.css',
 })
-export class AddHomeStayComponent implements OnInit, OnDestroy {
-  private _userSub?: Subscription;
-  private _currentUser?: UserMeResponse;
-
+export class AddHomeStayComponent implements OnInit {
   constructor(
     private serviceForHomeStayTypes: HomeDisplayService,
     private serviceForHttp: HomestayApiService,
-    private serviceForUser: UserGlobalPreferencesService,
   ) {}
 
-  ngOnInit() {
-    this._userSub = this.serviceForUser.getCurrentUser().subscribe((value) => {
-      this._currentUser = value;
-    });
+  ngOnInit(): void {
+    this.getHomeStayTypes();
   }
-  ngOnDestroy(): void {
-    this._userSub?.unsubscribe();
-  }
+  public types!: HomeStayType[];
 
   public currentRooms: number = 0;
   public currentBeds: number = 0;
@@ -76,8 +63,8 @@ export class AddHomeStayComponent implements OnInit, OnDestroy {
     submitButtonLabel: 'Enviar Formulario',
   };
 
-  public getHomeStayTypes(): HomeStayType[] {
-    return this.serviceForHomeStayTypes.getHomeStayTypes();
+  public getHomeStayTypes() {
+    this.types = this.serviceForHomeStayTypes.getHomeStayTypes();
   }
 
   public async sendDataToValidation() {
@@ -85,9 +72,9 @@ export class AddHomeStayComponent implements OnInit, OnDestroy {
       rooms: this.currentRooms,
       beds: this.currentBeds,
       bathrooms: this.currentBathrooms,
+      pricePerNight: this.currentPricePerNight,
       type: this.currentType,
       desc: this.currentDesc,
-      pricePerNight: this.currentPricePerNight,
       initDate: this.currentInitDate,
       finishDate: this.currentFinishDate,
       rules: this.currentRules,
@@ -98,7 +85,6 @@ export class AddHomeStayComponent implements OnInit, OnDestroy {
       depNumber: this.currentDepNumber,
       securityOptions: this.currentSecurityOptions,
       arrivalOptions: this.currentArrivalOptions,
-      userId: this._currentUser!.id,
     };
 
     if (this.validateForm(form)) {
@@ -149,9 +135,9 @@ export interface HomeStayForm {
   rooms: number;
   beds: number;
   bathrooms: number;
+  pricePerNight: number;
   type: string;
   desc: string;
-  pricePerNight: number;
   initDate: Date;
   finishDate: Date;
   rules: string;
