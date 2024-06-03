@@ -9,7 +9,9 @@ describe('HomestayService', () => {
   const mockAllHomestay: Propiedad[] = [
     {
       id: 2,
-      estado: true,
+      fechaCreacion: new Date(),
+      fechaActualizacion: new Date(),
+      estaActivo: true,
       dormitorios: 3,
       camas: 3,
       banos: 2,
@@ -32,7 +34,9 @@ describe('HomestayService', () => {
     },
     {
       id: 3,
-      estado: true,
+      fechaCreacion: new Date(),
+      fechaActualizacion: new Date(),
+      estaActivo: true,
       dormitorios: 4,
       camas: 4,
       banos: 2,
@@ -40,7 +44,7 @@ describe('HomestayService', () => {
       precioNoche: 14500,
       maxPersonas: 5,
       tipo: 'Casa',
-      descripcion: 'Descripcion',
+      descripcion: 'Descripcion2',
       pais: 'Chile',
       ciudad: 'Arica',
       calle: 'Edmundo Flores',
@@ -53,11 +57,63 @@ describe('HomestayService', () => {
       fotos: ['url'],
       anfitrionId: 1,
     },
+    {
+      id: 4,
+      fechaCreacion: new Date(),
+      fechaActualizacion: new Date(),
+      estaActivo: true,
+      dormitorios: 2,
+      camas: 2,
+      banos: 1,
+      fechasDisponibles: [new Date()],
+      precioNoche: 10000,
+      maxPersonas: 3,
+      tipo: 'Casa',
+      descripcion: 'Descripcion3',
+      pais: 'Chile',
+      ciudad: 'Arica',
+      calle: 'Edmundo Flores',
+      nroCasa: 1002,
+      nroDpto: 4,
+      comodidades: ['comodidad3'],
+      opcionesDeSeguridad: ['seguridad3'],
+      opcionesDeLlegada: ['llegada3'],
+      reglas: ['regla3'],
+      fotos: ['url'],
+      anfitrionId: 2,
+    },
+    {
+      id: 8,
+      fechaCreacion: new Date(),
+      fechaActualizacion: new Date(),
+      estaActivo: false,
+      dormitorios: 2,
+      camas: 2,
+      banos: 1,
+      fechasDisponibles: [new Date()],
+      precioNoche: 10000,
+      maxPersonas: 3,
+      tipo: 'Casa',
+      descripcion: 'Descripcion8',
+      pais: 'Chile',
+      ciudad: 'Arica',
+      calle: 'Edmundo Flores',
+      nroCasa: 1008,
+      nroDpto: 4,
+      comodidades: ['comodidad8'],
+      opcionesDeSeguridad: ['seguridad8'],
+      opcionesDeLlegada: ['llegada8'],
+      reglas: ['regla8'],
+      fotos: ['url'],
+      anfitrionId: 2,
+    },
   ];
 
   const mockHomestay: Propiedad = {
     id: 1,
-    estado: true,
+    fechaCreacion: new Date(),
+    fechaActualizacion: new Date(),
+    estaActivo: true,
     dormitorios: 4,
     camas: 4,
     banos: 2,
@@ -125,6 +181,7 @@ describe('HomestayService', () => {
 
   const mockUsuario: Usuario = {
     id: 1,
+    estaActivo: true,
     fechaCreacion: new Date(),
     fechaActualizacion: new Date(),
     tipoUsuario: 'Cliente',
@@ -173,25 +230,48 @@ describe('HomestayService', () => {
 
   describe('getAllHomeStays', () => {
     it('Should return all homestays', async () => {
-      mockPrisma.propiedad.findMany.mockResolvedValue(mockAllHomestay);
+      mockPrisma.propiedad.findMany.mockResolvedValue(
+        mockAllHomestay.filter((homestay) => homestay.estaActivo === true),
+      );
 
       const result = await homestayService.getAllHomeStays();
-      expect(result).toEqual(mockAllHomestay);
+      expect(result).toEqual(
+        mockAllHomestay.filter((homestay) => homestay.estaActivo === true),
+      );
     });
   });
 
   describe('getHomeStayById', () => {
     it('Should return homestay by id', async () => {
       mockPrisma.propiedad.findUnique.mockResolvedValue(mockAllHomestay[0]);
-      const result = await homestayService.getHomeStayById(
-        mockAllHomestay[0].id,
-      );
+      const result = await homestayService.getHomeStayById(2);
       expect(result).toEqual(mockAllHomestay[0]);
     });
 
     it('Should throw NotFoundExeptcion if homestay is not found', async () => {
       mockPrisma.propiedad.findUnique.mockResolvedValue(null);
-      await expect(homestayService.getHomeStayById(3)).rejects.toThrow(
+      await expect(homestayService.getHomeStayById(5)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('getAllHomeStayByUserId', () => {
+    it('Should return all homestays by anfitrionId', async () => {
+      mockPrisma.usuario.findUnique.mockResolvedValue(mockUsuario);
+      mockPrisma.propiedad.findMany.mockResolvedValue(
+        mockAllHomestay.filter((homestay) => homestay.anfitrionId === 1),
+      );
+      const result = await homestayService.getAllHomeStaysByUserId(1);
+      expect(result).toEqual(
+        mockAllHomestay.filter((homestay) => homestay.anfitrionId === 1),
+      );
+    });
+
+    it('Should throw NotFoundException if owner does not exist', async () => {
+      mockPrisma.usuario.findUnique.mockResolvedValue(null);
+
+      await expect(homestayService.getAllHomeStaysByUserId(1)).rejects.toThrow(
         NotFoundException,
       );
     });

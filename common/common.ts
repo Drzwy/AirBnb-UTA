@@ -21,5 +21,7 @@ export const HomeStayConstants = {
     submitButtonLabel: "Enviar Formulario",
     seeSavedHomeStaysHost: "Revisa y edita tus Alquileres inscritos",
     saveChangesButtonLabel: "Guardar cambios",
-    deleteHomeStayButtonLabel: "Eliminar Propiedad"
+    deleteHomeStayButtonLabel: "Eliminar Propiedad",
+    noHomestaysLabel:"Vaya, aun no has registrado ningun alquiler",
+    addHomestaysLabel:"Pon tu espacio en Airbnb"
 }

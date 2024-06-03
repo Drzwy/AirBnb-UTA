@@ -4,9 +4,9 @@
   <h2>{{HomeStayConstants.seeSavedHomeStaysHost}}</h2>
 
 
-  @for (homeStay of getHomeStaysOfUser(); track homeStay) {
+  @for (homeStay of getHomeStaysOfUser(); track homeStay; let i = $index) {
+    @if(homeStay.estaActivo){
     <div class="col-lg-12 mx-auto">
-
       <div class="d-flex flex-fill card">
         <img [src]="alternativeImageUrl" [alt]="alternativeImageAlt"
              class="card-img-top accordion-collapse dropdown-toggle mx-auto" style="max-width: 500px;max-height: 500px">
@@ -141,6 +141,14 @@
       </div>
 
     </div>
+    } @else {
+      <div *ngIf="i==0">
+        <div class="alert alert-danger my-5" role="alert">
+          {{HomeStayConstants.noHomestaysLabel}}
+        </div>
+        <button class="btn btn-outline-dark" (click)="navigateHomestays()">{{HomeStayConstants.addHomestaysLabel}}</button>
+      </div>
+    } 
 
   }
 

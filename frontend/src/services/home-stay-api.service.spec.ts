@@ -41,6 +41,7 @@ describe('HomestayApiService', () => {
 
   it('should handle invalid HomeStay form', () => {
     const form: HomeStayForm = {
+      guests: 2,
       rooms: 0,
       beds: 1,
       bathrooms: 1,
@@ -55,6 +56,7 @@ describe('HomestayApiService', () => {
       arrivalOptions: 'Self Check-In',
       rules: 'No smoking',
       location: 'City',
+      images: ["link1","link2"],
       initDate: new Date('2024-10-10'), //RANGO DE FECHA MAL PUESTA
       finishDate: new Date('2024-09-09'), //VER SI TIRA ERROR
       userId: 1,
@@ -73,6 +75,7 @@ describe('HomestayApiService', () => {
 
   it('should send HomeStay form correctly', () => {
     const form: HomeStayForm = {
+      guests: 2,
       rooms: 2,
       beds: 1,
       bathrooms: 1,
@@ -88,6 +91,7 @@ describe('HomestayApiService', () => {
       location: 'City',
       initDate: new Date(),
       finishDate: new Date(),
+      images: ["link1","link2"],
       userId: 1,
       pricePerNight: 100,
     };
@@ -96,6 +100,7 @@ describe('HomestayApiService', () => {
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
+      maxPersonas: form.guests,
       precioNoche: form.pricePerNight,
       tipo: form.type,
       descripcion: form.desc,
@@ -107,6 +112,7 @@ describe('HomestayApiService', () => {
       opcionesDeLlegada: [form.arrivalOptions],
       reglas: [form.rules],
       anfitrionId: form.userId,
+      fotos: form.images,
       pais: form.location,
       ciudad: form.location,
       fechasDisponibles: [form.initDate, form.finishDate],

@@ -19,6 +19,7 @@ export class HomestayApiService {
 
   public sendHomeStayForm(form: HomeStayForm) {
     if (
+      !form.guests ||
       !form.rooms ||
       !form.beds ||
       !form.bathrooms ||
@@ -34,7 +35,8 @@ export class HomestayApiService {
       !form.rules ||
       !form.location ||
       !form.initDate ||
-      !form.finishDate
+      !form.finishDate ||
+      !form.images
     ) {
       console.error('Formulario incompleto:', form);
       return throwError(
@@ -49,6 +51,7 @@ export class HomestayApiService {
       camas: form.beds,
       banos: form.bathrooms,
       precioNoche: form.pricePerNight, // TODO CAMBIAR LUEGO
+      maxPersonas: form.guests,
       tipo: form.type,
       descripcion: form.desc,
       calle: form.street,
@@ -62,6 +65,7 @@ export class HomestayApiService {
       pais: form.location,
       ciudad: form.location,
       fechasDisponibles: [form.initDate, form.finishDate],
+      fotos: form.images
     };
     return this.http
       .post<HomeStayCreateDTOResponse>(this.postUrl, request)
@@ -89,6 +93,7 @@ export interface HomeStayCreateDTOResponse {
   camas: number;
   banos: number;
   precioNoche: number; // TODO CAMBIAR LUEGO
+  maxPersonas: number;
   tipo: string;
   descripcion: string;
   calle: string;
@@ -102,6 +107,7 @@ export interface HomeStayCreateDTOResponse {
   pais: string;
   ciudad: string;
   fechasDisponibles: Date[];
+  fotos: string[];
 }
 
 export interface HomeStayGetResponse extends HomeStayCreateDTOResponse {

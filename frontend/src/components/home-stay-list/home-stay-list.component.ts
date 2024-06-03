@@ -90,6 +90,7 @@ export interface HomeStayInformation {
   banos: number,
   fechasDisponibles: Date[],
   precioNoche: number,
+  maxPersonas: number,  
   tipo: string,
   descripcion: string,
   pais: string,
@@ -101,7 +102,8 @@ export interface HomeStayInformation {
   opcionesDeSeguridad: string[],
   opcionesDeLlegada: string[],
   reglas: string[],
-  anfitrionId: number
+  anfitrionId: number,
+  fotos: string[]
 }
 
 interface PricePerNight {

@@ -13,6 +13,7 @@ import {
   UserGlobalPreferencesService,
   UserMeResponse,
 } from '../../services/user-global-preferences.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-home-stay',
@@ -28,6 +29,7 @@ export class EditHomeStayComponent implements OnInit, OnDestroy {
   constructor(
     private httpService: HomestayApiService,
     private userService: UserGlobalPreferencesService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,10 @@ export class EditHomeStayComponent implements OnInit, OnDestroy {
   }
   public getHomeStaysOfUser() {
     return this.homeStaysOfUser;
+  }
+
+  public navigateHomestays() {
+    this.router.navigateByUrl("add-home-stay")
   }
 
   protected readonly alternativeImageUrl = alternativeImageUrl;

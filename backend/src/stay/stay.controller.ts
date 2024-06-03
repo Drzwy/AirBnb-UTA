@@ -43,11 +43,8 @@ export class StayController {
   }
 
   @Get()
-  getStayById(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: StayIdsDTO,
-  ): Promise<Hospedaje> {
-    return this.stayService.getStayById(id, dto);
+  getStayById(@Body() dto: StayIdsDTO): Promise<Hospedaje> {
+    return this.stayService.getStayById(dto);
   }
 
   @Post('solicit')
