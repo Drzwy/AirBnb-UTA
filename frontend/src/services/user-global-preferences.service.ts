@@ -35,9 +35,7 @@ const availableChangeOptions: ChangeOptionDTO[] = [
   providedIn: 'root',
 })
 export class UserGlobalPreferencesService {
-  private _currentChangeOption: ChangeOptionDTO = defaultChangeOption;
   private _getCurrentUserURL: string = 'http://localhost:3000/users/me';
-  private _currentToken: string | null = sessionStorage.getItem('token');
 
   constructor(private http: HttpClient) {}
 
@@ -52,10 +50,6 @@ export class UserGlobalPreferencesService {
         Authorization: `Bearer ${sessionStorage.getItem('token')}`,
       },
     });
-  }
-
-  public getCurrentToken(): Observable<string> {
-    return of(this._currentToken!);
   }
 }
 
