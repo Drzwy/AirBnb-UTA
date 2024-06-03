@@ -140,8 +140,8 @@ export class UserService {
   async updateUserById(userId: number, dto: UserUpdateDto) {
     try {
       if (dto.hash) dto.hash = await argon.hash(dto.hash);
-      console.log({ dto });
-      const user = await this.prismaService.usuario.update({
+
+      const user: Usuario = await this.prismaService.usuario.update({
         where: {
           id: userId,
         },

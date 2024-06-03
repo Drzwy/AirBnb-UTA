@@ -31,6 +31,10 @@ export class HomeStayCreateDTO {
   precioNoche: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  maxPersonas: number;
+
+  @IsNotEmpty()
   @IsString()
   tipo: string;
 
@@ -66,7 +70,7 @@ export class HomeStayCreateDTO {
   @IsNotEmpty()
   @IsArray()
   @Type(() => String)
-  opcionesDeSguridad: string[];
+  opcionesDeSeguridad: string[];
 
   @IsNotEmpty()
   @IsArray()
@@ -77,7 +81,17 @@ export class HomeStayCreateDTO {
   @IsArray()
   @ArrayNotEmpty()
   @Type(() => String)
+  opcionesDeLlegada: string[];
+
+  @IsNotEmpty()
+  @IsArray()
+  @Type(() => String)
   reglas: string[];
+
+  @IsNotEmpty()
+  @IsArray()
+  @Type(() => String)
+  fotos: string[];
 
   @IsNotEmpty()
   @IsNumber()

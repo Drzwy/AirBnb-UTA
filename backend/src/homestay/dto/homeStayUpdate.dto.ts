@@ -15,6 +15,19 @@ export class HomeStayUpdateDTO {
   banos: number;
 
   @IsOptional()
+  @IsArray()
+  @Type(() => Date)
+  fechasDisponibles: Date[];
+
+  @IsOptional()
+  @IsNumber()
+  precioNoche: number;
+
+  @IsOptional()
+  @IsNumber()
+  maxPersonas: number;
+
+  @IsOptional()
   @IsString()
   tipo: string;
 
@@ -23,14 +36,12 @@ export class HomeStayUpdateDTO {
   descripcion: string;
 
   @IsOptional()
-  @IsArray()
-  @Type(() => Date)
-  fechas_disponibles: Date[];
+  @IsString()
+  pais: string;
 
   @IsOptional()
-  @IsArray()
-  @Type(() => String)
-  reglas: string[];
+  @IsString()
+  ciudad: string;
 
   @IsOptional()
   @IsString()
@@ -38,11 +49,11 @@ export class HomeStayUpdateDTO {
 
   @IsOptional()
   @IsNumber()
-  numero_casa: number;
+  nroCasa: number;
 
   @IsOptional()
   @IsNumber()
-  numero_dpto: number;
+  nroDpto: number;
 
   @IsOptional()
   @IsArray()
@@ -52,14 +63,24 @@ export class HomeStayUpdateDTO {
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  opciones_de_seguridad: string[];
+  opcionesDeSeguridad: string[];
 
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  opciones_de_llegada: string[];
+  opcionesDeLlegada: string[];
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  reglas: string[];
+
+  @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  fotos: string[];
 
   @IsOptional()
   @IsNumber()
-  ownerId: number;
+  anfitrionId: number;
 }
