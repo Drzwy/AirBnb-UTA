@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { UserTypes, Usuario } from '@prisma/client';
+import { UserTypes } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from './decorator';
 import { UserService } from './user.service';
