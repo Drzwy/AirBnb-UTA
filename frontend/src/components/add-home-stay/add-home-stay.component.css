@@ -1,0 +1,15 @@
+.numeric-input-holder {
+  display: flex;
+  flex-wrap: wrap;
+}
+.numeric-input {
+  width: 40%;
+  border-radius: 20px;
+  padding-inline: 30px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

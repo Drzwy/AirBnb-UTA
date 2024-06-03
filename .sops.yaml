@@ -1,0 +1,4 @@
+configuration_rules:
+  - path_regex: /**/*.env$
+    age: >
+      age1gtxl0uqmy0743al438dr96afd4klkqjzertm7z23uck94cf2p97q9zta25

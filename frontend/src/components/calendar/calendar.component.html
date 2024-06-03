@@ -1,0 +1,45 @@
+@if (selectedNights == 0) {
+  <div class="row my-3">
+    <h2 class="h4 text-left">Selecciona la fecha de llegada</h2>
+    <p class="fw-light">
+      Agrega las fechas de viaje para obtener precios exactos
+    </p>
+  </div>
+} @else {
+  <div class="row my-3">
+    <h2 class="h4 text-left">
+      {{ selectedNights }} noches
+      @if (location) {
+        en {{ location.split(",")[0] }}
+      }
+    </h2>
+    <p>
+      {{ rangeDates[0] | date: "dd 'de' MMM. 'de' y" }} -
+      {{ rangeDates[1] | date: "dd 'de' MMM. 'de' y" }}
+    </p>
+  </div>
+}
+
+<div class="row">
+  <p-calendar
+    [(ngModel)]="rangeDates"
+    dateFormat="dd/mm/yy"
+    selectionMode="range"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+    [numberOfMonths]="2"
+    [iconDisplay]="'input'"
+    [showIcon]="true"
+    [readonlyInput]="true"
+    [disabledDates]="invalidDate"
+    [inline]="true"
+    (onSelect)="onDateSelect()"
+  />
+</div>
+<div class="row my-3">
+  <div class="col">
+    <button class="btn btn-link text-dark fw-bold" (click)="clearSelection()">
+      Borrar fechas
+    </button>
+  </div>
+</div>

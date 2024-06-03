@@ -1,4 +1,4 @@
-// This is your Prisma schema file,
+  // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
@@ -44,11 +44,12 @@ model Usuario {
 enum UserTypes {
   Cliente
   Administrador
+
+  @@map("TipoUsuario")
 }
 
 model Propiedad {
-  id     Int     @id @default(autoincrement())
-  estado Boolean @default(true)
+  id Int @id @default(autoincrement())
 
   fechaCreacion      DateTime @default(now())
   fechaActualizacion DateTime @updatedAt
@@ -57,9 +58,10 @@ model Propiedad {
   dormitorios       Int
   camas             Int
   banos             Int
+  maxPersonas       Int
+
   fechasDisponibles DateTime[] @db.Date
   precioNoche       Float
-  maxPersonas       Int
 
   tipo        String
   descripcion String
@@ -86,11 +88,20 @@ model Propiedad {
   @@unique(name: "ubicacion", [pais, ciudad, calle, nroCasa, nroDpto])
 }
 
+enum StayState {
+  EN_ESPERA
+  ACEPTADO
+  RECHAZADO
+
+  @@map("EstadoSolicitudHospedaje")
+}
+
 model Hospedaje {
   id Int @default(autoincrement())
 
-  fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  fechaCreacion    DateTime  @default(now())
+  estaActivo       Boolean   @default(true)
+  estadoAceptacion StayState @default(EN_ESPERA)
 
   fechaIni DateTime @db.Date
   fechaFin DateTime @db.Date

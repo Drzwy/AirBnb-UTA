@@ -1,4 +1,341 @@
-<div class="price-per-night">
+<div class="row">
+  <div class="col-12 mb-3">
+    @if (!startDate || !endDate) {
+      <div class="col-12">
+        <h4 class="h4 fw-normal">Agrega las fechas para ver los precios</h4>
+      </div>
+    } @else {
+      <div class="col-12 d-flex align-items-end">
+        <h4 class="h4 me-2">
+          {{
+            nights < 28 ? 
+            "$" + housingPrice.pricePerNight.toLocaleString("en-US") + " CLP":
+            partialHousingPrices[0]
+          }}
+        </h4>
+        <h4 class="h6 fw-normal">{{ nights < 28 ? "noche" : "mes" }}</h4>
+      </div>
+    }
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-0">
+    <button
+      class="border-bottom-0 border border-dark-subtle border-2 rounded-top w-100 bg-transparent"
+      data-bs-toggle="dropdown"
+      data-bs-auto-close="outside"
+      aria-expanded="false"
+    >
+      <div class="row">
+        <div class="col-6 ps-3 py-2 text-start">
+          <h6 class="h6 mb-0">Llegada</h6>
+          <h6 class="h6 fw-normal">
+            {{
+              startDate ? (startDate | date: "dd/MM/yyyy") : "Agrega una fecha"
+            }}
+          </h6>
+        </div>
+        <div
+          class="col-6 border-start border-dark-subtle border-2 py-2 text-start"
+        >
+          <h2 class="h6 mb-0">Salida</h2>
+          <h2 class="h6 fw-normal mb-0">
+            {{ endDate ? (endDate | date: "dd/MM/yyyy") : "Agrega una fecha" }}
+          </h2>
+        </div>
+      </div>
+    </button>
+    <div class="dropdown">
+      <ul
+        class="dropdown-menu"
+        aria-labelledby="dropdownMenuButton1"
+        data-bs-auto-close="false"
+      >
+        <div class="container my-3 mx-3">
+          <app-calendar
+            (startDate)="onStartDateSelected($event)"
+            (endDate)="onEndDateSelected($event)"
+            (nights)="onNightsSelected($event)"
+          >
+          </app-calendar>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-12">
+    <button
+      class="border border-2 border-dark-subtle rounded-bottom w-100 py-2 bg-transparent text-start ps-2"
+      data-bs-toggle="dropdown"
+      data-bs-auto-close="outside"
+      aria-expanded="false"
+      data-bs-offset="0 ,0"
+    >
+      <h6 class="h6 mb-0">Huéspedes</h6>
+      @if(guests.adults + guests.children + guests.infants + guests.pets > 0){
+        <ng-container>
+          <h6 class="h6 fw-normal">{{ formatGuests() }}</h6>
+        </ng-container>
+      }
+    </button>
+    <div class="dropdown">
+      <ul class="dropdown-menu w-100">
+        <div class="row p-1 align-items-center">
+          <div class="col-12 col-sm-8 col-md-6">
+            <li class="dropdown-item-text">
+              <h6 class="h6">Adultos</h6>
+              <h6 class="h6 fw-normal">Edad: 13 o más</h6>
+            </li>
+          </div>
+
+          <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="
+                guests.adults = guests.adults > 1 ? guests.adults - 1 : 1
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-dash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+            </button>
+
+            <span class="count">{{ guests.adults }}</span>
+
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="guests.adults = guests.adults + 1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="row p-1 align-items-center">
+          <div class="col-12 col-sm-8 col-md-6">
+            <li class="dropdown-item-text">
+              <h6 class="h6">Niños</h6>
+              <h6 class="h6 fw-normal">De 2 a 12 años</h6>
+            </li>
+          </div>
+          <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="
+                guests.children = guests.children > 0 ? guests.children - 1 : 0
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-dash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+            </button>
+
+            <span class="count">{{ guests.children }}</span>
+
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="guests.children = guests.children + 1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="row p-1 align-items-center">
+          <div class="col-12 col-sm-8 col-md-6">
+            <li class="dropdown-item-text">
+              <h6 class="h6">Bebés</h6>
+              <h6 class="h6 fw-normal">Menos de 2 años</h6>
+            </li>
+          </div>
+          <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="
+                guests.infants = guests.infants > 0 ? guests.infants - 1 : 0
+              "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-dash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+            </button>
+
+            <span class="count">{{ guests.infants }}</span>
+
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="guests.infants = guests.infants + 1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="row p-1 align-items-center mb-2">
+          <div class="col-12 col-sm-8 col-md-6">
+            <li class="dropdown-item-text"><h6 class="h6">Mascotas</h6></li>
+          </div>
+
+          <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="guests.pets = guests.pets > 0 ? guests.pets - 1 : 0"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-dash"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                />
+              </svg>
+            </button>
+
+            <span class="count">{{ guests.pets }}</span>
+
+            <button
+              class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+              (click)="guests.pets = guests.pets + 1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-plus-lg"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="p-3">
+          <p class="rules">{{ rules }}</p>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-2">
+    <button
+      class="btn btn-primary w-100 py-2"
+      (click)="startDate && endDate ? reserve() : checkAvailability()"
+    >
+      {{ startDate && endDate ? "Reservar" : "Comprobar disponibilidad" }}
+    </button>
+    @if (startDate && endDate) {
+      <h6 class="h6 text-center fw-normal">
+        No se hará ningún cargo por el momento
+      </h6>
+    }
+  </div>
+</div>
+
+<div class="row">
+  @if (nights != 0) {
+    @for (price of partialHousingPrices; track price; let i = $index) {
+      <div class="row pe-0">
+        <div class="col-12 col-sm-8">
+          <h6
+            class="h6 fw-normal text-center text-sm-start text-decoration-underline"
+          >
+            {{ i === 0 ? price + typeOfPrice[i] : typeOfPrice[i] }}
+          </h6>
+        </div>
+        <div class="col-12 col-sm-4 text-center text-sm-end pe-0">
+          <h6 class="h6 fw-normal">
+            {{
+              price
+            }}
+          </h6>
+        </div>
+      </div>
+    }
+    <div class="col-12 border-top mt-3 pt-3"></div>
+    <div class="row pe-0">
+      <div class="col-12 col-sm-8">
+        <h6 class="h6">Total sin incluir impuestos</h6>
+      </div>
+      <div class="col-12 col-sm-4 text-center text-sm-end pe-0">
+        <h6 class="h6">{{ priceWithoutTaxes() }}</h6>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- <div class="price-per-night">
   <h2 *ngIf="!startDate || !endDate" class="add-dates">Agrega las fechas para ver los precios</h2>
   <h2 *ngIf="startDate && endDate" class="house-prices">{{ nights < 28 ? partialHousingPrices[0] : "$"+(toNumber(partialHousingPrices[0]) * nights).toLocaleString('en-US') + " CLP" }}</h2>
   <h2 *ngIf="startDate && endDate" class="nights"> {{ nights < 28 ? 'noche' : 'mes' }}</h2>
@@ -17,11 +354,11 @@
     <div class="dropdown">
       
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" data-bs-auto-close="false">
-          <app-calendar-v2 
+          <app-calendar 
           (startDate)="onStartDateSelected($event)"
           (endDate)="onEndDateSelected($event)"
           (nights)="onNightsSelected($event)">
-        </app-calendar-v2>   
+        </app-calendar>   
       </ul>
       
     </div>
@@ -153,4 +490,4 @@
     <h3 class="total-price">Total sin incluir impuestos</h3>
     <h3 class="total-price">{{ priceWithoutTaxes() }}</h3>
   </div>
-</div>
+</div> -->

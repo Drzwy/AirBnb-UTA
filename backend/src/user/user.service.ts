@@ -66,6 +66,9 @@ export class UserService {
       where: {
         id: userId,
       },
+      include: {
+        anfitrionDe: true,
+      },
     });
 
     if (!user) throw new NotFoundException('El usuario no existe');

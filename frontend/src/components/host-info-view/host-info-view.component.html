@@ -1,0 +1,80 @@
+<app-navbar />
+
+<div class="container-fluid main-info-container">
+  <div class="left-column">
+    <!-- Contenido de la columna izquierda -->
+    <div class="card">
+      <div class="card-body host-info-card">
+        <div class="host-image-container">
+          <img
+            src="assets/images/user-default-64.png"
+            alt="hostImage"
+            class="host-image"
+          />
+        </div>
+        <div class="host-info-container">
+          @for (labels of cardLabels; track labels) {
+            <div class="info-column">
+              <span style="font-size: 1.2rem">{{ labels.numberOf }}</span>
+              <span style="font-size: 0.6rem">{{ labels.label }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-column">
+    <!-- Contenido de la columna derecha -->
+    {{ CONSTANTS.aboutHostLabel }} {{ this.sampleHost.name }}
+    <div class="languages-and-livesIn">
+      <span
+        >{{ CONSTANTS.languagesLabel }} {{ this.sampleHost.languages[0] }}</span
+      >
+      <span>{{ CONSTANTS.livesInLabel }} {{ this.sampleHost.livesIn }}</span>
+    </div>
+    <br />
+
+    @for (desc of sampleHost.descriptionParagraphs; track desc) {
+      <div class="description-paragraph">
+        {{ desc }}
+      </div>
+    }
+    <br />
+    {{ CONSTANTS.homestaysOfHostLabel }} {{ this.sampleHost.name }}
+    <!-- @if (getHomeStaysOf(this.sampleHost).length > 0) {
+      <div class="home-stay-container scrollable-content">
+        @for (homeStay of getHomeStaysOf(this.sampleHost); track homeStay) {
+          <div class="home-stay-card">
+            <div>
+              <img
+                [src]="homeStay.imageUrl.url"
+                [alt]="homeStay.imageUrl.alt"
+                [width]="120"
+                [height]="120"
+                style="border-radius: 10px"
+              />
+            </div>
+
+            <div class="font-container">
+              <h2 class="secondary location-font">
+                {{ homeStay.location }}
+              </h2>
+            </div>
+
+            <h2 class="secondary">
+              {{ homeStay.availableDate }}
+            </h2>
+          </div>
+        }
+      </div>
+    } @else {
+      <br />
+      <div class="card empty-homestays">
+        <span>Este anfitrión no posee ningún alquiler por el momento</span>
+      </div>
+      <br />
+    } -->
+
+    {{ CONSTANTS.reviewsOfHostLabel }} {{ this.sampleHost.name }}
+  </div>
+</div>

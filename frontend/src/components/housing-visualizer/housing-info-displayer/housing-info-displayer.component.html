@@ -1,11 +1,6 @@
-
 <div>
-    @for(numberOf of this.getNumberOf(); track numberOf; let i = $index) {
-        {{numberOf}}
-        <ng-container *ngIf="i !== this.getNumberOf().length - 1">
-            · 
-        </ng-container>
-    }
+  @for (numberOf of this.getNumberOf(); track numberOf; let i = $index) {
+    {{ numberOf }}
+    <ng-container *ngIf="i !== this.getNumberOf().length - 1"> · </ng-container>
+  }
 </div>
-
-

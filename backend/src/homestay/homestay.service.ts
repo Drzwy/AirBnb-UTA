@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Propiedad, Usuario } from '@prisma/client';
-import { HomeStayCreateDTO, HomeStayUpdateDTO } from './dto';
+import { HomeStayUpdateDTO, HomeStayCreateDTO } from './dto';
 
 @Injectable()
 export class HomestayService {
@@ -14,13 +14,13 @@ export class HomestayService {
 
   public async getAllHomeStays(): Promise<Propiedad[]> {
     return this.prisma.propiedad.findMany({
-      where: { estado: true },
+      where: { estaActivo: true },
     });
   }
 
   public async getHomeStayById(id: number): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id, estado: true },
+      where: { id, estaActivo: true },
     });
 
     if (!homeStay) {
@@ -40,7 +40,7 @@ export class HomestayService {
     }
 
     return this.prisma.propiedad.findMany({
-      where: { estado: true, anfitrionId: id },
+      where: { estaActivo: true, anfitrionId: id },
     });
   }
 
@@ -71,7 +71,7 @@ export class HomestayService {
     data: HomeStayUpdateDTO,
   ): Promise<Propiedad> {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id, estado: true },
+      where: { id, estaActivo: true },
     });
 
     if (!homeStay) {
@@ -93,7 +93,7 @@ export class HomestayService {
 
   public async deleteHomeStay(id: number) {
     const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id, estado: true },
+      where: { id, estaActivo: true },
     });
 
     if (!homeStay) {
@@ -102,7 +102,7 @@ export class HomestayService {
 
     return this.prisma.propiedad.update({
       where: { id },
-      data: { estado: false },
+      data: { estaActivo: false },
     });
   }
 }
