@@ -32,10 +32,8 @@ export class AuthService {
   async register(dto: UserRegisterDTO) {
     // crear el usuario en la base de datos
     const user: Usuario = await this.userService.registerUser(dto);
-    const user: Usuario = await this.userService.registerUser(dto);
 
     // retornar el JWT
-    return this.signToken(user.id, user.email, user.tipoUsuario);
     return this.signToken(user.id, user.email, user.tipoUsuario);
   }
 
@@ -46,7 +44,6 @@ export class AuthService {
   async login(dto: LoginDTO) {
     // recuperar el usuario
     const user: Usuario = await this.prismaService.usuario.findUnique({
-    const user: Usuario = await this.prismaService.usuario.findUnique({
       where: {
         email: dto.email,
       },
@@ -54,13 +51,13 @@ export class AuthService {
     // si no existe throw error
     if (!user)
       throw new ForbiddenException('El correo no se encuentra registrado');
-    // comparar la contraseña
+    // comparar la contraseñas
     const passwordsMatch: boolean = await argon.verify(user.hash, dto.hash);
+
     // si no coincide throw error
     if (!passwordsMatch)
       throw new ForbiddenException('La contraseña introducida es incorrecta');
     // return token
-    return this.signToken(user.id, user.email, user.tipoUsuario);
     return this.signToken(user.id, user.email, user.tipoUsuario);
   }
 
@@ -72,10 +69,8 @@ export class AuthService {
     userId: number,
     email: string,
     userType: UserTypes,
-    userType: UserTypes,
   ): Promise<{ access_token: string }> {
     // si por alguna razon no existen los parametros
-    if (!userId || !email || !userType)
     if (!userId || !email || !userType)
       throw new InternalServerErrorException(
         'La solicitud de firma no pudo procesar correctamente',
@@ -86,15 +81,12 @@ export class AuthService {
       sub: userId,
       email,
       userType,
-      userType,
     };
 
     // recuperar el secreto para firmar el token
     const secret: string = this.configService.get('JWT_SECRET');
-    const secret: string = this.configService.get('JWT_SECRET');
 
     // firmar el token con el secreto y establecer su fecha de expiración
-    const token: string = await this.jwtService.signAsync(payload, {
     const token: string = await this.jwtService.signAsync(payload, {
       expiresIn: '1h',
       secret: secret,
