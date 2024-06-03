@@ -35,7 +35,7 @@ export class HomestayController {
   @Get('get/userHouses/:id')
   @HttpCode(HttpStatus.OK)
   public async getHomeStayByUserId(@Param('id', ParseIntPipe) id: number) {
-    return await this.homeStayService.getHomeStayByUserId(id);
+    return await this.homeStayService.getAllHomeStayByUserId(id);
   }
 
   @Post('create')

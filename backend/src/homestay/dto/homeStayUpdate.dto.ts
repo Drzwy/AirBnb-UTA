@@ -76,6 +76,11 @@ export class HomeStayUpdateDTO {
   reglas: string[];
 
   @IsOptional()
+  @IsArray()
+  @Type(() => String)
+  fotos: string[];
+
+  @IsOptional()
   @IsNumber()
   anfitrionId: number;
 }

@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Propiedad, Usuario } from '@prisma/client';
 import { HomeStayCreateDTO, HomeStayUpdateDTO } from './dto';
 
@@ -30,7 +30,7 @@ export class HomestayService {
     return homeStay;
   }
 
-  public async getHomeStayByUserId(id: number): Promise<Propiedad[]> {
+  public async getAllHomeStayByUserId(id: number): Promise<Propiedad[]> {
     const ownerExists: Usuario = await this.prisma.usuario.findUnique({
       where: { id: id },
     });

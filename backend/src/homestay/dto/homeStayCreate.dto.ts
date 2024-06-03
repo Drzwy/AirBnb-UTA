@@ -82,6 +82,11 @@ export class HomeStayCreateDTO {
   reglas: string[];
 
   @IsNotEmpty()
+  @IsArray()
+  @Type(() => String)
+  fotos: string[];
+
+  @IsNotEmpty()
   @IsNumber()
   anfitrionId: number;
 }

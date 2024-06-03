@@ -46,7 +46,7 @@ enum UserTypes {
 }
 
 model Propiedad {
-  id Int @id @default(autoincrement())
+  id     Int     @id @default(autoincrement())
   estado Boolean @default(true)
 
   dormitorios       Int
@@ -63,12 +63,13 @@ model Propiedad {
   ciudad  String
   calle   String
   nroCasa Int
-  nroDpto Int @default(0)
+  nroDpto Int    @default(0)
 
   comodidades         String[]
   opcionesDeSeguridad String[]
   opcionesDeLlegada   String[]
   reglas              String[]
+  fotos               String[]
 
   Anfitrion   Usuario @relation(name: "Es dueño", fields: [anfitrionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   anfitrionId Int
