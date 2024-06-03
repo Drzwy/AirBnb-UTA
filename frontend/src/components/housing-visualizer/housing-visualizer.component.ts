@@ -126,6 +126,17 @@ export class HousingVisualizerComponent implements OnInit{
       'Este alojamiento tiene una capacidad máxima de 4 huéspedes, sin contar bebés. No se permiten mascotas.',
   };
 
+  public names: string[] = [
+    "Retiro de ensueño junto al mar",
+    "Escapada romántica en la montaña",
+    "Encantador refugio urbano",
+    "Paraíso tropical con vista al mar",
+    "Alojamiento elegante en el corazón de la ciudad",
+    "Refugio acogedor con vistas espectaculares",
+    "Escapada de lujo en el bosque",
+    "Rincón mágico junto al lago",
+  ]
+
   public TEXTS = {
     hostIs: 'Anfitrion:',
     priceIs: 'Precio:',

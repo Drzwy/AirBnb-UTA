@@ -56,7 +56,7 @@ describe('HomestayApiService', () => {
       arrivalOptions: 'Self Check-In',
       rules: 'No smoking',
       location: 'City',
-      images: [],
+      images: ["link1","link2"],
       initDate: new Date('2024-10-10'), //RANGO DE FECHA MAL PUESTA
       finishDate: new Date('2024-09-09'), //VER SI TIRA ERROR
       userId: 1,
@@ -91,7 +91,7 @@ describe('HomestayApiService', () => {
       location: 'City',
       initDate: new Date(),
       finishDate: new Date(),
-      images: [],
+      images: ["link1","link2"],
       userId: 1,
       pricePerNight: 100,
     };

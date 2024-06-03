@@ -3,7 +3,7 @@
 </div>
 <div class="border-bottom"></div>
 <div class="container">
-  <h1 class="h2 my-3 py-2">{{ house.houseName }}</h1>
+  <h1 class="h2 my-3 py-2">{{ names[homeStay.id%8] }}</h1>
   <div class="row my-3">
     <app-images-card *ngIf="img" [imageUrls]="img" />
   </div>
@@ -15,7 +15,7 @@
         <h4 class="h4">
           @if (house.location && house.houseType) {
             <!-- {{ house.houseType }} {{ TEXTS.locatedIn }} {{ house.location }} -->
-          Propiedad {{TEXTS.locatedIn}} {{homeStay.ciudad}}
+          {{homeStay.tipo}} {{TEXTS.locatedIn}} {{homeStay.ciudad}}
           }
         </h4>
 
