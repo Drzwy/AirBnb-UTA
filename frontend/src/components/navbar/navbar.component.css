@@ -119,3 +119,8 @@ div.first-letter-display {
   font-size: 0.5rem;
   display: block;
 }
+
+
+.container{
+  max-width: 1700px;
+}

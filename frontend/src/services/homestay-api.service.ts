@@ -16,6 +16,7 @@ export class HomestayApiService {
       !form.rooms ||
       !form.beds ||
       !form.bathrooms ||
+      !form.price ||
       !form.type ||
       !form.desc ||
       !form.street ||
@@ -41,7 +42,7 @@ export class HomestayApiService {
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
-      precioNoche: 110000, // TODO CAMBIAR LUEGO
+      precioNoche: form.price, // TODO CAMBIAR LUEGO
       tipo: form.type,
       descripcion: form.desc,
       calle: form.street,

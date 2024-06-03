@@ -55,7 +55,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public navigateByURL(id: string): void {
     if (id == 'logout') {
       this.loginService.logout();
-    } else {
+      this.router.navigate([this.router.url])
+      .then(() => {
+        window.location.reload();
+      });
+    } else if (id == 'home-stay-list') {
+      console.log('ola')
+      this.router.navigate([id]).then(() => {
+        window.location.reload();
+      });;
+    }
+    else{
       this.router.navigate([id]);
     }
   }

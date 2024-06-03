@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginRegisterService } from '../../services/login-register.service';
-import { HttpClient } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,21 +12,29 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private loginRegisterService: LoginRegisterService,
-    private http: HttpClient,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  user: userLogin = {
-    email: '',
-    hash: '',
-  };
+  @Input() modal: boolean = false
+  public loginForm: FormGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    hash: new FormControl('', [Validators.required])
+  });;
 
-  public login(user: NgForm) {
-    this.loginRegisterService.login(this.user).subscribe((result) => {
+  public login() {
+    this.loginRegisterService.login(this.loginForm.value).subscribe((result) => {
       if (result && result.success) {
         alert('Inicio sesion correctamente');
-        this.router.navigateByUrl('home-stay-list');
+        if(!this.modal){
+          this.router.navigateByUrl('home-stay-list');
+        } else{
+          this.router.navigateByUrl(this.router.url).then(() => {
+            window.location.reload();
+          });;
+        }
+        
       } else {
         alert(result.message);
       }

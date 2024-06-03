@@ -1,12 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container">
     <!-- Elemento a la izquierda -->
-    <div class="navbar-brand" (click)="navigateByURL('')">
+    <div class="navbar-brand" (click)="navigateByURL('home-stay-list')">
       <img
         src="assets/images/airbnb-logo.png"
         alt="Logo"
-        width="50"
-        height="50"
+        width="100"
       />
     </div>
 
@@ -88,6 +87,7 @@
                 class="user-config-element-button dropdown-item"
                 [attr.data-bs-toggle]="'modal'"
                 [attr.data-bs-target]="'#' + configOption.url"
+                (click)="configOption.url === 'add-home-stay' ? navigateByURL(configOption.url) : null"
               >
                 {{ configOption.label }}
               </button>
@@ -147,31 +147,59 @@
           </div>
         </div>
       </div>
-      <!--  Modal de Login  -->
-      <div
-        class="modal fade"
-        id="login"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="false"
-        style="width: 70vh"
-      >
-        <div class="modal-dialog my-modal">
-          <app-login />
+      <!-- Modal de login -->
+      <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h1 class="modal-title fs-5 w-100 ps-3" id="loginModalLabel">Iniciar Sesión</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <app-login [modal]="true"/>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <p class="d-flex align-items-center justify-content-center">
+                ¿No tienes cuenta?
+                <a
+                  class="btn btn-link"
+                  style="color: black; font-weight: bold"
+                  data-bs-target="#register"
+                  data-bs-toggle="modal"
+                  >Registrarse</a
+                >
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       <!--  Modal de Register  -->
-      <div
-        class="modal fade my-modal"
-        id="register"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="false"
-      >
-        <div class="modal-dialog my-modal">
-          <app-register />
+      <div class="modal fade" id="register" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h1 class="modal-title fs-5 w-100 ps-3" id="registerModalLabel">Regístrate</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <app-register [modal]="true"/>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <p class="d-flex align-items-center justify-content-center">
+                ¿Ya tienes una cuenta?
+                <a
+                  class="btn btn-link"
+                  style="color: black; font-weight: bold"
+                  data-bs-target="#login"
+                  data-bs-toggle="modal"
+                  >Inicia sesión</a
+                >
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </nav>

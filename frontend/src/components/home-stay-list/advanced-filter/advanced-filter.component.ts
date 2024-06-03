@@ -18,6 +18,9 @@ export class AdvancedFilterComponent implements OnInit {
   public currentNumberOfRooms: number;
   public currentNumberOfBathrooms: number;
 
+  public rangePrice: number[] = [15000, 86000];
+  public numbers: number[] = [1,2,3,4,5,6,7,8]
+
   ngOnInit() {
     this.service.filterIsValid.subscribe((value) => {
       this._filterIsValid = value;

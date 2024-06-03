@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   HomeDisplayService,
   HomeStayType,
@@ -10,11 +10,16 @@ import { HomestayApiService } from '../../services/homestay-api.service';
   templateUrl: './add-home-stay.component.html',
   styleUrl: './add-home-stay.component.css',
 })
-export class AddHomeStayComponent {
+export class AddHomeStayComponent implements OnInit{
   constructor(
     private serviceForHomeStayTypes: HomeDisplayService,
     private serviceForHttp: HomestayApiService,
   ) {}
+
+  ngOnInit(): void {
+    this.getHomeStayTypes()
+  }
+  public types!: HomeStayType[]
 
   public currentRooms: number = 0;
   public currentBeds: number = 0;
@@ -58,8 +63,8 @@ export class AddHomeStayComponent {
     submitButtonLabel: 'Enviar Formulario',
   };
 
-  public getHomeStayTypes(): HomeStayType[] {
-    return this.serviceForHomeStayTypes.getHomeStayTypes();
+  public getHomeStayTypes(){
+    this.types = this.serviceForHomeStayTypes.getHomeStayTypes();
   }
 
   public async sendDataToValidation() {
@@ -67,6 +72,7 @@ export class AddHomeStayComponent {
       rooms: this.currentRooms,
       beds: this.currentBeds,
       bathrooms: this.currentBathrooms,
+      price: this.currentPricePerNight,
       type: this.currentType,
       desc: this.currentDesc,
       initDate: this.currentInitDate,
@@ -129,6 +135,7 @@ export interface HomeStayForm {
   rooms: number;
   beds: number;
   bathrooms: number;
+  price: number;
   type: string;
   desc: string;
   initDate: Date;

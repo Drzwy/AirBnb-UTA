@@ -46,9 +46,9 @@ export class HostInfoViewComponent {
 
   constructor(private service: HomeDisplayService) {}
 
-  public getHomeStaysOf(host: HostInfo) {
-    return this.service.availableHomeStays;
-  }
+  // public getHomeStaysOf(host: HostInfo) {
+  //   return this.service.availableHomeStays;
+  // }
 
   protected readonly CompressionStream = CompressionStream;
 }

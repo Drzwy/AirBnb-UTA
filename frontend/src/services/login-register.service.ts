@@ -17,13 +17,13 @@ export class LoginRegisterService {
     this.checkTokenExpiration();
   }
 
-  // private url = 'http://localhost:3000/auth' no se uso por que agregue el proxy, me daba error de cors si no lo ponia
+  private url = 'http://localhost:3000/auth'
   public clientType = 'Guest';
 
   public register(
     user: userRegister,
   ): Observable<{ success: boolean; message?: string }> {
-    return this.http.post<{ access_token: string }>('auth/register', user).pipe(
+    return this.http.post<{ access_token: string }>(`${this.url}/register`, user).pipe(
       map((result) => {
         if (result && result.access_token) {
           sessionStorage.setItem('token', result.access_token);
@@ -46,7 +46,7 @@ export class LoginRegisterService {
     user: userLogin,
   ): Observable<{ success: boolean; message?: string }> {
     console.log(this.clientType);
-    return this.http.post<any>('auth/login', user).pipe(
+    return this.http.post<any>(`${this.url}/login`, user).pipe(
       map((result) => {
         if (result && result.access_token) {
           sessionStorage.setItem('token', result.access_token);
@@ -70,9 +70,6 @@ export class LoginRegisterService {
       const decodedToken: any = jwtDecode(token);
       const expirationTimeInSeconds: number = decodedToken.exp;
       const currentTimeInSeconds: number = Math.floor(Date.now() / 1000);
-
-      console.log(expirationTimeInSeconds);
-      console.log(currentTimeInSeconds);
 
       if (currentTimeInSeconds > expirationTimeInSeconds) {
         this.logout();

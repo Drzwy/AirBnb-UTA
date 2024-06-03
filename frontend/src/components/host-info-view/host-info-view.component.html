@@ -41,7 +41,7 @@
     }
     <br />
     {{ CONSTANTS.homestaysOfHostLabel }} {{ this.sampleHost.name }}
-    @if (getHomeStaysOf(this.sampleHost).length > 0) {
+    <!-- @if (getHomeStaysOf(this.sampleHost).length > 0) {
       <div class="home-stay-container scrollable-content">
         @for (homeStay of getHomeStaysOf(this.sampleHost); track homeStay) {
           <div class="home-stay-card">
@@ -73,7 +73,7 @@
         <span>Este anfitrión no posee ningún alquiler por el momento</span>
       </div>
       <br />
-    }
+    } -->
 
     {{ CONSTANTS.reviewsOfHostLabel }} {{ this.sampleHost.name }}
   </div>

@@ -1,29 +1,269 @@
-<div class="finder-container">
-  <div class="finder-place-holder">
-    <label>Dónde</label>
-    <input
-      type="text"
-      [placeholder]="CONSTANTS.wherePlaceHolder"
-      [(ngModel)]="currentWhere"
-    />
-  </div>
-  <div class="finder-place-holder">
-    <label>Llegada</label>
-    <input type="date" [(ngModel)]="currentArrival" />
-  </div>
-  <div class="finder-place-holder">
-    <label>Salida</label>
-    <input type="date" [(ngModel)]="currentFinish" />
-  </div>
-  <div class="finder-place-holder">
-    <label>Quién</label>
-    <input
-      type="text"
-      [placeholder]="CONSTANTS.howManyPlaceHolder"
-      [(ngModel)]="currentHowMany"
-    />
-  </div>
-  <div class="lupa">
-    <button class="finder-button">Buscar</button>
+<div class="container w-100 border rounded-pill shadow mb-4">
+  <div class="row py-2 mx-2">
+    <div class="col-4 border-end">
+      <h6 class="text-truncate title-size mt-2 mb-1">Dónde</h6>
+      <input
+        type="text"
+        class="border-0 w-100 text-truncate text-size"
+        [placeholder]="CONSTANTS.wherePlaceHolder"
+        [(ngModel)]="currentWhere"
+      />
+    </div>
+    <div class="col-4 border-end">
+      <button class="w-100 bg-transparent border-0 text-start" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        <div class="row">
+          <div class="col-6 border-end">
+            <h6 class="text-truncate title-size">Llegada</h6>
+            <h6 class="h6 fw-normal text-truncate text-size text-secondary">
+              {{
+                currentArrival ? (currentArrival | date: "d MMM") : "Agrega una fecha"
+              }}
+            </h6>
+          </div>
+          <div class="col-6">
+            <h6 class="h6 text-truncate title-size">Salida</h6>
+            <h6 class="h6 fw-normal text-truncate text-size text-secondary">
+              {{
+                currentFinish ? (currentFinish | date: "d MMM") : "Agrega una fecha"
+              }}
+            </h6>
+          </div>
+        </div> 
+      </button>
+      <div class="dropdown">
+        <ul
+          class="dropdown-menu"
+          aria-labelledby="dropdownMenuButton1"
+          data-bs-auto-close="false"
+        >
+          <div class="container my-3 mx-3">
+            <app-calendar
+              (startDate)="onStartDateSelected($event)"
+              (endDate)="onEndDateSelected($event)"
+            >
+            </app-calendar>
+          </div>
+        </ul>
+      </div>
+       
+    </div>
+    <div class="col-3">
+      <button class="w-100 bg-transparent border-0 text-start" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" data-bs-offset="0, 25"> 
+        <h6 class="text-truncate title-size">Quién</h6>
+        @if(guests.adults + guests.children + guests.infants + guests.pets > 0){
+          <h6 class="fw-normal text-truncate text-size text-secondary">{{ formatGuests() }}</h6>
+        }@else {
+          <h6 class="fw-normal text-truncate text-size text-secondary">{{CONSTANTS.howManyPlaceHolder}}</h6> 
+        }
+      </button>
+      <div class="dropdown">
+        <ul class="dropdown-menu" style="width: 22rem;">
+          <div class="row p-1 align-items-center">
+            <div class="col-12 col-sm-8 col-md-6">
+              <li class="dropdown-item-text">
+                <h6 class="h6">Adultos</h6>
+                <h6 class="h6 fw-normal">Edad: 13 o más</h6>
+              </li>
+            </div>
+  
+            <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="
+                  guests.adults = guests.adults > 0 ? guests.adults - 1 : 0
+                "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-dash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                  />
+                </svg>
+              </button>
+  
+              <span class="count">{{ guests.adults }}</span>
+  
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="guests.adults = guests.adults + 1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-plus-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="row p-1 align-items-center">
+            <div class="col-12 col-sm-8 col-md-6">
+              <li class="dropdown-item-text">
+                <h6 class="h6">Niños</h6>
+                <h6 class="h6 fw-normal">De 2 a 12 años</h6>
+              </li>
+            </div>
+            <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="
+                  guests.children = guests.children > 0 ? guests.children - 1 : 0
+                "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-dash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                  />
+                </svg>
+              </button>
+  
+              <span class="count">{{ guests.children }}</span>
+  
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="guests.children = guests.children + 1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-plus-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="row p-1 align-items-center">
+            <div class="col-12 col-sm-8 col-md-6">
+              <li class="dropdown-item-text">
+                <h6 class="h6">Bebés</h6>
+                <h6 class="h6 fw-normal">Menos de 2 años</h6>
+              </li>
+            </div>
+            <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="
+                  guests.infants = guests.infants > 0 ? guests.infants - 1 : 0
+                "
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-dash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                  />
+                </svg>
+              </button>
+  
+              <span class="count">{{ guests.infants }}</span>
+  
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="guests.infants = guests.infants + 1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-plus-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="row p-1 align-items-center mb-2">
+            <div class="col-12 col-sm-8 col-md-6">
+              <li class="dropdown-item-text"><h6 class="h6">Mascotas</h6></li>
+            </div>
+  
+            <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="guests.pets = guests.pets > 0 ? guests.pets - 1 : 0"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-dash"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1.5 8a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 0 1h-12a.5.5 0 0 1-.5-.5z"
+                  />
+                </svg>
+              </button>
+  
+              <span class="count">{{ guests.pets }}</span>
+  
+              <button
+                class="btn btn-outline-dark btn-sm rounded-circle mx-2"
+                (click)="guests.pets = guests.pets + 1"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-plus-lg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="col-1 d-flex justify-content-end align-items-center">
+      <button class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>

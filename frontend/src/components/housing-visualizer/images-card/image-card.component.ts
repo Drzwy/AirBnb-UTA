@@ -8,10 +8,6 @@ import { Component, Input } from '@angular/core';
 export class ImageCardComponent {
   @Input() imageUrls: ImageDTO[] = [];
 
-  public getImages(): ImageDTO[] {
-    console.log(this.imageUrls);
-    return this.imageUrls;
-  }
 }
 
 export interface ImageDTO {
