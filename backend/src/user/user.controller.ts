@@ -48,7 +48,7 @@ export class UserController {
    */
   @Get('me')
   getMe(@User() user: Usuario) {
-    return user;
+    return this.userService.getUserById(user.id);
   }
 
   /**

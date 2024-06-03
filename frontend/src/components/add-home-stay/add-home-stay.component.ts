@@ -1,24 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   HomeDisplayService,
   HomeStayType,
 } from '../../services/home-display.service';
 import { HomestayApiService } from '../../services/homestay-api.service';
+import { Subscription } from 'rxjs';
+import { UserGlobalPreferencesService, UserMeResponse } from '../../services/user-global-preferences.service';
 
 @Component({
   selector: 'app-add-home-stay',
   templateUrl: './add-home-stay.component.html',
   styleUrl: './add-home-stay.component.css',
 })
-export class AddHomeStayComponent implements OnInit{
+export class AddHomeStayComponent implements OnInit, OnDestroy{
+  private _userSub?: Subscription;
+  private _currentUser?: UserMeResponse;
+  
   constructor(
     private serviceForHomeStayTypes: HomeDisplayService,
     private serviceForHttp: HomestayApiService,
+    private serviceForUser: UserGlobalPreferencesService,
   ) {}
 
   ngOnInit(): void {
     this.getHomeStayTypes()
+    this._userSub = this.serviceForUser.getCurrentUser().subscribe((value) => {
+      this._currentUser = value;
+    });
   }
+
+  ngOnDestroy(): void {
+    this._userSub?.unsubscribe();
+  }
+
   public types!: HomeStayType[]
 
   public currentRooms: number = 0;
@@ -72,7 +86,7 @@ export class AddHomeStayComponent implements OnInit{
       rooms: this.currentRooms,
       beds: this.currentBeds,
       bathrooms: this.currentBathrooms,
-      price: this.currentPricePerNight,
+      pricePerNight: this.currentPricePerNight,
       type: this.currentType,
       desc: this.currentDesc,
       initDate: this.currentInitDate,
@@ -85,6 +99,7 @@ export class AddHomeStayComponent implements OnInit{
       depNumber: this.currentDepNumber,
       securityOptions: this.currentSecurityOptions,
       arrivalOptions: this.currentArrivalOptions,
+      userId: this._currentUser!.id,
     };
 
     if (this.validateForm(form)) {
@@ -135,7 +150,7 @@ export interface HomeStayForm {
   rooms: number;
   beds: number;
   bathrooms: number;
-  price: number;
+  pricePerNight: number;
   type: string;
   desc: string;
   initDate: Date;
@@ -148,4 +163,5 @@ export interface HomeStayForm {
   depNumber: number;
   securityOptions: string;
   arrivalOptions: string;
+  userId: number
 }

@@ -9,6 +9,7 @@ import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { AdvancedFilterComponent } from '../components/home-stay-list/advanced-filter/advanced-filter.component';
+import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,11 @@ const routes: Routes = [
     path: 'about-host',
     component: HostInfoViewComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'about-me',
+    component: EditHomeStayComponent,
+    canActivate: [authGuard]
   },
   {
     path: '**',

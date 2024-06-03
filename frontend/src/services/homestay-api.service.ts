@@ -7,16 +7,22 @@ import { catchError, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class HomestayApiService {
-  private url: string = 'http://localhost:3000/homestays/create';
-
+  private postUrl: string = 'http://localhost:3000/homestays/create';
+  private getOfUrl: string = 'http://localhost:3000/homestays/get';
+  private putUrl: string = 'http://localhost:3000/homestay';
+  private deleteUrl: string = 'http://localhost:3000/homestays/delete';
   constructor(private http: HttpClient) {}
+
+  public deleteHomeStay(id: number) {
+    return this.http.delete(`${this.deleteUrl}/${id}`);
+  }
 
   public sendHomeStayForm(form: HomeStayForm) {
     if (
       !form.rooms ||
       !form.beds ||
       !form.bathrooms ||
-      !form.price ||
+      !form.pricePerNight ||
       !form.type ||
       !form.desc ||
       !form.street ||
@@ -34,7 +40,7 @@ export class HomestayApiService {
       return throwError(
         () =>
           new Error(
-            'Formulario incompleto. Por favor, completa todos los campos.',
+            'Formulario incompleto o datos no ingresados correctamente. Por favor, completa todos los campos.',
           ),
       );
     }
@@ -42,7 +48,7 @@ export class HomestayApiService {
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
-      precioNoche: form.price, // TODO CAMBIAR LUEGO
+      precioNoche: form.pricePerNight, // TODO CAMBIAR LUEGO
       tipo: form.type,
       descripcion: form.desc,
       calle: form.street,
@@ -52,13 +58,13 @@ export class HomestayApiService {
       opcionesDeSeguridad: [form.securityOptions],
       opcionesDeLlegada: [form.arrivalOptions],
       reglas: [form.rules],
-      anfitrionId: 1,
+      anfitrionId: form.userId,
       pais: form.location,
       ciudad: form.location,
       fechasDisponibles: [form.initDate, form.finishDate],
     };
     return this.http
-      .post<HomeStayCreateDTOResponse>(this.url, request)
+      .post<HomeStayCreateDTOResponse>(this.postUrl, request)
       .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
   }
 
@@ -78,7 +84,7 @@ export class HomestayApiService {
   }
 }
 
-interface HomeStayCreateDTOResponse {
+export interface HomeStayCreateDTOResponse {
   dormitorios: number;
   camas: number;
   banos: number;
@@ -96,4 +102,11 @@ interface HomeStayCreateDTOResponse {
   pais: string;
   ciudad: string;
   fechasDisponibles: Date[];
+}
+
+export interface HomeStayGetResponse extends HomeStayCreateDTOResponse {
+  id: number;
+  fechaDeCreacion: string;
+  fechaActualizacion: string;
+  estaActivo: boolean;
 }

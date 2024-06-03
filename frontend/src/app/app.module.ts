@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
 import { SliderModule } from 'primeng/slider';
+import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SliderModule } from 'primeng/slider';
     LoginComponent,
     CalendarComponent,
     AddHomeStayComponent,
+    EditHomeStayComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,6 @@ import { SliderModule } from 'primeng/slider';
     HttpClientModule,
     CalendarModule,
     BrowserAnimationsModule,
-    FormsModule,
     SliderModule,
     ReactiveFormsModule
   ],

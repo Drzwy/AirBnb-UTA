@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private _currentUser: UserMeResponse = {
     id: 0,
     nombre: '',
+    anfitrionDe: []
   };
   private configVisibility: boolean = false;
   private loginSub?: Subscription;
@@ -69,9 +70,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.router.navigate([id]);
     }
   }
-  readonly largeButton: UrlOption = {
+  readonly largeButtonHasHomestays: UrlOption = {
     label: 'Pon tu espacio en Airbnb',
     url: 'add-home-stay',
+  };
+  readonly largeButtonHostMode: UrlOption = {
+    label: 'Modo Anfitrión',
+    url: 'about-me',
   };
   readonly userConfigOptions: UrlOption[] = [
     {
@@ -122,6 +127,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public getAllLanguages(): ChangeOptionDTO[] {
     return this.service.getAllLanguages();
   }
+
+  public currentUserHasHomestays(): boolean {
+    return this._currentUser.anfitrionDe.length > 0;
+  }
+
 }
 
 export interface UserDto {
