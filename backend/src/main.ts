@@ -16,13 +16,12 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('AirBnb UTA')
-    .setDescription('airbnb para la uta')
-    .setVersion('1.0')
+    .setTitle('AirBnb-UTA')
+    .setDescription('')
+    .setVersion('0.2.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-
   await app.listen(3000);
 }
 bootstrap();

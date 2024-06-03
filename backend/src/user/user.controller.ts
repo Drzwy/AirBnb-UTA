@@ -10,7 +10,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { UserTypes, Usuario } from '@prisma/client';
+import { UserTypes } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
 import { User } from './decorator';
 import { UserService } from './user.service';
@@ -22,10 +22,10 @@ import { ApiTags } from '@nestjs/swagger';
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
-  UAE: UnauthorizedException = new UnauthorizedException(
+  private UAE: UnauthorizedException = new UnauthorizedException(
     'No está autorizado para acceder a este recurso',
   );
-  BRE: BadRequestException = new BadRequestException(
+  private BRE: BadRequestException = new BadRequestException(
     'El parámetro introducido no tiene el formato correcto',
   );
 
@@ -47,8 +47,8 @@ export class UserController {
    * @returns Datos del Usuario logeado
    */
   @Get('me')
-  getMe(@User() user: Usuario) {
-    return user;
+  getMe(@User('id') userId: number) {
+    return this.userService.getUserById(userId);
   }
 
   /**
