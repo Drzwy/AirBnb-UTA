@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -61,18 +62,24 @@ export class HomeStayCreateDTO {
   @IsNumber()
   nroDpto: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsArray()
   @Type(() => String)
   comodidades: string[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsArray()
   @Type(() => String)
   opcionesDeSeguridad: string[];
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsArray()
+  @Type(() => String)
+  opcionesDeLlegada: string[];
+
+  @IsNotEmpty()
+  @IsArray()
+  @ArrayNotEmpty()
   @Type(() => String)
   opcionesDeLlegada: string[];
 

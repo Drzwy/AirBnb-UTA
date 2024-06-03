@@ -21,11 +21,8 @@ export class UserService {
    * @returns Usuario con tipo Cliente creado
    */
   async registerUser(dto: UserRegisterDTO) {
-    const password: string = dto.password;
-    delete dto.password;
     const createDto: UserCreateDTO = Object.assign({}, dto, {
-      tipo_usuario: UserTypes.Cliente,
-      hash: password,
+      tipoUsuario: UserTypes.Cliente,
     });
 
     return this.createUser(createDto);
@@ -44,11 +41,12 @@ export class UserService {
       const user: Usuario = await this.prismaService.usuario.create({
         data: dto,
       });
+      delete user.hash;
       return user;
     } catch (error) {
       // si las credenciales estan duplicadas throw error
       if (error instanceof PrismaClientKnownRequestError) {
-        // error code predefinido de prisma
+        // error code "Unique constraint failed on the {constraint}"
         if (error.code === 'P2002') {
           throw new ForbiddenException('Credenciales duplicadas');
         }
@@ -71,7 +69,7 @@ export class UserService {
     });
 
     if (!user) throw new NotFoundException('El usuario no existe');
-
+    delete user.hash;
     return user;
   }
 
@@ -80,9 +78,13 @@ export class UserService {
    * @returns Usuarios dentro de la BD
    */
   async getAllUsers() {
-    const users: Usuario[] = await this.prismaService.usuario.findMany();
+    let users: Usuario[] = await this.prismaService.usuario.findMany({});
     if (users.length == 0)
       throw new NotFoundException('No existen usuarios registrados');
+    users = users.map((user) => {
+      delete user.hash;
+      return user;
+    });
     return users;
   }
 
@@ -93,12 +95,29 @@ export class UserService {
    */
   async deleteUserById(userId: number) {
     try {
-      const deletedUser: Usuario = await this.prismaService.usuario.delete({
+      const updateUserQuery = this.prismaService.usuario.update({
         where: {
           id: userId,
         },
+        data: {
+          estaActivo: false,
+        },
       });
-      return deletedUser;
+      const updatePropertiesQuery = this.prismaService.propiedad.updateMany({
+        where: {
+          anfitrionId: userId,
+        },
+        data: {
+          estaActivo: false,
+        },
+      });
+
+      const deletedUser = await this.prismaService.$transaction([
+        updateUserQuery,
+        updatePropertiesQuery,
+      ]);
+      console.log({ deletedUser });
+      return deletedUser; // nose q tira
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
@@ -128,6 +147,8 @@ export class UserService {
         },
         data: dto,
       });
+
+      delete user.hash;
       return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

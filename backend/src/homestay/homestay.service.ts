@@ -30,7 +30,7 @@ export class HomestayService {
     return homeStay;
   }
 
-  public async getAllHomeStayByUserId(id: number): Promise<Propiedad[]> {
+  public async getAllHomeStaysByUserId(id: number): Promise<Propiedad[]> {
     const ownerExists: Usuario = await this.prisma.usuario.findUnique({
       where: { id: id },
     });

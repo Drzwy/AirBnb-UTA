@@ -12,6 +12,7 @@ import { UserService } from 'src/user/user.service';
 import { UserRegisterDTO } from 'src/user/dto';
 import { Usuario } from '@prisma/client';
 
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -33,7 +34,7 @@ export class AuthService {
     const user: Usuario = await this.userService.registerUser(dto);
 
     // retornar el JWT
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email, user.tipoUsuario);
   }
 
   /**
@@ -50,13 +51,14 @@ export class AuthService {
     // si no existe throw error
     if (!user)
       throw new ForbiddenException('El correo no se encuentra registrado');
-    // comparar la contraseña
+    // comparar la contraseñas
     const passwordsMatch: boolean = await argon.verify(user.hash, dto.password);
+
     // si no coincide throw error
     if (!passwordsMatch)
       throw new ForbiddenException('La contraseña introducida es incorrecta');
     // return token
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email, user.tipoUsuario);
   }
 
   /**
@@ -66,9 +68,10 @@ export class AuthService {
   async signToken(
     userId: number,
     email: string,
+    userType: UserTypes,
   ): Promise<{ access_token: string }> {
     // si por alguna razon no existen los parametros
-    if (!userId || !email)
+    if (!userId || !email || !userType)
       throw new InternalServerErrorException(
         'La solicitud de firma no pudo procesar correctamente',
       );
@@ -77,6 +80,7 @@ export class AuthService {
     const payload = {
       sub: userId,
       email,
+      userType,
     };
 
     // recuperar el secreto para firmar el token
