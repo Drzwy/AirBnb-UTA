@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UserRegisterDTO {
   @IsEmail()
@@ -8,7 +14,7 @@ export class UserRegisterDTO {
 
   @IsString()
   @IsNotEmpty()
-  password: string;
+  hash: string;
 
   @IsString()
   @IsNotEmpty()
@@ -27,13 +33,16 @@ export class UserRegisterDTO {
   apellidoMat: string;
 
   @IsString()
+  @IsOptional()
   descripcion: string;
 
   @IsArray()
+  @IsNotEmpty()
   @Type(() => String)
   idiomas: string[];
 
   @IsArray()
+  @IsNotEmpty()
   @Type(() => String)
   detalles: string[];
 }

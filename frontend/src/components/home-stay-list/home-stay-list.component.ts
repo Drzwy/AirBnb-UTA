@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ImageDTO} from "../housing-visualizer/images-card/image-card.component";
 import {emptyFilter, HomeDisplayService, HomeStayType} from "../../services/home-display.service";
 import {FilterState} from "./advanced-filter/advanced-filter.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-stay-list',
@@ -14,7 +15,10 @@ export class HomeStayListComponent implements OnInit {
   public currentHomeStayList: HomeStayInformation[] = []
 
 
-  constructor(private service: HomeDisplayService) {
+  constructor(
+    private service: HomeDisplayService,
+    private router: Router
+  ) {
   }
   ngOnInit() {
     this.service.currentType.subscribe(
@@ -38,6 +42,10 @@ export class HomeStayListComponent implements OnInit {
   }
   readonly homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes()
   readonly IMAGE_DIMENSIONS: number  = 270
+
+  public homeVisualizer(){
+    this.router.navigate(['housing-visualizer']);
+  }
 
   public updateHomeStayList(type?: string, filter?: FilterState): HomeStayInformation[] {
     if (type === undefined || type == "") {
