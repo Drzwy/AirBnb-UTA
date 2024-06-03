@@ -1,6 +1,5 @@
 import { Type } from 'class-transformer';
 import {
-  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -74,7 +73,6 @@ export class HomeStayCreateDTO {
 
   @IsNotEmpty()
   @IsArray()
-  @ArrayNotEmpty()
   @Type(() => String)
   opcionesDeLlegada: string[];
 
