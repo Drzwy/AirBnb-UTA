@@ -23,7 +23,7 @@ export class HousingVisualizerComponent implements OnInit{
     this.route.params.subscribe(params =>{
       this.id = +params['id']
     })
-    this.img = this.homeStayservice.images[this.id-1]
+    this.img = this.homeStayservice.images[this.id%8]
     this.homeStayservice.getHomeStay(this.id).subscribe((value) =>{
       this.homeStay = value
     })
@@ -146,7 +146,7 @@ export class HousingVisualizerComponent implements OnInit{
 
   public housingInformation(): HousingInformation{
     const housingInformation: HousingInformation = {
-      numberOfGuests: this.homeStay.dormitorios,
+      numberOfGuests: this.homeStay.maxPersonas,
       numberOfBathrooms: this.homeStay.banos,
       numberOfBeds: this.homeStay.camas,
       numberOfRooms: this.homeStay.dormitorios

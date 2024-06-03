@@ -35,6 +35,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
 
   public types!: HomeStayType[]
 
+  public currentGuests: number = 0;
   public currentRooms: number = 0;
   public currentBeds: number = 0;
   public currentBathrooms: number = 0;
@@ -59,7 +60,8 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
   }
 
   readonly CONSTANTS = {
-    roomsNumberLabel: 'Número de Dormitorios',
+    guestsNumberLabel: 'Número de Huespedes',
+    roomsNumberLabel: 'Número de Habitaciones',
     bedsNumberLabel: 'Número de Camas disponible',
     bathsNumberLabel: 'Número de Baños disponible',
     homeStayTypeLabel: 'Tipo de Propiedad',
@@ -83,6 +85,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
 
   public async sendDataToValidation() {
     const form: HomeStayForm = {
+      guests: this.currentGuests,
       rooms: this.currentRooms,
       beds: this.currentBeds,
       bathrooms: this.currentBathrooms,
@@ -100,6 +103,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
       securityOptions: this.currentSecurityOptions,
       arrivalOptions: this.currentArrivalOptions,
       userId: this._currentUser!.id,
+      images: ['cambiar']
     };
 
     if (this.validateForm(form)) {
@@ -116,6 +120,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
   private validateForm(form: HomeStayForm): boolean {
     if (form === undefined) return false;
     return (
+      form.guests > 1 ||
       form.rooms > 0 ||
       form.bathrooms > 0 ||
       form.beds > 0 ||
@@ -123,6 +128,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     );
   }
   private cleanEntries() {
+    this.currentGuests = 0;
     this.currentRooms = 0;
     this.currentBeds = 0;
     this.currentBathrooms = 0;
@@ -147,6 +153,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
 }
 
 export interface HomeStayForm {
+  guests: number;
   rooms: number;
   beds: number;
   bathrooms: number;
@@ -163,5 +170,6 @@ export interface HomeStayForm {
   depNumber: number;
   securityOptions: string;
   arrivalOptions: string;
-  userId: number
+  userId: number;
+  images: string[];
 }
