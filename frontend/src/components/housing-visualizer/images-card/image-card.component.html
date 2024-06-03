@@ -1,4 +1,4 @@
-<div class="scroll-container">
+<!-- <div class="scroll-container">
     <img [src]="getImages()[0].url" [alt]="getImages()[0].alt" style="border-top-left-radius: 20px; border-bottom-left-radius: 20px;"/>
     
     <div class="img-pair">
@@ -6,4 +6,47 @@
             <img *ngIf="i > 0 && i < 5" [src]="img.url" [alt]="img.alt"/>
         }
     </div>
-</div> 
+</div>  -->
+
+<div id="carouselImg" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    @for (img of imageUrls; track img; let i = $index) {
+      <button
+        type="button"
+        data-bs-target="#carouselImg"
+        [attr.data-bs-slide-to]="i"
+        [class.active]="i === 0"
+        [attr.aria-current]="i === 0 ? 'true' : null"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+      ></button>
+    }
+  </div>
+  <div class="carousel-inner rounded">
+    @for (img of imageUrls; track img; let i = $index) {
+      <div
+        [ngClass]="{ 'carousel-item': true, active: i === 0 }"
+        data-bs-interval="3000"
+      >
+        <img [src]="img.url" class="d-block w-100" [alt]="img.alt" />
+      </div>
+    }
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselImg"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselImg"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>

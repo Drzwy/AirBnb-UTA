@@ -8,10 +8,9 @@ describe('HouseVisualizerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HousingVisualizerComponent]
-    })
-    .compileComponents();
-    
+      declarations: [HousingVisualizerComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HousingVisualizerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

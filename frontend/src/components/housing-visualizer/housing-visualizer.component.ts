@@ -1,142 +1,178 @@
-import { Component } from '@angular/core';
-import {ImageDTO} from "./images-card/image-card.component";
-import {HousingInformation} from "./housing-info-displayer/housing-info-displayer.component";
+import { Component, OnInit } from '@angular/core';
+import { ImageDTO } from './images-card/image-card.component';
+import { HousingInformation } from './housing-info-displayer/housing-info-displayer.component';
 import { HousingPrice } from './housing-reservation/housing-reservation.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HomeDisplayService } from '../../services/home-display.service';
+import { HomeStayInformation } from '../home-stay-list/home-stay-list.component';
+
 
 @Component({
   selector: 'app-housing-visualizer',
   templateUrl: './housing-visualizer.component.html',
-  styleUrl: './housing-visualizer.component.css'
+  styleUrl: './housing-visualizer.component.css',
 })
-export class HousingVisualizerComponent {
-
+export class HousingVisualizerComponent implements OnInit{
   constructor(
-    private router: Router
-  ){
+    private router: Router,
+    private route: ActivatedRoute,
+    private homeStayservice: HomeDisplayService 
+  ) {}
 
+  ngOnInit(){
+    this.route.params.subscribe(params =>{
+      this.id = +params['id']
+    })
+    this.img = this.homeStayservice.images[this.id-1]
+    this.homeStayservice.getHomeStay(this.id).subscribe((value) =>{
+      this.homeStay = value
+    })
   }
 
+  public id: number = 0;
+  public img: ImageDTO[] = [];
+  public homeStay!: HomeStayInformation
   public isExpanded: boolean[] = [];
-
-  public volver(){
-    this.router.navigate(['home-stay-list'])
-  }
-
-  public expand(index: number){
-    this.isExpanded[index] = !this.isExpanded[index];
-  }
-
+  
   public house: HouseExample = {
-    imagesUrl : [
-      {url: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F4.bp.blogspot.com%2F-SSv1BZ5Uh9Q%2FU8Q6sbOxAlI%2FAAAAAAAACCo%2F0XpzHemw4A4%2Fs1600%2FArquitectura-Casa-de-playa-isla-Creta.jpg&f=1&nofb=1&ipt=71297c913fd1e44deb991e248532a41940362569cf5abfa1f22c6c95594425c1&ipo=images",
-        alt: "playa"},
-      {url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fplayascalas.com%2Fwp-content%2F2014%2F08%2FFotos-playas-paradisiacas12.jpg&f=1&nofb=1&ipt=f1dd7829a4025688784272303d7c45d9a4cc7c4d66614f607ca1b1c630be2e4d&ipo=images",
-        alt: "playa2"},
-      {url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdecoraideas.com%2Fwp-content%2Fuploads%2F2019%2F08%2F07-1.jpg&f=1&nofb=1&ipt=e1a7e5d8255222e1a0cc0077610baaca5acb40d0aeab4a02628d8bd68d5eaa66&ipo=images",
-        alt: "casa por dentro"},
-      {url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdecoraideas.com%2Fwp-content%2Fuploads%2F2019%2F08%2F07-1.jpg&f=1&nofb=1&ipt=e1a7e5d8255222e1a0cc0077610baaca5acb40d0aeab4a02628d8bd68d5eaa66&ipo=images",
-        alt: "casa por dentro"},
-      {url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7puN0vHdrBgYNCEiI4OTFZhTfVZIQsUNFaWg2_NQnkw&s",
-        alt: "turistas"}
-
+    imagesUrl: [
+      {
+        url: 'https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/87249781-c250-463e-92e6-82391681da29.jpeg?im_w=1200',
+        alt: 'playa',
+      },
+      {
+        url: 'https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/896501f7-3435-4274-8e0f-d8a399cc0c9b.jpeg?im_w=1440',
+        alt: 'playa2',
+      },
+      {
+        url: 'https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/061e7561-3d88-4c47-b258-101c5b15fb84.jpeg?im_w=1440',
+        alt: 'casa por dentro',
+      },
+      {
+        url: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdecoraideas.com%2Fwp-content%2Fuploads%2F2019%2F08%2F07-1.jpg&f=1&nofb=1&ipt=e1a7e5d8255222e1a0cc0077610baaca5acb40d0aeab4a02628d8bd68d5eaa66&ipo=images',
+        alt: 'casa por dentro',
+      },
+      {
+        url: 'https://a0.muscache.com/im/pictures/miso/Hosting-50788889/original/b1bfc6c8-6942-4725-8f6f-96078a5b1d13.jpeg?im_w=1440',
+        alt: 'turistas',
+      },
     ],
     houseDescriptionParagraphs: [
-        "Bienvenido al paraíso costero que siempre has soñado. Esta encantadora casa en la playa es el refugio perfecto para aquellos que buscan paz, serenidad y la belleza incomparable del océano. Con vistas panorámicas al mar desde casi todas las habitaciones, esta propiedad ofrece una experiencia de vida costera incomparable.",
-        "Ubicada en una pintoresca comunidad frente al mar, esta casa de estilo contemporáneo irradia calidez y comodidad desde el momento en que pones un pie dentro. Con una arquitectura que fusiona la elegancia moderna con el encanto rústico de la costa, cada detalle ha sido cuidadosamente diseñado para crear un ambiente acogedor y relajante.",
-        "Disfruta de tus mañanas con el sonido de las olas rompiendo suavemente en la playa, mientras tomas tu café en la terraza con vistas al horizonte infinito. Los días de verano se vuelven aún más gloriosos con acceso directo a la playa, donde puedes disfrutar de nadar, practicar surf o simplemente relajarte bajo el sol."
+      'Bienvenido al paraíso costero que siempre has soñado. Esta encantadora casa en la playa es el refugio perfecto para aquellos que buscan paz, serenidad y la belleza incomparable del océano. Con vistas panorámicas al mar desde casi todas las habitaciones, esta propiedad ofrece una experiencia de vida costera incomparable.',
+      'Ubicada en una pintoresca comunidad frente al mar, esta casa de estilo contemporáneo irradia calidez y comodidad desde el momento en que pones un pie dentro. Con una arquitectura que fusiona la elegancia moderna con el encanto rústico de la costa, cada detalle ha sido cuidadosamente diseñado para crear un ambiente acogedor y relajante.',
+      'Disfruta de tus mañanas con el sonido de las olas rompiendo suavemente en la playa, mientras tomas tu café en la terraza con vistas al horizonte infinito. Los días de verano se vuelven aún más gloriosos con acceso directo a la playa, donde puedes disfrutar de nadar, practicar surf o simplemente relajarte bajo el sol.',
     ],
-    houseName : "Bello apartamento paradisiaco",
-    hostName  : "Abelardo Puertas",
+    houseName: 'Bello apartamento paradisiaco',
+    hostName: 'Abelardo Puertas',
     prices: {
       pricePerNight: 80000,
       cleaningFee: 25000,
       airbnbServiceFee: 17641,
     },
-    valuations : [
+    valuations: [
       {
-        name: "Juan",
-        img:"https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240",
-        city: "Mar del plata",
-        country: "Argentina",
-        date: new Date(2022, 10), 
+        name: 'Juan',
+        img: 'https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240',
+        city: 'Mar del plata',
+        country: 'Argentina',
+        date: new Date(2022, 10),
         stars: 1,
-        text: "Todo espectacular, la ubicación, la decoración y la atención en resumen, el departamento y los anfitriones son increíbles!! La vista y el lugar es mucho mejor que las fotos. Estuvimos unas noches y ha sido uno de los mejores AIRBNB en los que he estado. Gracias Benjamín y Gastón."
+        text: 'Todo espectacular, la ubicación, la decoración y la atención en resumen, el departamento y los anfitriones son increíbles!! La vista y el lugar es mucho mejor que las fotos. Estuvimos unas noches y ha sido uno de los mejores AIRBNB en los que he estado. Gracias Benjamín y Gastón.',
       },
       {
-        name: "Juan",
-        img:"https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240",
-        city: "Mar del plata",
-        country: "Argentina",
+        name: 'Juan',
+        img: 'https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240',
+        city: 'Mar del plata',
+        country: 'Argentina',
         date: new Date(2022, 10),
         stars: 3,
-        text: "Tuve una estancia corta en Gaston Place. El alojamiento está hermoso, limpio y cómodo. Gaston es un anfitrión amable y receptivo. Tuvimos un vuelo tardío y amablemente nos dejó salir más tarde en el día. Todos y cada uno, lugar recomendado cuando te hospedas en Santiago, Chile."
+        text: 'Tuve una estancia corta en Gaston Place. El alojamiento está hermoso, limpio y cómodo. Gaston es un anfitrión amable y receptivo. Tuvimos un vuelo tardío y amablemente nos dejó salir más tarde en el día. Todos y cada uno, lugar recomendado cuando te hospedas en Santiago, Chile.',
       },
       {
-        name: "Juan",
-        img:"https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240",
-        city: "Mar del plata",
-        country: "Argentina",
+        name: 'Juan',
+        img: 'https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240',
+        city: 'Mar del plata',
+        country: 'Argentina',
         date: new Date(2022, 10),
         stars: 4,
-        text: "No podría decir lo suficiente sobre estas personas. Muy complaciente, tan receptivo. Hermosa vista increíble del apartamento."
+        text: 'No podría decir lo suficiente sobre estas personas. Muy complaciente, tan receptivo. Hermosa vista increíble del apartamento.',
       },
       {
-        name: "Juan",
-        img:"https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240",
-        city: "Mar del plata",
-        country: "Argentina",
+        name: 'Juan',
+        img: 'https://a0.muscache.com/im/pictures/user/97d09175-b85f-456b-bffa-fce460d2fe13.jpg?im_w=240',
+        city: 'Mar del plata',
+        country: 'Argentina',
         date: new Date(2022, 10),
         stars: 5,
-        text: "Mi estancia en el Apartamento de Playa en Santa Cruz, Bolivia, fue una experiencia excepcional. Desde el momento en que llegamos, nos recibieron con una cálida bienvenida y un servicio atento que nos hizo sentir como en casa de inmediato. Ubicado a lo largo de la costa del río Piraí, el apartamento ofrece vistas impresionantes y acceso directo a una playa tranquila y arenosa. Nos alojamos en un cómodo apartamento con vista al río, equipado con todo lo necesario para una estancia relajante. El personal fue amable y servicial, brindándonos recomendaciones locales y asegurándose de que nuestra estadía fuera placentera. Disfrutamos de las actividades acuáticas, como kayak y natación, así como de paseos relajantes por la orilla del río. El ambiente en el apartamento era tranquilo y relajado, perfecto para desconectar y disfrutar de la naturaleza. En resumen, mi estancia en el Apartamento de Playa en Santa Cruz fue una escapada maravillosa que recomendaría a cualquier persona que busque un retiro costero en Bolivia."
-      }
+        text: 'Mi estancia en el Apartamento de Playa en Santa Cruz, Bolivia, fue una experiencia excepcional. Desde el momento en que llegamos, nos recibieron con una cálida bienvenida y un servicio atento que nos hizo sentir como en casa de inmediato. Ubicado a lo largo de la costa del río Piraí, el apartamento ofrece vistas impresionantes y acceso directo a una playa tranquila y arenosa. Nos alojamos en un cómodo apartamento con vista al río, equipado con todo lo necesario para una estancia relajante. El personal fue amable y servicial, brindándonos recomendaciones locales y asegurándose de que nuestra estadía fuera placentera. Disfrutamos de las actividades acuáticas, como kayak y natación, así como de paseos relajantes por la orilla del río. El ambiente en el apartamento era tranquilo y relajado, perfecto para desconectar y disfrutar de la naturaleza. En resumen, mi estancia en el Apartamento de Playa en Santa Cruz fue una escapada maravillosa que recomendaría a cualquier persona que busque un retiro costero en Bolivia.',
+      },
     ],
-    location: "Santa Cruz, Bolivia",
-    houseType: "Apartamento de playa",
+    location: 'Santa Cruz, Bolivia',
+    houseType: 'Apartamento de playa',
     informationOfNumber: {
       numberOfGuests: 6,
       numberOfRooms: 3,
       numberOfBathrooms: 2,
     },
     services: [
-        "Cama con colchoneta",
-        "Agua caliente en la tarde",
-        "SPA con piedras calientes",
-        "Avion privado pero que no vuela",
-        "Tenedor electrico multifuncional",
-        "Cocina futuristica con combustible nuclear"
+      'Cama con colchoneta',
+      'Agua caliente en la tarde',
+      'SPA con piedras calientes',
+      'Avion privado pero que no vuela',
+      'Tenedor electrico multifuncional',
+      'Cocina futuristica con combustible nuclear',
     ],
-    rules: "Este alojamiento tiene una capacidad máxima de 4 huéspedes, sin contar bebés. No se permiten mascotas."
+    rules:
+      'Este alojamiento tiene una capacidad máxima de 4 huéspedes, sin contar bebés. No se permiten mascotas.',
+  };
+
+  public TEXTS = {
+    hostIs: 'Anfitrion:',
+    priceIs: 'Precio:',
+    pricePerNight: 'por noche',
+    ratings: 'Mira las valoraciones',
+    description: 'Más sobre esta vivienda',
+    locatedIn: 'en',
+    servicesList: 'Lo que este lugar ofrece',
+  };
+
+  public volver() {
+    this.router.navigate(['home-stay-list']);
   }
 
-  public  TEXTS = {
-    hostIs: "Anfitrion:",
-    priceIs: "Precio:",
-    pricePerNight: "por noche",
-    ratings: "Mira las valoraciones",
-    description: "Más sobre esta vivienda",
-    locatedIn: "en",
-    servicesList: "Lo que este lugar ofrece"
-
-    
+  public expand(index: number) {
+    this.isExpanded[index] = !this.isExpanded[index];
   }
 
-
+  public housingInformation(): HousingInformation{
+    const housingInformation: HousingInformation = {
+      numberOfGuests: this.homeStay.dormitorios,
+      numberOfBathrooms: this.homeStay.banos,
+      numberOfBeds: this.homeStay.camas,
+      numberOfRooms: this.homeStay.dormitorios
+    }
+    return housingInformation
+  }
+  public housingPrices(): HousingPrice{
+    const housingPrices: HousingPrice = {
+      pricePerNight: this.homeStay.precioNoche,
+      cleaningFee: 0.08,
+      airbnbServiceFee: 0.14
+    }
+    return housingPrices
+  } 
 }
 
-interface HouseExample{
-  imagesUrl?: ImageDTO[],
-  houseName?: String,
-  hostName?: String,
+interface HouseExample {
+  imagesUrl?: ImageDTO[];
+  houseName?: String;
+  hostName?: String;
   houseDescriptionParagraphs?: String[];
-  prices: HousingPrice
-  valuations?: any,
-  informationOfNumber: HousingInformation
-  services?: String[],
-  houseType?: String,
-  location?: String,
-  rules: string
+  prices: HousingPrice;
+  valuations?: any;
+  informationOfNumber: HousingInformation;
+  services?: String[];
+  houseType?: String;
+  location?: String;
+  rules: string;
 }
-
-
-
