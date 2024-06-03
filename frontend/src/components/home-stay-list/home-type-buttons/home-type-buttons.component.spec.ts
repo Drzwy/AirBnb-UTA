@@ -8,9 +8,8 @@ describe('HomeStaySearcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomeTypeButtonsComponent]
-    })
-    .compileComponents();
+      declarations: [HomeTypeButtonsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeTypeButtonsComponent);
     component = fixture.componentInstance;

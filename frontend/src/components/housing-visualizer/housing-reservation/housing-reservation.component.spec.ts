@@ -11,9 +11,8 @@ describe('HousingReservationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HousingReservationComponent ]
-    })
-    .compileComponents();
+      declarations: [HousingReservationComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,10 +8,9 @@ describe('HomeStayFinderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HomeStayFinderComponent]
-    })
-    .compileComponents();
-    
+      declarations: [HomeStayFinderComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(HomeStayFinderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,0 +1,7 @@
+.form-control::placeholder {
+  font-size: 15px; /* Tamaño del placeholder */
+  position: absolute;
+  top: 48%;
+  transform: translateY(-50%);
+  opacity: 0.5; /* Opacidad del placeholder */
+}
