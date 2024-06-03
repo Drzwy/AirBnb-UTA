@@ -10,8 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/user/user.service';
 import { UserRegisterDTO } from 'src/user/dto';
+import { UserTypes } from '@prisma/client';
 import { Usuario } from '@prisma/client';
-
 
 @Injectable()
 export class AuthService {
@@ -52,7 +52,7 @@ export class AuthService {
     if (!user)
       throw new ForbiddenException('El correo no se encuentra registrado');
     // comparar la contraseñas
-    const passwordsMatch: boolean = await argon.verify(user.hash, dto.password);
+    const passwordsMatch: boolean = await argon.verify(user.hash, dto.hash);
 
     // si no coincide throw error
     if (!passwordsMatch)
