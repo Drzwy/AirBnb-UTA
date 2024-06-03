@@ -18,7 +18,7 @@ model Usuario {
 
   fechaCreacion      DateTime @default(now())
   fechaActualizacion DateTime @updatedAt
-  estaActivo         Boolean
+  estaActivo         Boolean  @default(true)
 
   tipoUsuario UserTypes @default(Cliente)
   email       String    @unique
@@ -51,7 +51,7 @@ model Propiedad {
 
   fechaCreacion      DateTime @default(now())
   fechaActualizacion DateTime @updatedAt
-  estaActivo         Boolean
+  estaActivo         Boolean  @default(true)
 
   dormitorios       Int
   camas             Int
