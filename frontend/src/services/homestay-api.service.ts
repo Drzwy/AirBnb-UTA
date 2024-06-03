@@ -42,7 +42,7 @@ export class HomestayApiService {
       return throwError(
         () =>
           new Error(
-            'Formulario incompleto. Por favor, completa todos los campos.',
+            'Formulario incompleto o datos no ingresados correctamente. Por favor, completa todos los campos.',
           ),
       );
     }
@@ -86,11 +86,11 @@ export class HomestayApiService {
   }
 }
 
-interface HomeStayCreateDTOResponse {
+export interface HomeStayCreateDTOResponse {
   dormitorios: number;
   camas: number;
   banos: number;
-  precioNoche: number; // TODO CAMBIAR LUEGO
+  precioNoche: number;
   tipo: string;
   descripcion: string;
   calle: string;
