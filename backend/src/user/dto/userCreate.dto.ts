@@ -11,7 +11,7 @@ import {
 export class UserCreateDTO {
   @IsString()
   @IsEnum(UserTypes)
-  tipo_usuario: UserTypes;
+  tipoUsuario: UserTypes;
 
   @IsEmail()
   @IsNotEmpty()
