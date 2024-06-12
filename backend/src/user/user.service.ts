@@ -68,6 +68,7 @@ export class UserService {
       },
       include: {
         anfitrionDe: true,
+        valoracionesRecibidas: true,
       },
     });
 

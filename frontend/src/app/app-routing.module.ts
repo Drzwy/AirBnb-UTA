@@ -7,9 +7,8 @@ import { RegisterComponent } from '../components/register/register.component';
 import { authGuard, loginGuard } from '../guards/auth.guard';
 import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.component';
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
-import { NavbarComponent } from '../components/navbar/navbar.component';
-import { AdvancedFilterComponent } from '../components/home-stay-list/advanced-filter/advanced-filter.component';
 import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
+import { HostMainViewComponent } from '../components/host-main-view/host-main-view.component';
 
 const routes: Routes = [
   {
@@ -25,7 +24,7 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [loginGuard]
+    canActivate: [loginGuard],
   },
   {
     path: 'home-stay-list',
@@ -43,14 +42,14 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'about-host',
+    path: 'about',
     component: HostInfoViewComponent,
     canActivate: [authGuard],
   },
   {
     path: 'about-me',
-    component: EditHomeStayComponent,
-    canActivate: [authGuard]
+    component: HostMainViewComponent,
+    canActivate: [authGuard],
   },
   {
     path: '**',

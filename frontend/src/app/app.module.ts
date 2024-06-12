@@ -22,6 +22,7 @@ import { AddHomeStayComponent } from '../components/add-home-stay/add-home-stay.
 import { HostInfoViewComponent } from '../components/host-info-view/host-info-view.component';
 import { SliderModule } from 'primeng/slider';
 import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
+import { HostMainViewComponent } from '../components/host-main-view/host-main-view.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-st
     LoginComponent,
     CalendarComponent,
     AddHomeStayComponent,
-    EditHomeStayComponent
+    EditHomeStayComponent,
+    HostMainViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,7 @@ import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-st
     CalendarModule,
     BrowserAnimationsModule,
     SliderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
