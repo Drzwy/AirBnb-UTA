@@ -1,6 +1,6 @@
 
 <app-navbar />
-<div class="container m-2 p-3 flex-column">
+<div class="container m-2 p-3 flex-column m-2">
 
   <h1>Modo Anfitrión</h1>
   <div class="row gy-5 container-fluid justify-content-center" >
@@ -25,6 +25,10 @@
     </div>
 
   </div>
+
+
+  <app-message [id]="getCurrentHostId()"/>
+
 
   <h3>Revisa tus alquileres</h3>
   <div class="row gy-5 g-3 container-fluid" >
@@ -96,7 +100,6 @@
         <h1 class="text-body-emphasis" style="font-size: 7rem">
           ${{ getRatingOfCurrentHost() }}
         </h1>
-        <img src="assets/images/laurel-wreath.png" alt="laurel" height="128" width="256">
       </div>
     </div>
 

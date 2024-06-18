@@ -23,6 +23,7 @@ import { HostInfoViewComponent } from '../components/host-info-view/host-info-vi
 import { SliderModule } from 'primeng/slider';
 import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 import { HostMainViewComponent } from '../components/host-main-view/host-main-view.component';
+import { MessageComponent } from '../components/message/message.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { HostMainViewComponent } from '../components/host-main-view/host-main-vi
     AddHomeStayComponent,
     EditHomeStayComponent,
     HostMainViewComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,

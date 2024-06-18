@@ -10,6 +10,10 @@ import {
   alternativeImageUrl,
   HomeStayConstants,
 } from '../../../../common/common';
+import {
+  MessageApiService,
+  MessageResponse,
+} from '../../services/message-api.service';
 
 @Component({
   selector: 'app-host-main-view',
@@ -20,6 +24,7 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
   private _currentHostHouses: HomeStayGetResponse[] = [];
   private _currentHostRatings: ValoracionUsuarioResponse[] = [];
   private _currentHostName: string = '';
+  private _currentHostId: number = 0;
   private _userSubscription = new Subscription();
   constructor(private userService: UserGlobalPreferencesService) {}
 
@@ -29,6 +34,7 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this._currentHostHouses = value.anfitrionDe;
         this._currentHostName = value.nombre;
+        this._currentHostId = value.id;
         if (value.valoracionesRecibidas) {
           this._currentHostRatings = value.valoracionesRecibidas;
         }
@@ -45,9 +51,13 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
   public getCurrentHostName(): string {
     return this._currentHostName;
   }
+  public getCurrentHostId(): number {
+    return this._currentHostId;
+  }
+
   public getRatingOfCurrentHost(): number {
     if (!this._currentHostRatings) return 0;
-    let rating = 0;
+    let rating: number = 0;
     this._currentHostRatings.map((r: ValoracionUsuarioResponse) => {
       rating += r.puntuacion;
     });
