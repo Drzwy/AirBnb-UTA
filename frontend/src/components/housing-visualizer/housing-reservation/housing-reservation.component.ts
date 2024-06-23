@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { BookingService } from '../../../services/booking.service';
+import { UserGlobalPreferencesService } from '../../../services/user-global-preferences.service';
 
 @Component({
   selector: 'app-housing-reservation',
@@ -6,14 +9,27 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./housing-reservation.component.css'],
 })
 export class HousingReservationComponent implements OnInit {
-  constructor() {
+  constructor(
+    private router: Router,
+    private bookingServ: BookingService,
+    private userServ: UserGlobalPreferencesService
+  ) {
     this.startDate = null;
     this.endDate = null;
     this.nights = 0;
     this.rules = '';
+    this.houseName = '';
+    this.houseType = '';
+    this.id = -1
+    this.houseId = -1
   }
 
   ngOnInit(): void {
+    console.log("ola")
+    this.userServ.getCurrentUser().subscribe(response =>{
+      this.id = response.id
+    })
+    console.log(this.id)
   }
 
   @Input() public housingPrice: HousingPrice = {
@@ -23,10 +39,17 @@ export class HousingReservationComponent implements OnInit {
   };
 
   @Input() public rules: string;
+  @Input() public houseId:number;
+  @Input() public houseName:string;
+  @Input() public houseType:string;
+  @Output() startDate2: any = new EventEmitter<Date>();
+  @Output() endDate2: any = new EventEmitter<Date>();
+  @Output() nights2: any = new EventEmitter<number>();
 
   public startDate: Date | null;
   public endDate: Date | null;
   public nights: number;
+  public id: number;
 
   public partialHousingPrices: string[] = [];
 
@@ -110,15 +133,18 @@ export class HousingReservationComponent implements OnInit {
 
   public onStartDateSelected(date: any) {
     this.startDate = date;
+    this.startDate2.emit(date)
   }
 
   public onEndDateSelected(date: any) {
     this.endDate = date;
+    this.endDate2.emit(date)
   }
 
-  public onNightsSelected(nigths: any) {
-    this.nights = nigths;
+  public onNightsSelected(nights: any) {
+    this.nights = nights;
     this.getPrice();
+    this.nights2.emit(nights)
   }
 
   public reserve() {
@@ -128,17 +154,25 @@ export class HousingReservationComponent implements OnInit {
     if (this.startDate && this.endDate) {
       partialPrices = this.partialHousingPrices.map((price, index) => ({
         type: this.typeOfPrice[index],
-        price: this.toNumber(price) * this.nights,
+        price: this.toNumber(price),
       }));
       reservation = {
+        id: this.id,
+        houseId: this.houseId,
         guests: this.guests,
         startDate: this.startDate,
         endDate: this.endDate,
         nights: this.nights,
+        pricePerNight: this.housingPrice.pricePerNight,
         partialPrices: partialPrices,
         totalPrice: this.toNumber(this.priceWithoutTaxes()),
       };
-      console.log(reservation);
+    this.router.navigate([`booking/${this.houseId}`]).then(() => {
+      window.scrollTo(0, 0);
+    });;
+    this.bookingServ.addReservation(reservation)
+    this.bookingServ.addHouseInfo(this.houseName, this.houseType)
+    console.log(reservation);
     }
   }
 
@@ -161,10 +195,13 @@ export interface Guests {
 }
 
 export interface Reservation {
+  houseId: number,
+  id: number,
   guests: Guests;
   startDate: Date;
   endDate: Date;
   nights: number;
+  pricePerNight: number;
   partialPrices: any;
   totalPrice: number;
 }

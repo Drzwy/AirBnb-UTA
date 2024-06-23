@@ -24,6 +24,7 @@ import { SliderModule } from 'primeng/slider';
 import { EditHomeStayComponent } from '../components/edit-home-stay/edit-home-stay.component';
 import { HostMainViewComponent } from '../components/host-main-view/host-main-view.component';
 import { MessageComponent } from '../components/message/message.component';
+import { BookingViewComponent } from '../components/booking-view/booking-view.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MessageComponent } from '../components/message/message.component';
     EditHomeStayComponent,
     HostMainViewComponent,
     MessageComponent,
+    BookingViewComponent
   ],
   imports: [
     BrowserModule,

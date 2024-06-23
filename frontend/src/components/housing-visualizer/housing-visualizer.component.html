@@ -57,8 +57,15 @@
         <div class="container">
           <div class="row my-4 mx-1">
             <app-housing-reservation
+              (startDate2)="onStartDateSelected($event)"
+              (endDate2)="onEndDateSelected($event)"
+              (nights2)="onNightsSelected($event)"
               [housingPrice]="housingPrices()"
               [rules]="homeStay.reglas[0]"
+              [houseId]="homeStay.id"
+              [houseName]="'AGREGAR NOMBRE AL CREAR'"
+              [houseType]="homeStay.tipo"
+              
             ></app-housing-reservation>
           </div>
         </div>
@@ -67,7 +74,11 @@
   </div>
   <div class="row">
     <div class="border-bottom py-2">
-      <app-calendar [location]="this.house.location"></app-calendar>
+      <app-calendar
+      [location]="this.house.location"
+      [date1]="this.startDate2"
+      [date2]="this.endDate2"
+      ></app-calendar>
     </div>
   </div>
   <div class="">
