@@ -10,6 +10,7 @@ import { HostInfoViewComponent } from '../components/host-info-view/host-info-vi
 import { HostMainViewComponent } from '../components/host-main-view/host-main-view.component';
 import { BookingViewComponent } from '../components/booking-view/booking-view.component';
 import { CalendarComponent } from '../components/calendar/calendar.component';
+import { AccountViewComponent } from '../components/account-view/account-view.component';
 
 const routes: Routes = [
   {
@@ -51,7 +52,6 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarComponent,
-
   },
 
   {
@@ -60,8 +60,13 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'about-me',
+    path: 'about-me-host',
     component: HostMainViewComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'about-me',
+    component: AccountViewComponent,
     canActivate: [authGuard],
   },
   {

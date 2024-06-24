@@ -1,0 +1,18 @@
+<h3>Revisa tus solicitudes de hospedaje</h3>
+<div class="row gy-5 container-fluid justify-content-center" >
+  <div class="card mx-auto w-75 pt-3 justify-content-center">
+    @if (getStayRequests().length > 0){
+      <ul class="list-group">
+        @for (request of getStayRequests(); track  request) {
+          <li class="list-group-item">{{request.id}} de la casa  {{request.propiedadId}}</li>
+        }
+
+      </ul>
+
+    } @else {
+      hola buenas tardes
+
+    }
+
+  </div>
+</div>
