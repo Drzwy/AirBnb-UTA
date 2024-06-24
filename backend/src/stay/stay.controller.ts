@@ -8,14 +8,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Hospedaje, Propiedad } from '@prisma/client';
 import { User } from 'src/user/decorator';
 import { StayService } from './stay.service';
 import { StayIdsDTO, SolicitStayDTO, ModifyStayDTO } from './dto';
+import { JwtGuard } from 'src/auth/guard';
 
 @ApiTags('Stays')
+@UseGuards(JwtGuard)
 @Controller('stays')
 export class StayController {
   constructor(private stayService: StayService) {}
