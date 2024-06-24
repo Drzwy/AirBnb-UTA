@@ -10,7 +10,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Hospedaje } from '@prisma/client';
+import { Hospedaje, Propiedad } from '@prisma/client';
 import { User } from 'src/user/decorator';
 import { StayService } from './stay.service';
 import { StayIdsDTO, SolicitStayDTO, ModifyStayDTO } from './dto';
@@ -40,6 +40,20 @@ export class StayController {
   @Get('guest/:id')
   getMyStaysByGuestId(@Param('id') userId: number): Promise<Hospedaje[]> {
     return this.stayService.getStaysByGuestId(userId);
+  }
+
+  @Get('host/me')
+  getMyStaysAsHost(
+    @User('id') hostId: number,
+  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+    return this.stayService.getStaysByHostId(hostId);
+  }
+
+  @Get('host/:id')
+  getMyStaysByHostId(
+    @Param('id') hostId: number,
+  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+    return this.stayService.getStaysByHostId(hostId);
   }
 
   @Get()
