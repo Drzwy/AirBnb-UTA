@@ -1,17 +1,22 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Hospedaje, StayState } from '@prisma/client';
+import { Hospedaje, Propiedad, StayState } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StayIdsDTO, SolicitStayDTO } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ModifyStayDTO } from './dto/stayModify.dto';
+import { HomestayService } from 'src/homestay/homestay.service';
 
 @Injectable()
 export class StayService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private homestayService: HomestayService,
+  ) {}
 
   async getAllStays(): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany();
@@ -52,6 +57,34 @@ export class StayService {
       );
 
     return stays;
+  }
+
+  async getStaysByHostId(
+    hostId: number,
+  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+    try {
+      const properties: Propiedad[] =
+        await this.homestayService.getAllHomeStaysByUserId(hostId);
+
+      const allStays: { propiedad: Propiedad; hospedajes: Hospedaje[] }[] = [];
+      for (const property of properties) {
+        const stays: Hospedaje[] = await this.getStaysByPropertyId(property.id);
+        allStays.push({
+          propiedad: property,
+          hospedajes: stays,
+        });
+      }
+
+      return allStays;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new InternalServerErrorException(
+          'Ocurrió un error con el cliente de prisma',
+        );
+      } else {
+        throw error;
+      }
+    }
   }
 
   async getStayById(ids: StayIdsDTO): Promise<Hospedaje> {
