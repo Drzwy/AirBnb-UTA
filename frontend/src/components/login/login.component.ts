@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
       if (result && result.success) {
         alert('Inicio sesion correctamente');
         if(!this.modal){
-          // this.router.navigateByUrl('home-stay-list'); probar por mientras si funciona mejor el location.back
           this.location.back()
         } else{
           this.router.navigateByUrl(this.router.url).then(() => {

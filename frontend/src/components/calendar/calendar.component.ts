@@ -1,33 +1,50 @@
-import { Component, EventEmitter, Input, OnChanges, SimpleChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { BookingService } from '../../services/booking.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent implements OnChanges {
-  constructor() {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['date1']) {
-      if(this.date1){
-        this.rangeDates[0] = this.date1;
-      }  
-    }
-    if (changes['date2']) {
-      if(this.date2){
-        this.rangeDates[1] = this.date2;
-      }
-    }
-    this.onDateSelect()
-  }
+export class CalendarComponent implements OnInit {
+  constructor(
+    private bookingService: BookingService
+  ) {}
 
   @Output() startDate: any = new EventEmitter<Date>();
   @Output() endDate: any = new EventEmitter<Date>();
   @Output() nights: any = new EventEmitter<number>();
   @Input() location: any;
-  @Input() date1: Date | null = null
-  @Input() date2: Date | null = null
+
+  ngOnInit(){
+    this.startDateSubscription = this.bookingService.startDate$.subscribe(date =>{
+      this.date1 = date;
+      if(this.date1){
+        this.rangeDates[0] = this.date1;
+      }else{
+        this.rangeDates = []
+        this.selectedNights = 0;
+        this.startDate.emit(this.rangeDates[0]);
+        this.endDate.emit(this.rangeDates[1]);
+        this.nights.emit(this.selectedNights);
+      }
+      this.onDateSelect()
+    })
+    this.endDateSubscription = this.bookingService.endDate$.subscribe(date =>{
+      this.date2 = date;
+      if(this.date2){
+        this.rangeDates[1] = this.date2;
+      }
+      this.onDateSelect()
+    })
+    
+  }
+
+  private startDateSubscription?: Subscription;
+  private endDateSubscription?: Subscription;
+  public date1: Date | null = null;
+  public date2: Date | null = null;
 
   //fechas minima y maxima para seleccionar (maxDate puede ser Date o undefined para evitar selecionar fechas deshabilitadas en el rango)
   minDate: Date = new Date();
@@ -40,14 +57,13 @@ export class CalendarComponent implements OnChanges {
   selectedNights: number = 0;
   rangeDates: Date[] = [];
 
+  
+
   public clearSelection() {
     this.rangeDates = [];
+    this.bookingService.clearSelection();
     this.maxDate = undefined;
     this.minDate = new Date();
-    this.selectedNights = 0;
-    this.startDate.emit(this.rangeDates[0]);
-    this.endDate.emit(this.rangeDates[1]);
-    this.nights.emit(this.selectedNights);
   }
 
   onDateSelect() {
@@ -55,7 +71,9 @@ export class CalendarComponent implements OnChanges {
       // Primer día seleccionado, calcular la fecha máxima
       this.updateMinMaxDate(this.rangeDates[0]);
       this.startDate.emit(this.rangeDates[0]);
-      this.endDate.emit(this.rangeDates[1]);
+      if(this.date1 != this.rangeDates[0]){
+        this.bookingService.addStartDate(this.rangeDates[0])
+      }
       if (this.rangeDates[1]) {
         this.minDate = new Date();
         this.maxDate = undefined;
@@ -68,8 +86,12 @@ export class CalendarComponent implements OnChanges {
 
         this.selectedNights = differenceDays;
 
+        if(this.date2 != this.rangeDates[1]){
+          this.bookingService.addEndDate(this.rangeDates[1])
+        }
         this.endDate.emit(this.rangeDates[1]);
         this.nights.emit(this.selectedNights);
+        
       }
     }
   }

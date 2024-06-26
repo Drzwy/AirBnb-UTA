@@ -18,9 +18,6 @@ export class HousingVisualizerComponent implements OnInit{
     private route: ActivatedRoute,
     private homeStayservice: HomeDisplayService 
   ) {
-    this.startDate2 = null;
-    this.endDate2 = null;
-    this.nights2 = 0;
   }
 
   ngOnInit(){
@@ -38,11 +35,6 @@ export class HousingVisualizerComponent implements OnInit{
   public homeStay!: HomeStayInformation
   public isExpanded: boolean[] = [];
 
-  //fechas del calendario del componente reservation
-  public startDate2: Date | null;
-  public endDate2: Date | null;
-  public nights2: number;
-  
   public house: HouseExample = {
     imagesUrl: [
       {
@@ -182,20 +174,6 @@ export class HousingVisualizerComponent implements OnInit{
     return housingPrices
   } 
 
-  public onStartDateSelected(date: any) {
-    this.startDate2 = date;
-    console.log("LLEGO S")
-  }
-
-  public onEndDateSelected(date: any) {
-    this.endDate2 = date;
-    console.log("LLEGO E")
-  }
-
-  public onNightsSelected(nights: any) {
-    this.nights2 = nights;
-    console.log("LLEGO N")
-  }
 
 }
 

@@ -57,9 +57,6 @@
         <div class="container">
           <div class="row my-4 mx-1">
             <app-housing-reservation
-              (startDate2)="onStartDateSelected($event)"
-              (endDate2)="onEndDateSelected($event)"
-              (nights2)="onNightsSelected($event)"
               [housingPrice]="housingPrices()"
               [rules]="homeStay.reglas[0]"
               [houseId]="homeStay.id"
@@ -76,8 +73,6 @@
     <div class="border-bottom py-2">
       <app-calendar
       [location]="this.house.location"
-      [date1]="this.startDate2"
-      [date2]="this.endDate2"
       ></app-calendar>
     </div>
   </div>

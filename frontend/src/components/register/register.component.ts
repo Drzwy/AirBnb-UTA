@@ -72,7 +72,7 @@ export class RegisterComponent implements AfterViewInit {
 
   public selectedLanguages: string[] = [];
 
-  register(): void {
+  public register() {
     const user = {
       email: this.registerForm.get('email')?.value,
       hash: this.registerForm.get('hash')?.value,

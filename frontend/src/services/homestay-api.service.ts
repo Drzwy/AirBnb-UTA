@@ -33,7 +33,8 @@ export class HomestayApiService {
       !form.securityOptions ||
       !form.arrivalOptions ||
       !form.rules ||
-      !form.location ||
+      !form.city ||
+      !form.country ||
       !form.initDate ||
       !form.finishDate ||
       !form.images
@@ -62,10 +63,10 @@ export class HomestayApiService {
       opcionesDeLlegada: [form.arrivalOptions],
       reglas: [form.rules],
       anfitrionId: form.userId,
-      pais: form.location,
-      ciudad: form.location,
+      pais: form.country,
+      ciudad: form.city,
       fechasDisponibles: [form.initDate, form.finishDate],
-      fotos: form.images
+      fotos: form.images.split(',').map(img => img.trim())
     };
     return this.http
       .post<HomeStayCreateDTOResponse>(this.postUrl, request)

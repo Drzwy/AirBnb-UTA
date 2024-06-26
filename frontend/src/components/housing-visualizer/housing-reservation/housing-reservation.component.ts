@@ -25,11 +25,9 @@ export class HousingReservationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("ola")
     this.userServ.getCurrentUser().subscribe(response =>{
       this.id = response.id
     })
-    console.log(this.id)
   }
 
   @Input() public housingPrice: HousingPrice = {
@@ -42,9 +40,6 @@ export class HousingReservationComponent implements OnInit {
   @Input() public houseId:number;
   @Input() public houseName:string;
   @Input() public houseType:string;
-  @Output() startDate2: any = new EventEmitter<Date>();
-  @Output() endDate2: any = new EventEmitter<Date>();
-  @Output() nights2: any = new EventEmitter<number>();
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -73,8 +68,6 @@ export class HousingReservationComponent implements OnInit {
   public getPrice(): void {
     let prices: string[] = [];
     let text: string;
-
-    console.log(this.housingPrice.pricePerNight * this.nights * this.housingPrice.cleaningFee)
 
     text =
       '$' + (this.housingPrice.pricePerNight * this.nights).toLocaleString('en-US') + ' CLP';
@@ -133,22 +126,18 @@ export class HousingReservationComponent implements OnInit {
 
   public onStartDateSelected(date: any) {
     this.startDate = date;
-    this.startDate2.emit(date)
   }
 
   public onEndDateSelected(date: any) {
     this.endDate = date;
-    this.endDate2.emit(date)
   }
 
   public onNightsSelected(nights: any) {
     this.nights = nights;
     this.getPrice();
-    this.nights2.emit(nights)
   }
 
   public reserve() {
-    console.log('reservar');
     let partialPrices: any;
     let reservation: Reservation;
     if (this.startDate && this.endDate) {

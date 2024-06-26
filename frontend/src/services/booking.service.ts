@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Reservation } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
-import { catchError, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,12 @@ export class BookingService{
   public houseType: string = '';
   public id: number = -1;
 
+  public startDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
+  public endDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
+  startDate$ = this.startDate.asObservable();
+  endDate$ = this.endDate.asObservable();
+
+
   public addReservation(reservation:Reservation){
     this.reservation = reservation;
   }
@@ -27,6 +33,20 @@ export class BookingService{
   public addHouseInfo(name: string, type:string){
     this.houseName = name
     this.houseType = type
+  }
+
+  public addStartDate(date: Date){    
+    this.startDate.next(date)
+    
+  }
+
+  public addEndDate(date: Date |null){    
+    this.endDate.next(date)
+  }
+
+  public clearSelection(){
+    this.startDate.next(null);
+    this.endDate.next(null);
   }
 
   public getReservation(): Observable<Reservation>{
