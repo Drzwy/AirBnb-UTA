@@ -39,6 +39,8 @@ model Usuario {
   valoracionesAUsuarios    ValoracionUsuario[]   @relation("reseña usuario")
   valoracionesAPropiedades ValoracionPropiedad[] @relation("reseña propiedad")
   valoracionesRecibidas    ValoracionUsuario[]   @relation("usuario criticado")
+
+  metodosDePago MetodoDePago[] @relation("registra")
 }
 
 enum UserTypes {
@@ -103,8 +105,23 @@ model Hospedaje {
   estaActivo       Boolean   @default(true)
   estadoAceptacion StayState @default(EN_ESPERA)
 
-  fechaIni DateTime @db.Date
-  fechaFin DateTime @db.Date
+  fechaIni        DateTime @db.Date 
+  fechaFin        DateTime @db.Date
+  nochesDeEstadia Int
+  costoNoche      Float
+
+  nroAdultos  Int @default(1)
+  nroNinos    Int @default(0)
+  nroBebes    Int @default(0)
+  nroMascotas Int @default(0)
+
+  costoHospedaje Float 
+  tarifaServicio Float @default(0)
+  tarifaLimpieza Float @default(0)
+
+  metodoDePago   MetodoDePago @relation(name: "paga", fields: [metodoDePagoId, usuarioPagador], references: [id, propietarioId])
+  metodoDePagoId Int
+  usuarioPagador Int
 
   Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   huespedId   Int
@@ -112,6 +129,19 @@ model Hospedaje {
   propiedadId Int
 
   @@id([id, huespedId, propiedadId])
+}
+
+model MetodoDePago {
+  id Int @default(autoincrement())
+
+  infoTarjeta String
+
+  propietario   Usuario @relation("registra", fields: [propietarioId], references: [id])
+  propietarioId Int
+
+  hospedajesPagados Hospedaje[] @relation("paga")
+
+  @@id([id, propietarioId])
 }
 
 model ValoracionUsuario {
