@@ -105,7 +105,7 @@ model Hospedaje {
   estaActivo       Boolean   @default(true)
   estadoAceptacion StayState @default(EN_ESPERA)
 
-  fechaIni        DateTime @db.Date 
+  fechaIni        DateTime @db.Date
   fechaFin        DateTime @db.Date
   nochesDeEstadia Int
   costoNoche      Float
@@ -115,13 +115,13 @@ model Hospedaje {
   nroBebes    Int @default(0)
   nroMascotas Int @default(0)
 
-  costoHospedaje Float 
+  costoHospedaje Float
   tarifaServicio Float @default(0)
   tarifaLimpieza Float @default(0)
 
-  metodoDePago   MetodoDePago @relation(name: "paga", fields: [metodoDePagoId, usuarioPagador], references: [id, propietarioId])
-  metodoDePagoId Int
-  usuarioPagador Int
+  metodoDePago     MetodoDePago @relation(name: "paga", fields: [metodoDePagoId, usuarioPagadorId], references: [id, propietarioId])
+  metodoDePagoId   Int
+  usuarioPagadorId Int
 
   Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   huespedId   Int
