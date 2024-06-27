@@ -7,6 +7,7 @@ import { HomestayApiService } from '../../services/homestay-api.service';
 import { Subscription } from 'rxjs';
 import { UserGlobalPreferencesService, UserMeResponse } from '../../services/user-global-preferences.service';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-home-stay',
@@ -21,6 +22,7 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     private serviceForHomeStayTypes: HomeDisplayService,
     private serviceForHttp: HomestayApiService,
     private serviceForUser: UserGlobalPreferencesService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,59 +36,11 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     this._userSub?.unsubscribe();
   }
 
-  public homeStayForm: FormGroup = new FormGroup({
-    guest: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]), //puse maximo 10 pero puede cambiar
-    rooms: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
-    beds: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
-    bathrooms: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
-    type: new FormControl('', [Validators.required]),
-    desc: new FormControl('', [Validators.required]),
-    pricePerNight: new FormControl(10000, [Validators.required, Validators.min(5000)]),
-    noAvailableDates: new FormControl([]), //no se si deberia ser required?
-    rules: new FormControl('', [Validators.required]),
-    title: new FormControl('', [Validators.required]),
-    city: new FormControl('', [Validators.required]),
-    country: new FormControl('', [Validators.required]),
-    images: new FormControl('', [Validators.required, imageLinksValidator()]),
-    streetAddress: new FormControl('', [Validators.required]),
-    services: new FormControl('', [Validators.required]),
-    streetNumber: new FormControl(null, [Validators.required]),
-    depNumber: new FormControl(null, [Validators.required]),
-    securityOptions: new FormControl('', [Validators.required]),
-    arrivalOptions: new FormControl('', [Validators.required]),
-  })
-
-  public types!: HomeStayType[]
-
-  public currentGuests: number = 1;
-  public currentRooms: number = 1;
-  public currentBeds: number = 1;
-  public currentBathrooms: number = 1;
-  public currentType: string = '';
-  public currentDesc: string = '';
-  public currentPricePerNight: number = 0;
-  public noAvailableDates: Date[] = [];
-  public currentInitDate: Date = new Date();
-  public currentFinishDate: Date = new Date();
-  public currentRules: string = '';
-  public currentTitle: string = '';
-  public currentCity: string = '';
-  public currentCountry: string = '';
-  public currentImages: string = ''
-  public currentStreetAddress: string = '';
-  public currentServices: string = '';
-  public currentStreetNumber: number = 0;
-  public currentDepNumber: number = 0;
-  public currentSecurityOptions: string = '';
-  public currentArrivalOptions: string = '';
-
-  private invalidFormAlertNotification: boolean = false;
-  public getFormIsValid(): boolean {
-    return this.invalidFormAlertNotification;
-  }
-
   readonly CONSTANTS = {
-    guestsNumberLabel: 'Número de Huespedes',
+    adultsNumberLabel: 'Número de Adultos',
+    childrenNumberLabel: 'Número de Niños',
+    babiesNumberLabel: 'Número de Bebes',
+    petsNumberLabel: 'Número de Mascotas',
     roomsNumberLabel: 'Número de Habitaciones',
     bedsNumberLabel: 'Número de Camas disponible',
     bathsNumberLabel: 'Número de Baños disponible',
@@ -108,14 +62,46 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     submitButtonLabel: 'Enviar Formulario',
   };
 
+  public homeStayForm: FormGroup = new FormGroup({
+    adults: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]), //puse maximo 10 pero puede cambiar
+    children: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    babies: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    pets: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    rooms: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    beds: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    bathrooms: new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]),
+    type: new FormControl('', [Validators.required]),
+    desc: new FormControl('', [Validators.required]),
+    pricePerNight: new FormControl(10000, [Validators.required, Validators.min(10000)]),
+    noAvailableDates: new FormControl([]), //no se si deberia ser required?
+    rules: new FormControl('', [Validators.required]),
+    title: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
+    country: new FormControl('', [Validators.required]),
+    images: new FormControl('', [Validators.required, imageLinksValidator()]),
+    streetAddress: new FormControl('', [Validators.required]),
+    services: new FormControl('', [Validators.required]),
+    streetNumber: new FormControl(null, [Validators.required]),
+    depNumber: new FormControl(''), //segun mi logica no deberia ser obligatorio este
+    securityOptions: new FormControl('', [Validators.required]),
+    arrivalOptions: new FormControl('', [Validators.required]),
+  })
+
+  public types!: HomeStayType[]
+
   public increment(field: string): void {
     const currentField = this.homeStayForm.get(field)!.value || 0;
     if(field != 'pricePerNight'){
       this.homeStayForm.get(field)!.setValue(currentField + 1);
     } else {
-      this.homeStayForm.get(field)!.setValue(currentField + 5000);
+      if((currentField+5000) < 10000){
+        this.homeStayForm.get(field)!.setValue(10000);
+      }else{
+        this.homeStayForm.get(field)!.setValue(currentField + 5000);
+      }
+      
     }
-    
+    this.homeStayForm.get(field)!.updateValueAndValidity()
   }
 
   public decrement(field: string): void {
@@ -141,90 +127,60 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     this.types = this.serviceForHomeStayTypes.getHomeStayTypes();
   }
 
-  public async sendDataToValidation() {
+  public sendDataToValidation() {
     const form: HomeStayForm = {
-      guests: this.currentGuests,
-      rooms: this.currentRooms,
-      beds: this.currentBeds,
-      bathrooms: this.currentBathrooms,
-      pricePerNight: this.currentPricePerNight,
-      type: this.currentType,
-      desc: this.currentDesc,
-      initDate: this.currentInitDate,
-      finishDate: this.currentFinishDate,
-      title: this.currentTitle,
-      rules: this.currentRules,
-      country: this.currentCountry,
-      city: this.currentCity,
-      services: this.currentServices,
-      street: this.currentStreetAddress,
-      streetNumber: this.currentStreetNumber,
-      depNumber: this.currentDepNumber,
-      securityOptions: this.currentSecurityOptions,
-      arrivalOptions: this.currentArrivalOptions,
+      adults: this.homeStayForm.get('adults')?.value,
+      children: this.homeStayForm.get('children')?.value,
+      babies: this.homeStayForm.get('babies')?.value,
+      pets: this.homeStayForm.get('pets')?.value,
+      rooms: this.homeStayForm.get('rooms')?.value,
+      beds: this.homeStayForm.get('beds')?.value,
+      bathrooms: this.homeStayForm.get('bathrooms')?.value,
+      pricePerNight: this.homeStayForm.get('pricePerNight')?.value,
+      type: this.homeStayForm.get('type')?.value,
+      desc: this.homeStayForm.get('desc')?.value,
+      noAvailableDates: this.homeStayForm.get('noAvailableDates')?.value,
+      rules: this.homeStayForm.get('rules')?.value,
+      title: this.homeStayForm.get('title')?.value,
+      country: this.homeStayForm.get('country')?.value,
+      city: this.homeStayForm.get('city')?.value,
+      street: this.homeStayForm.get('streetAddress')?.value,
+      services: this.homeStayForm.get('services')?.value,
+      streetNumber: this.homeStayForm.get('streetNumber')?.value,
+      depNumber: this.homeStayForm.get('depNumber')?.value,
+      securityOptions: this.homeStayForm.get('securityOptions')?.value,
+      arrivalOptions: this.homeStayForm.get('arrivalOptions')?.value,
       userId: this._currentUser!.id,
-      images: this.currentImages
-    };
-
-    if (this.validateForm(form)) {
-      this.invalidFormAlertNotification = false;
-      this.serviceForHttp.sendHomeStayForm(form).subscribe((form) => {
-        this.cleanEntries();
-      });
-    } else {
-      this.invalidFormAlertNotification = true;
-      this.cleanEntries();
+      images: this.homeStayForm.get('images')?.value
     }
+
+    this.serviceForHttp.sendHomeStayForm(form).subscribe((result)=>{
+      if(result && result.success){
+        alert("Propiedad registrada correctamente")
+        this.router.navigateByUrl('home-stay-list')
+      } else{
+        alert(result.message || "Error al registrar la propiedad")
+      }
+    })
+    
   }
 
-  private validateForm(form: HomeStayForm): boolean {
-    if (form === undefined) return false;
-    return (
-      form.guests > 1 ||
-      form.rooms > 0 ||
-      form.bathrooms > 0 ||
-      form.beds > 0 ||
-      form.initDate.toString() == ''
-    );
-  }
-  private cleanEntries() {
-    this.currentGuests = 0;
-    this.currentRooms = 0;
-    this.currentBeds = 0;
-    this.currentBathrooms = 0;
-    this.currentType = '';
-    this.currentDesc = '';
-    this.currentPricePerNight = 0;
-    this.currentInitDate = new Date();
-    this.currentFinishDate = new Date();
-    this.currentRules = '';
-    this.currentTitle = '';
-    this.currentCountry = '';
-    this.currentCity = '';
-    this.currentStreetAddress = '';
-    this.currentServices = '';
-    this.currentStreetNumber = 0;
-    this.currentDepNumber = 0;
-    this.currentSecurityOptions = '';
-    this.currentArrivalOptions = '';
-    this.currentImages = ''
-  }
-
-  public currentHomeStayForm?: HomeStayForm;
-
+  
   protected readonly navigator = navigator;
 }
 
 export interface HomeStayForm {
-  guests: number;
+  adults: number;
+  children: number;
+  babies: number;
+  pets: number;
   rooms: number;
   beds: number;
   bathrooms: number;
   pricePerNight: number;
   type: string;
   desc: string;
-  initDate: Date;
-  finishDate: Date;
+  noAvailableDates: Date[];
   rules: string;
   title: string;
   country: string;
@@ -243,7 +199,7 @@ export function imageLinksValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const links = control.value || '';
     const urlPattern = /^(http|https):\/\/[^\s$.?#].[^\s]*$/;
-    const imagePattern = /\.(jpeg|jpg|gif|png|webp)$/i;
+    const imagePattern = /(jpeg|jpg|gif|png|webp|images)/i;
 
     if (links.length != 0) {
       for (let link of links.split(',')) {

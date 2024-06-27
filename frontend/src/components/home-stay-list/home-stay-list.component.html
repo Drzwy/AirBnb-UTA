@@ -12,14 +12,14 @@
       <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
         <div class="card border border-0 my-2" (click)="homeVisualizer(homeStay.id)">
           <img
-              [src]="images[homeStay.id%images.length][0].url"
+              [src]="homeStay.fotos[0]"
               class="rounded-3"
               [height]="IMAGE_DIMENSIONS"
             />
           <div class="card-body lh-1">
             <div class="row">
               <div class="col-9 ps-0">
-                <h6 class="h6 card-title">{{homeStay.ciudad}}</h6>
+                <h6 class="h6 card-title">{{homeStay.ciudad}}, {{homeStay.pais}}</h6>
               </div>
               <div class="col-3 text-end pe-0">
                 <p>
