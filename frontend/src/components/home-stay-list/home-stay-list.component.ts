@@ -3,6 +3,7 @@ import {
   emptyFilter,
   HomeDisplayService,
   HomeStayType,
+  reviews,
 } from '../../services/home-display.service';
 import { FilterState } from './advanced-filter/advanced-filter.component';
 import { Router } from '@angular/router';
@@ -21,6 +22,8 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public currentType: string = '';
   public currentFilter: FilterState = emptyFilter;
   public currentHomeStayList: HomeStayInformation[] = [];
+  public reviews: reviews[] = []
+  public rating: number[] = []
 
   private _homestayTypeSubscription?: Subscription;
   private _currentFilterSubscription?: Subscription;
@@ -42,6 +45,7 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     this._filterByConditionSubscription = this.service
       .filterHomeStaysByConditions()
       .subscribe((value) => (this.currentHomeStayList = value));
+    this.getReviews()
   }
   ngOnDestroy() {
     this._currentFilterSubscription!.unsubscribe();
@@ -63,7 +67,6 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     this.service.getAvailableHomeStay().subscribe((result) =>{
       if (type === undefined || type == '') {
         this.currentHomeStayList = result;
-        this.images = this.service.images
       } else {
         this.currentHomeStayList = result.filter(
           (homeStay) => homeStay.tipo == type && homeStay.precioNoche,
@@ -72,12 +75,19 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     })  
   }
 
-  // public getPriceOf(home: HomeStayInformation): String {
-  //   return this.service.intToMoneyFormat(
-  //     home.pricePerNight.price,
-  //     home.pricePerNight.typeChange,
-  //   );
-  // }
+  public getReviews(){
+    this.service.getHomeStaysReviews().subscribe((result) =>{
+      console.log(result)
+      this.reviews = result
+    })
+  }
+  
+  public getRatings(id: number): string{
+    const filteredReviews = this.reviews.filter(review => review.propiedadCriticadaId === id);
+    const rating = filteredReviews.reduce((sum, review) => sum + review.puntuacion, 0);
+    return filteredReviews.length > 0 ? (rating / filteredReviews.length).toFixed(1) : "0";
+  }
+
 }
 
 export interface HomeStayInformation {

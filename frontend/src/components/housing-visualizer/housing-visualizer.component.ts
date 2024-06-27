@@ -3,8 +3,9 @@ import { ImageDTO } from './images-card/image-card.component';
 import { HousingInformation } from './housing-info-displayer/housing-info-displayer.component';
 import { HousingPrice } from './housing-reservation/housing-reservation.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HomeDisplayService } from '../../services/home-display.service';
+import { HomeDisplayService, reviews } from '../../services/home-display.service';
 import { HomeStayInformation } from '../home-stay-list/home-stay-list.component';
+import { forkJoin, map, mergeMap } from 'rxjs';
 
 
 @Component({
@@ -24,16 +25,18 @@ export class HousingVisualizerComponent implements OnInit{
     this.route.params.subscribe(params =>{
       this.id = +params['id']
     })
-    this.img = this.homeStayservice.images[this.id%8]
     this.homeStayservice.getHomeStay(this.id).subscribe((value) =>{
       this.homeStay = value
     })
+    this.getReviews2(this.id)
   }
 
   public id: number = 0;
   public img: ImageDTO[] = [];
   public homeStay!: HomeStayInformation
   public isExpanded: boolean[] = [];
+  public reviews: any[] = []
+  public users: any[] = []
 
   public house: HouseExample = {
     imagesUrl: [
@@ -174,6 +177,51 @@ export class HousingVisualizerComponent implements OnInit{
     return housingPrices
   } 
 
+  public getReviews(id:number){
+    this.homeStayservice.getReviewsByID(id).subscribe((result) =>{
+      this.reviews = result
+    })
+  }
+  
+  public getRatings(id: number): string{
+    const filteredReviews = this.reviews.filter(review => review.propiedadCriticadaId === id);
+    const rating = filteredReviews.reduce((sum, review) => sum + review.puntuacion, 0);
+    return filteredReviews.length > 0 ? (rating / filteredReviews.length).toFixed(1) : "0";
+  }
+
+  public getReviews2(id: number) {
+    this.homeStayservice.getReviewsByID(id).pipe(
+      mergeMap((reviews: any[]) => {
+        const usuarioIds = reviews.map(review => review.usuarioCreadorId);
+        const requests = usuarioIds.map(userId => this.homeStayservice.getUserById(userId));
+        return forkJoin(requests).pipe(
+          map((usuarios: any[]) => {
+            reviews.forEach((review, index) => {
+              review.usuarioCreadorInfo = usuarios[index]; 
+            });
+            return reviews; 
+          })
+        );
+      })
+    ).subscribe((result) => {
+      console.log(result)
+      this.reviews = result; 
+    });
+  }
+  public dateFormat(date: Date): string {
+    let date2 = new Date(date) 
+    return date2.toLocaleString("es-ES", {
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+  public getUser(id:number){
+    this.homeStayservice.getUserById(id).subscribe((result =>{
+      console.log(result, 'xd')
+      this.users.push(result)
+    }))
+  }
 
 }
 

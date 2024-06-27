@@ -6,10 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrl: './image-card.component.css',
 })
 export class ImageCardComponent {
-  @Input() imageUrls: ImageDTO[] = [];
+  @Input() imageUrls: string[] = [];
 
-  public getImages(): ImageDTO[] {
-    console.log(this.imageUrls);
+  public getImages(): string[] {
     return this.imageUrls;
   }
 }
