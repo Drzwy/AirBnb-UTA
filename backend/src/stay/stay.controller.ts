@@ -8,14 +8,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Hospedaje, Propiedad } from '@prisma/client';
+import { Hospedaje } from '@prisma/client';
 import { User } from 'src/user/decorator';
-import { StayService } from './stay.service';
+import { HostRequestsToStay, StayService } from './stay.service';
 import { StayIdsDTO, SolicitStayDTO, ModifyStayDTO } from './dto';
+import { JwtGuard } from 'src/auth/guard';
 
 @ApiTags('Stays')
+@UseGuards(JwtGuard)
 @Controller('stays')
 export class StayController {
   constructor(private stayService: StayService) {}
@@ -43,16 +46,14 @@ export class StayController {
   }
 
   @Get('host/me')
-  getMyStaysAsHost(
-    @User('id') hostId: number,
-  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+  getMyStaysAsHost(@User('id') hostId: number): Promise<HostRequestsToStay[]> {
     return this.stayService.getStaysByHostId(hostId);
   }
 
   @Get('host/:id')
   getMyStaysByHostId(
     @Param('id') hostId: number,
-  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+  ): Promise<HostRequestsToStay[]> {
     return this.stayService.getStaysByHostId(hostId);
   }
 

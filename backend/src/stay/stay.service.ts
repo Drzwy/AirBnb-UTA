@@ -4,19 +4,15 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Hospedaje, Propiedad, StayState } from '@prisma/client';
+import { Hospedaje, Propiedad, StayState, Usuario } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StayIdsDTO, SolicitStayDTO } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { ModifyStayDTO } from './dto/stayModify.dto';
-import { HomestayService } from 'src/homestay/homestay.service';
 
 @Injectable()
 export class StayService {
-  constructor(
-    private prismaService: PrismaService,
-    private homestayService: HomestayService,
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
   async getAllStays(): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany();
@@ -59,28 +55,43 @@ export class StayService {
     return stays;
   }
 
-  async getStaysByHostId(
-    hostId: number,
-  ): Promise<{ propiedad: Propiedad; hospedajes: Hospedaje[] }[]> {
+  async getStaysByHostId(hostId: number): Promise<HostRequestsToStay[]> {
     try {
       const properties: Propiedad[] =
-        await this.homestayService.getAllHomeStaysByUserId(hostId);
-
-      const allStays: { propiedad: Propiedad; hospedajes: Hospedaje[] }[] = [];
-      for (const property of properties) {
-        const stays: Hospedaje[] = await this.getStaysByPropertyId(property.id);
-        allStays.push({
-          propiedad: property,
-          hospedajes: stays,
+        await this.prismaService.propiedad.findMany({
+          where: {
+            anfitrionId: hostId,
+          },
         });
+
+      const stayRequests: HostRequestsToStay[] = [];
+      for (const property of properties) {
+        const stayRequest = new HostRequestsToStay();
+
+        stayRequest.propiedad = property;
+
+        const stays: Hospedaje[] = await this.getStaysByPropertyId(property.id);
+
+        for (const stay of stays) {
+          const guest: Usuario = await this.prismaService.usuario.findUnique({
+            where: {
+              id: stay.huespedId,
+            },
+          });
+          stayRequest.hospedajes.push({ hospedaje: stay, huesped: guest });
+        }
+
+        stayRequests.push(stayRequest);
       }
 
-      return allStays;
+      return stayRequests;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        throw new InternalServerErrorException(
-          'Ocurrió un error con el cliente de prisma',
-        );
+        if (error.code === 'P2025') {
+          throw new NotFoundException(error);
+        } else {
+          throw new InternalServerErrorException(error);
+        }
       } else {
         throw error;
       }
@@ -264,4 +275,11 @@ export class StayService {
 
     return dateArray;
   }
+}
+
+export class HostRequestsToStay {
+  propiedad: Propiedad;
+  hospedajes: { hospedaje: Hospedaje; huesped: Usuario }[];
+
+  constructor() {}
 }
