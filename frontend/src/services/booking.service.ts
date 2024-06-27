@@ -19,6 +19,9 @@ export class BookingService{
   public houseName: string = '';
   public houseType: string = '';
   public id: number = -1;
+  public invalidDates: Date[] = [];
+  public rating: string = '';
+  public numberReviews: number = -1;
 
   public startDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
   public endDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
@@ -37,7 +40,15 @@ export class BookingService{
 
   public addStartDate(date: Date){    
     this.startDate.next(date)
-    
+  }
+
+  public addInvalidDates(dates: Date[]){
+    this.invalidDates = dates
+  }
+
+  public addReviews(rating: string, numberReviews:number){
+    this.rating = rating
+    this.numberReviews = numberReviews
   }
 
   public addEndDate(date: Date |null){    
@@ -55,6 +66,14 @@ export class BookingService{
 
   public getHouseInfo(): Observable<string[]>{
     return of([this.houseName, this.houseType])
+  }
+
+  public getInvalidDates(){
+    return this.invalidDates
+  }
+
+  public getReviews(){
+    return {rating: this.rating, numberReviews: this.numberReviews}
   }
 
   public booking(): Observable<any>{

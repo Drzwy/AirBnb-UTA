@@ -17,7 +17,7 @@ export class HousingReservationComponent implements OnInit {
     this.startDate = null;
     this.endDate = null;
     this.nights = 0;
-    this.rules = '';
+    this.rules = [];
     this.houseName = '';
     this.houseType = '';
     this.id = -1
@@ -36,10 +36,14 @@ export class HousingReservationComponent implements OnInit {
     airbnbServiceFee: 0,
   };
 
-  @Input() public rules: string;
+  @Input() public rules: string[];
   @Input() public houseId:number;
   @Input() public houseName:string;
   @Input() public houseType:string;
+  @Input() public invalidDates:Date[] = [];
+  @Input() public rating: string = '';
+  @Input() public numberReviews: number = -1;
+
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -116,7 +120,6 @@ export class HousingReservationComponent implements OnInit {
             guestString += 's';
           }
         }
-
         guestCount++;
       }
     });
@@ -161,6 +164,8 @@ export class HousingReservationComponent implements OnInit {
     });;
     this.bookingServ.addReservation(reservation)
     this.bookingServ.addHouseInfo(this.houseName, this.houseType)
+    this.bookingServ.addInvalidDates(this.invalidDates)
+    this.bookingServ.addReviews(this.rating, this.numberReviews)
     console.log(reservation);
     }
   }

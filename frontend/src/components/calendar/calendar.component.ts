@@ -16,6 +16,7 @@ export class CalendarComponent implements OnInit {
   @Output() endDate: any = new EventEmitter<Date>();
   @Output() nights: any = new EventEmitter<number>();
   @Input() location: any;
+  @Input() invalidDate: Date[] = []; // se ingresan aqui las fechas no disponibles y se desactivan en el calendario
 
   ngOnInit(){
     this.startDateSubscription = this.bookingService.startDate$.subscribe(date =>{
@@ -23,7 +24,7 @@ export class CalendarComponent implements OnInit {
       if(this.date1){
         this.rangeDates[0] = this.date1;
       }else{
-        this.rangeDates = []
+        this.rangeDates = [];
         this.selectedNights = 0;
         this.startDate.emit(this.rangeDates[0]);
         this.endDate.emit(this.rangeDates[1]);
@@ -38,11 +39,12 @@ export class CalendarComponent implements OnInit {
       }
       this.onDateSelect()
     })
-    
+    this.noDates = this.invalidDate.map(date => date = new Date(date))
   }
 
   private startDateSubscription?: Subscription;
   private endDateSubscription?: Subscription;
+  public noDates: Date[] = []
   public date1: Date | null = null;
   public date2: Date | null = null;
 
@@ -53,7 +55,6 @@ export class CalendarComponent implements OnInit {
   //Aqui se guardan las fechas seleccionadas
   // date1: Date = new Date('06/26/2024'); // ejemplos para desactivar fechas en el calendario
   // date2: Date = new Date('06/28/2024');
-  invalidDate: Date[] = []; // se ingresan aqui las fechas no disponibles y se desactivan en el calendario
   selectedNights: number = 0;
   rangeDates: Date[] = [];
 

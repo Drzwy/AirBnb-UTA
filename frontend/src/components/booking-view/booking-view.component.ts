@@ -13,7 +13,7 @@ export class BookingViewComponent implements OnInit {
   constructor(
     private router: Router,
     private bookingService: BookingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   public indice: number = -1
@@ -31,10 +31,15 @@ export class BookingViewComponent implements OnInit {
     this.bookingService.getHouseInfo().subscribe(response =>{
       this.houseInfo = response;
     });
+    this.getInvalidDates()
+    this.getReviews()
   }
 
   public reservation!: Reservation
   public houseInfo!: string[]
+  public invalidDates!: Date[]
+  public rating: string = ''
+  public numberReviews: number = -1
 
   public formatGuests(): string {
     let guestString = '';
@@ -67,6 +72,16 @@ export class BookingViewComponent implements OnInit {
     });
 
     return guestString;
+  }
+
+  public getReviews(){
+    const reviews = this.bookingService.getReviews()
+    console.log(reviews)
+    this.rating = reviews.rating
+    this.numberReviews = reviews.numberReviews
+  }
+  public getInvalidDates(){
+    this.invalidDates = this.bookingService.getInvalidDates()
   }
 
   public onStartDateSelected(date: any) {
