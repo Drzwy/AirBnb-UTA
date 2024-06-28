@@ -19,7 +19,6 @@ import { UserCreateDTO } from './dto/userCreate.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
-@UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
   private UAE: UnauthorizedException = new UnauthorizedException(
@@ -36,6 +35,7 @@ export class UserController {
    * @returns Usuarios encontrados
    */
   @Get()
+  @UseGuards(JwtGuard)
   getAllUsers(@User('tipoUsuario') userType: UserTypes) {
     if (userType == UserTypes.Cliente) throw this.UAE;
     return this.userService.getAllUsers();
@@ -47,6 +47,7 @@ export class UserController {
    * @returns Datos del Usuario logeado
    */
   @Get('me')
+  @UseGuards(JwtGuard)
   getMe(@User('id') userId: number) {
     return this.userService.getUserById(userId);
   }
@@ -71,6 +72,7 @@ export class UserController {
    * @returns Usuario creado
    */
   @Post()
+  @UseGuards(JwtGuard)
   createUser(
     @User('tipoUsuario') userType: UserTypes,
     @Body() dto: UserCreateDTO,
@@ -87,6 +89,7 @@ export class UserController {
    * @returns Usuario borrado
    */
   @Delete(':userId')
+  @UseGuards(JwtGuard)
   deleteUserById(
     @User('tipoUsuario') userType: UserTypes,
     @Param('userId') userId: string,
@@ -103,6 +106,7 @@ export class UserController {
    * @returns Usuario actualizado
    */
   @Patch()
+  @UseGuards(JwtGuard)
   updateLoggedUser(@User('id') userId: number, @Body() dto: UserUpdateDto) {
     return this.userService.updateUserById(userId, dto);
   }
@@ -114,6 +118,7 @@ export class UserController {
    * @returns Usuario actualizado
    */
   @Patch(':userId')
+  @UseGuards(JwtGuard)
   updateUserById(
     @User('tipoUsuario') userType: UserTypes,
     @Param('userId') userId: string,
