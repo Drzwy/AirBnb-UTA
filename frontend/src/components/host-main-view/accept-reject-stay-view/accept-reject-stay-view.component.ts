@@ -5,7 +5,8 @@ import {
   StayResponse,
   StaysService,
 } from '../../../services/stays.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-accept-reject-stay-view',
@@ -36,6 +37,7 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
   public acceptStay(stay: StayResponse) {
     this.service
       .acceptStayRequest(this.getIdsOfStay(stay))
+      .pipe(take(1))
       .subscribe((value) => {
         if (value) {
           alert('SE HA ACEPTADO LA SOLICITUD!!');
@@ -43,11 +45,13 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
           alert('ALGO MALO HA OCURRIDO');
         }
       });
+    window.location.reload();
   }
 
   public rejectStay(stay: StayResponse) {
     this.service
       .rejectStayRequest(this.getIdsOfStay(stay))
+      .pipe(take(1))
       .subscribe((value) => {
         if (value) {
           alert('SE HA RECHAZADO LA SOLICITUD.');

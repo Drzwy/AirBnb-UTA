@@ -12,7 +12,7 @@
       </div>
       <div class="card-body text-center">
         <h1 class="text-body-emphasis" style="font-size: 7rem">
-          {{ getRatingOfCurrentHost() }}
+          {{ getRatingOfCurrentHost() ? getRatingOfCurrentHost() : 0.0}}
         </h1>
         <img src="assets/images/laurel-wreath.png" alt="laurel" height="128" width="256">
       </div>
@@ -21,6 +21,23 @@
         <h2>
           de valoración promedio
         </h2>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Balance económico</h3>
+  <div class="row gy-5 container-fluid" >
+    <div class="card mx-auto w-75 pt-3">
+      <div class="card-title text-center">
+        <h2>
+          En el último mes has ganado
+        </h2>
+      </div>
+      <div class="card-body text-center">
+        <h1 class="text-body-emphasis" style="font-size: 7rem">
+          ${{ getMoneyOfAcceptedStays() }}
+        </h1>
       </div>
     </div>
 
@@ -93,22 +110,7 @@
 
   </div>
 
-  <h3>Balance económico</h3>
-  <div class="row gy-5 container-fluid" >
-    <div class="card mx-auto w-75 pt-3">
-      <div class="card-title text-center">
-        <h2>
-          En el último mes has ganado
-        </h2>
-      </div>
-      <div class="card-body text-center">
-        <h1 class="text-body-emphasis" style="font-size: 7rem">
-          ${{ getRatingOfCurrentHost() }}
-        </h1>
-      </div>
-    </div>
 
-  </div>
 
 
 

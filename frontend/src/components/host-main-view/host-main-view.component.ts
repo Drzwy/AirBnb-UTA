@@ -10,10 +10,7 @@ import {
   alternativeImageUrl,
   HomeStayConstants,
 } from '../../../../common/common';
-import {
-  MessageApiService,
-  MessageResponse,
-} from '../../services/message-api.service';
+import { StaysService } from '../../services/stays.service';
 
 @Component({
   selector: 'app-host-main-view',
@@ -23,10 +20,15 @@ import {
 export class HostMainViewComponent implements OnInit, OnDestroy {
   private _currentHostHouses: HomeStayGetResponse[] = [];
   private _currentHostRatings: ValoracionUsuarioResponse[] = [];
+  private _currentHostProfit: number = 0;
   private _currentHostName: string = '';
   private _currentHostId: number = 0;
-  private _userSubscription = new Subscription();
-  constructor(private userService: UserGlobalPreferencesService) {}
+  private _userSubscription: Subscription = new Subscription();
+  private _staySubscription: Subscription = new Subscription();
+  constructor(
+    private userService: UserGlobalPreferencesService,
+    private stayService: StaysService,
+  ) {}
 
   ngOnInit() {
     this._userSubscription = this.userService
@@ -39,10 +41,22 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
           this._currentHostRatings = value.valoracionesRecibidas;
         }
       });
+    this._staySubscription = this.stayService
+      .getStayRequestOfLoggedHost()
+      .subscribe((value) => {
+        value.forEach((staysOfHost) => {
+          staysOfHost.hospedajes.forEach((stay) => {
+            if (stay.hospedaje.estadoAceptacion === 'ACEPTADO') {
+              this._currentHostProfit += stay.hospedaje.costoHospedaje;
+            }
+          });
+        });
+      });
   }
 
   ngOnDestroy() {
     this._userSubscription.unsubscribe();
+    this._staySubscription.unsubscribe();
   }
 
   public getCurrentHostHouses(): HomeStayGetResponse[] {
@@ -53,6 +67,10 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
   }
   public getCurrentHostId(): number {
     return this._currentHostId;
+  }
+
+  public getMoneyOfAcceptedStays(): number {
+    return this._currentHostProfit;
   }
 
   public getRatingOfCurrentHost(): number {
