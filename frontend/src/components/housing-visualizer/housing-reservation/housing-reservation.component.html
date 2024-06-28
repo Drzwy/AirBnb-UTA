@@ -41,7 +41,7 @@
         >
           <h2 class="h6 mb-0">Salida</h2>
           <h2 class="h6 fw-normal mb-0">
-            {{ endDate ? (endDate | date: "dd/MM/yyyy") : "Agrega una fecha" }}
+            {{ endDate && endDate.getTime() > startDate!.getTime() ? (endDate | date: "dd/MM/yyyy") : "Agrega una fecha" }}
           </h2>
         </div>
       </div>
@@ -57,6 +57,7 @@
             (startDate)="onStartDateSelected($event)"
             (endDate)="onEndDateSelected($event)"
             (nights)="onNightsSelected($event)"
+            [invalidDate]="invalidDates"
           >
           </app-calendar>
         </div>
@@ -304,7 +305,7 @@
 </div>
 
 <div class="row">
-  @if (nights != 0) {
+  @if (nights != 0 && startDate!.getTime() < endDate!.getTime()) {
     @for (price of partialHousingPrices; track price; let i = $index) {
       <div class="row pe-0">
         <div class="col-12 col-sm-8">
@@ -334,3 +335,11 @@
     </div>
   }
 </div>
+
+
+{{startDate}}
+<div class="row"></div>
+{{endDate}}
+<div class="row"></div>
+{{nights}}
+

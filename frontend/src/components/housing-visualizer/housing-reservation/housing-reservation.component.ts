@@ -17,19 +17,18 @@ export class HousingReservationComponent implements OnInit {
     this.startDate = null;
     this.endDate = null;
     this.nights = 0;
-    this.rules = '';
+    this.rules = [];
     this.houseName = '';
     this.houseType = '';
-    this.id = -1
-    this.houseId = -1
+    this.id = -1;
+    this.houseId = -1;
+    this.houseImg = '';
   }
 
   ngOnInit(): void {
-    console.log("ola")
     this.userServ.getCurrentUser().subscribe(response =>{
       this.id = response.id
     })
-    console.log(this.id)
   }
 
   @Input() public housingPrice: HousingPrice = {
@@ -38,13 +37,15 @@ export class HousingReservationComponent implements OnInit {
     airbnbServiceFee: 0,
   };
 
-  @Input() public rules: string;
+  @Input() public rules: string[];
   @Input() public houseId:number;
   @Input() public houseName:string;
   @Input() public houseType:string;
-  @Output() startDate2: any = new EventEmitter<Date>();
-  @Output() endDate2: any = new EventEmitter<Date>();
-  @Output() nights2: any = new EventEmitter<number>();
+  @Input() public houseImg: string;
+  @Input() public invalidDates:Date[] = [];
+  @Input() public rating: string = '';
+  @Input() public numberReviews: number = -1;
+
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -73,8 +74,6 @@ export class HousingReservationComponent implements OnInit {
   public getPrice(): void {
     let prices: string[] = [];
     let text: string;
-
-    console.log(this.housingPrice.pricePerNight * this.nights * this.housingPrice.cleaningFee)
 
     text =
       '$' + (this.housingPrice.pricePerNight * this.nights).toLocaleString('en-US') + ' CLP';
@@ -123,7 +122,6 @@ export class HousingReservationComponent implements OnInit {
             guestString += 's';
           }
         }
-
         guestCount++;
       }
     });
@@ -133,22 +131,18 @@ export class HousingReservationComponent implements OnInit {
 
   public onStartDateSelected(date: any) {
     this.startDate = date;
-    this.startDate2.emit(date)
   }
 
   public onEndDateSelected(date: any) {
     this.endDate = date;
-    this.endDate2.emit(date)
   }
 
   public onNightsSelected(nights: any) {
     this.nights = nights;
     this.getPrice();
-    this.nights2.emit(nights)
   }
 
   public reserve() {
-    console.log('reservar');
     let partialPrices: any;
     let reservation: Reservation;
     if (this.startDate && this.endDate) {
@@ -157,21 +151,26 @@ export class HousingReservationComponent implements OnInit {
         price: this.toNumber(price),
       }));
       reservation = {
-        id: this.id,
-        houseId: this.houseId,
-        guests: this.guests,
         startDate: this.startDate,
         endDate: this.endDate,
         nights: this.nights,
         pricePerNight: this.housingPrice.pricePerNight,
+        guests: this.guests,
         partialPrices: partialPrices,
+        paymentMethodId: 1,
+        payerId: this.id,
+        id: this.id,
+        houseId: this.houseId,
+
         totalPrice: this.toNumber(this.priceWithoutTaxes()),
       };
     this.router.navigate([`booking/${this.houseId}`]).then(() => {
       window.scrollTo(0, 0);
     });;
     this.bookingServ.addReservation(reservation)
-    this.bookingServ.addHouseInfo(this.houseName, this.houseType)
+    this.bookingServ.addHouseInfo(this.houseName, this.houseType, this.houseImg)
+    this.bookingServ.addInvalidDates(this.invalidDates)
+    this.bookingServ.addReviews(this.rating, this.numberReviews)
     console.log(reservation);
     }
   }
@@ -195,13 +194,16 @@ export interface Guests {
 }
 
 export interface Reservation {
-  houseId: number,
-  id: number,
-  guests: Guests;
   startDate: Date;
   endDate: Date;
   nights: number;
   pricePerNight: number;
+  guests: Guests;
   partialPrices: any;
-  totalPrice: number;
+  paymentMethodId: number,
+  payerId: number,
+  id: number,
+  houseId: number,
+  
+  totalPrice: number; // este no se envia al backend
 }

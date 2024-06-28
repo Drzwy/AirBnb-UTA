@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
 import { Reservation } from '../housing-visualizer/housing-reservation/housing-reservation.component';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-view',
@@ -13,10 +14,8 @@ export class BookingViewComponent implements OnInit {
   constructor(
     private router: Router,
     private bookingService: BookingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
-
-  public indice: number = -1
 
   ngOnInit() {
     this.bookingService.getReservation().subscribe(response =>{
@@ -31,10 +30,22 @@ export class BookingViewComponent implements OnInit {
     this.bookingService.getHouseInfo().subscribe(response =>{
       this.houseInfo = response;
     });
+    this.getInvalidDates()
+    this.getReviews()
   }
 
+  public indice: number = -1
+  public paymentMethodForm: FormGroup = new FormGroup({
+    cardNumber: new FormControl('', [Validators.required, Validators.minLength(19), Validators.maxLength(19)]),
+    expDate: new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/([0-9]{2})$/), expirationDateValidator()]),
+    cvv: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)])
+  })
+  public type: string = '';
   public reservation!: Reservation
   public houseInfo!: string[]
+  public invalidDates!: Date[]
+  public rating: string = ''
+  public numberReviews: number = -1
 
   public formatGuests(): string {
     let guestString = '';
@@ -67,6 +78,45 @@ export class BookingViewComponent implements OnInit {
     });
 
     return guestString;
+  }
+
+  public getReviews(){
+    const reviews = this.bookingService.getReviews()
+    console.log(reviews)
+    this.rating = reviews.rating
+    this.numberReviews = reviews.numberReviews
+  }
+  public getInvalidDates(){
+    this.invalidDates = this.bookingService.getInvalidDates()
+  }
+
+  public formatCardNumber(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // saca los otros caracteres
+
+    const formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    input.value = formattedValue;
+
+    // actualiza el valor en el input
+    this.paymentMethodForm.get('cardNumber')?.setValue(formattedValue, { emitEvent: false });
+  }
+
+  public formatExpirationDate(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // saca los caracteres
+  
+    if (value.length > 2) {
+      value = `${value.substring(0, 2)}/${value.substring(2)}`;
+    }
+    input.value = value;
+    this.paymentMethodForm.get('expiration')?.setValue(value, { emitEvent: false });
+  }
+
+  public formatCVV(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // saca los caracteres
+    input.value = value;
+    this.paymentMethodForm.get('expiration')?.setValue(value, { emitEvent: false });
   }
 
   public onStartDateSelected(date: any) {
@@ -111,8 +161,43 @@ export class BookingViewComponent implements OnInit {
     })
   }
 
+  public addCard(){
+    const card = {
+      cardNumber: this.paymentMethodForm.get('cardNumber')?.value,
+      expDate: this.paymentMethodForm.get('expDate')?.value,
+      cvv: this.paymentMethodForm.get('cvv')?.value,
+    }
+    this.bookingService.addCard(card)
+  }
+
   public back(){
     console.log(this.reservation.houseId)
     this.router.navigateByUrl(`housing-visualizer/${this.reservation.houseId}`)
   }
+}
+
+export function expirationDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) {
+      return null; //si esta vacio
+    }
+    // Extraer mes y año
+    const parts = value.split('/');
+    const month = parseInt(parts[0], 10);
+    const year = parseInt(parts[1], 10);
+    console.log(year, 'mes fuera')
+    console.log(year, 'año fuera')
+    // Verificar mes válido (01-12)
+    if (month < 1 || month > 12) {
+      console.log(month, 'mes dentro')
+      return { invalidExpirationDate: true }; // Mes inválido
+    }
+    // Verificar año válido (24-35)
+    if (year < 24 || year > 35) {
+      console.log(year, 'año dentro')
+      return { invalidExpirationDate: true }; // Año inválido
+    }
+    return null;
+  };
 }

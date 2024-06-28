@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Reservation } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
-import { catchError, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +19,47 @@ export class BookingService{
   public houseName: string = '';
   public houseType: string = '';
   public id: number = -1;
+  public invalidDates: Date[] = [];
+  public rating: string = '';
+  public numberReviews: number = -1;
+  public houseImg: string = '';
+
+  public startDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
+  public endDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
+  startDate$ = this.startDate.asObservable();
+  endDate$ = this.endDate.asObservable();
+
 
   public addReservation(reservation:Reservation){
     this.reservation = reservation;
   }
 
-  public addHouseInfo(name: string, type:string){
-    this.houseName = name
-    this.houseType = type
+  public addHouseInfo(name: string, type:string, img: string){
+    this.houseName = name;
+    this.houseType = type;
+    this.houseImg = img
+  }
+
+  public addStartDate(date: Date){    
+    this.startDate.next(date)
+  }
+
+  public addInvalidDates(dates: Date[]){
+    this.invalidDates = dates
+  }
+
+  public addReviews(rating: string, numberReviews:number){
+    this.rating = rating
+    this.numberReviews = numberReviews
+  }
+
+  public addEndDate(date: Date |null){    
+    this.endDate.next(date)
+  }
+
+  public clearSelection(){
+    this.startDate.next(null);
+    this.endDate.next(null);
   }
 
   public getReservation(): Observable<Reservation>{
@@ -34,18 +67,48 @@ export class BookingService{
   }
 
   public getHouseInfo(): Observable<string[]>{
-    return of([this.houseName, this.houseType])
+    return of([this.houseName, this.houseType, this.houseImg])
+  }
+
+  public getInvalidDates(){
+    return this.invalidDates
+  }
+
+  public getReviews(){
+    return {rating: this.rating, numberReviews: this.numberReviews}
+  }
+
+  public addCard(card: any){
+    card = {...card, propietarioId: this.reservation.id}
+    console.log(card)
   }
 
   public booking(): Observable<any>{
+    console.log(this.reservation.partialPrices)
     const booking = {
       fechaIni: this.reservation.startDate,
       fechaFin: this.reservation.endDate,
+      nochesDeEstadia: this.reservation.nights,
+      costoNoche: this.reservation.pricePerNight,
+      nroAdultos: this.reservation.guests.adults,
+      nroNinos: this.reservation.guests.children,
+      nroBebes: this.reservation.guests.infants,
+      nroMascotas: this.reservation.guests.pets,
+      costoHospedaje: this.reservation.partialPrices[0].price,
+      tarifaServicio: Math.round(this.reservation.partialPrices[2].price),
+      tarifaLimpieza: this.reservation.partialPrices[1].price,
+      metodoDePagoId: 1, //cambiar cuando se puedan registar tarjetas
+      usuarioPagadorId: this.reservation.id,
       huespedId: this.reservation.id,
-      propiedadId: this.reservation.houseId
+      propiedadId: this.reservation.houseId,
     }
     console.log(booking)
-    return this.http.post<any>(this.url, booking).pipe(
+    return this.http.post<any>(this.url, booking, {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      }
+    }).pipe(
       map((result) => {
         if (result) {
           return { success: true };
