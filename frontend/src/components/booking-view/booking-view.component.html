@@ -293,34 +293,43 @@
       </div>
       <div class="row mt-3">
         <div class="col">
-          <select class="form-select form-select-lg">
-            <option selected>Tarjeta de crédito o débito</option>
-            <option >Webpay</option>
+          <select class="form-select form-select-lg" [(ngModel)]="type">
+            <option>Tarjeta 1</option>
+            <option>Tarjeta 2</option>
+            <option>Tarjeta 3</option>
+            <option>Agregar tarjeta de crédito o débito</option>
           </select>
         </div>
       </div>
-      <div class="row mt">
-        <div class="col mt-3">
-          <input type="number" class="form-control form-control-lg" id="cardNumber" formControlName="cardNumber" placeholder="0000 0000 0000 0000">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6 pe-0">
-          <input type="number" class="form-control form-control-lg" id="expiration" formControlName="expiration" placeholder="MM/AA">
-        </div>
-        <div class="col-6 ps-0">
-          <input type="number" class="form-control form-control-lg" id="cvv" formControlName="cvv" placeholder="123">
-        </div>
-      </div>
-      <!-- EN DUDA - PA QUE QUIERO SABER EL PAIS? XD SE PUEDE OMITIR SUPONGO -->
-      <!-- <div class="row">
-        <div class="col mt-3">
-          <select class="form-select form-select-lg">
-            <option selected>Chile</option>
-            <option >Peru</option>
-          </select>
-        </div>
-      </div> -->
+      @if(type == 'Agregar tarjeta de crédito o débito'){
+        <form [formGroup]="paymentMethodForm">
+          <div class="row mt">
+            <div class="col mt-3">
+              <input type="number" class="form-control form-control-lg" id="cardNumber" formControlName="cardNumber" placeholder="0000 0000 0000 0000">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 pe-0">
+              <input type="number" class="form-control form-control-lg" id="expiration" formControlName="expiration" placeholder="MM/AA">
+            </div>
+            <div class="col-6 ps-0">
+              <input type="number" class="form-control form-control-lg" id="cvv" formControlName="cvv" placeholder="123">
+            </div>
+          </div>
+          <!-- EN DUDA - PA QUE QUIERO SABER EL PAIS? XD SE PUEDE OMITIR SUPONGO -->
+          <!-- <div class="row">
+            <div class="col mt-3">
+              <select class="form-select form-select-lg">
+                <option selected>Chile</option>
+                <option >Peru</option>
+              </select>
+            </div>
+          </div> -->
+          <div class="col-4 mt-3">
+            <button class="btn btn-outline-dark">Agregar tarjeta</button>
+          </div>
+        </form>
+      }
       <div class="border-bottom mt-5 mb-4"></div>
       <div class="row justify-content-between">
         <div class="col">
@@ -392,12 +401,12 @@
         <div class="container">
           <div class="card-header bg-transparent">
             <div class="row my-3 align-items-center">
-              <div class="col-4">
-                <img src="https://a0.muscache.com/im/pictures/672742a7-415e-43cc-a302-9d42738687b2.jpg?aki_policy=large" class="img-fluid rounded">
+              <div class="col-5">
+                <img [src]="houseInfo[2]" class="w-100 rounded" style="height: 150px;">
               </div>
-              <div class="col-8">
+              <div class="col-7">
                 <div class="row">
-                  <h5>{{houseInfo[0]}}</h5>
+                  <h5 class="align-items-center">{{houseInfo[0]}}</h5>
                 </div>
                 <div class="row">
                   <h6 class="fw-normal">{{houseInfo[1]}}</h6>

@@ -65,7 +65,7 @@
         <div class="row">
           @for (service of homeStay.comodidades; track service) {
             <div class="col-6 my-4">
-              <h4 class="h6 fw-normal">• +{{ service }}</h4>
+              <h4 class="h6 fw-normal">• {{ service }}</h4>
             </div>
           }
         </div>
@@ -85,6 +85,7 @@
               [invalidDates]="homeStay.fechasDisponibles"
               [rating]="getRatings(homeStay.id)"
               [numberReviews]="reviews.length"
+              [houseImg]="homeStay.fotos[0]"
             ></app-housing-reservation>
           </div>
         </div>
@@ -152,10 +153,10 @@
           <div class="col-11 col-md-5 mb-4 py-3 border shadow rounded">
             <div class="row">
               <div class="col-1 me-3 mt-2">
-                <img class="rounded-circle img-size" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo8bolH7neKpgmMSEutA6ysg4mvN2CN_RHrw&s" />
+                <img class="rounded-circle img-size" src="https://cdn.icon-icons.com/icons2/3832/PNG/512/person_circle_icon_234456.png" />
               </div>
               <div class="col-9 mt-1 ms-3">
-                <h5 class="h5">{{ review.usuarioCreadorInfo.nombre }} {{review.usuarioCreadorInfo.apellidoPat}}</h5>
+                <h5 class="h5 pt-1">{{ review.usuarioCreadorInfo.nombre }} {{review.usuarioCreadorInfo.apellidoPat}}</h5>
                 <!-- <p>{{review.usuarioCreadorInfo.nombre }}, {{ review.propiedadCriticadaId }}</p> -->
                 <p>{{homeStay.ciudad}}, {{homeStay.pais}}</p>
   

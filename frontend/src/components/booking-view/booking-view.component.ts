@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
 import { Reservation } from '../housing-visualizer/housing-reservation/housing-reservation.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-booking-view',
@@ -35,6 +36,13 @@ export class BookingViewComponent implements OnInit {
     this.getReviews()
   }
 
+  public paymentMethodForm: FormGroup = new FormGroup({
+    cardNumber: new FormControl('', [Validators.required]),
+    expDate: new FormControl('', [Validators.required]),
+    cvv: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(4)])
+  })
+
+  public type: string = '';
   public reservation!: Reservation
   public houseInfo!: string[]
   public invalidDates!: Date[]
@@ -131,3 +139,4 @@ export class BookingViewComponent implements OnInit {
     this.router.navigateByUrl(`housing-visualizer/${this.reservation.houseId}`)
   }
 }
+

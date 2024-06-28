@@ -20,8 +20,9 @@ export class HousingReservationComponent implements OnInit {
     this.rules = [];
     this.houseName = '';
     this.houseType = '';
-    this.id = -1
-    this.houseId = -1
+    this.id = -1;
+    this.houseId = -1;
+    this.houseImg = '';
   }
 
   ngOnInit(): void {
@@ -40,6 +41,7 @@ export class HousingReservationComponent implements OnInit {
   @Input() public houseId:number;
   @Input() public houseName:string;
   @Input() public houseType:string;
+  @Input() public houseImg: string;
   @Input() public invalidDates:Date[] = [];
   @Input() public rating: string = '';
   @Input() public numberReviews: number = -1;
@@ -149,21 +151,24 @@ export class HousingReservationComponent implements OnInit {
         price: this.toNumber(price),
       }));
       reservation = {
-        id: this.id,
-        houseId: this.houseId,
-        guests: this.guests,
         startDate: this.startDate,
         endDate: this.endDate,
         nights: this.nights,
         pricePerNight: this.housingPrice.pricePerNight,
+        guests: this.guests,
         partialPrices: partialPrices,
+        paymentMethodId: 1,
+        payerId: this.id,
+        id: this.id,
+        houseId: this.houseId,
+
         totalPrice: this.toNumber(this.priceWithoutTaxes()),
       };
     this.router.navigate([`booking/${this.houseId}`]).then(() => {
       window.scrollTo(0, 0);
     });;
     this.bookingServ.addReservation(reservation)
-    this.bookingServ.addHouseInfo(this.houseName, this.houseType)
+    this.bookingServ.addHouseInfo(this.houseName, this.houseType, this.houseImg)
     this.bookingServ.addInvalidDates(this.invalidDates)
     this.bookingServ.addReviews(this.rating, this.numberReviews)
     console.log(reservation);
@@ -189,13 +194,16 @@ export interface Guests {
 }
 
 export interface Reservation {
-  houseId: number,
-  id: number,
-  guests: Guests;
   startDate: Date;
   endDate: Date;
   nights: number;
   pricePerNight: number;
+  guests: Guests;
   partialPrices: any;
-  totalPrice: number;
+  paymentMethodId: number,
+  payerId: number,
+  id: number,
+  houseId: number,
+  
+  totalPrice: number; // este no se envia al backend
 }

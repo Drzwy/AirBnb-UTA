@@ -7,7 +7,7 @@ import {
 } from '../../services/home-display.service';
 import { FilterState } from './advanced-filter/advanced-filter.component';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { forkJoin, map, Subscription, switchMap } from 'rxjs';
 import { ImageDTO } from '../housing-visualizer/images-card/image-card.component';
 
 @Component({
@@ -22,8 +22,7 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public currentType: string = '';
   public currentFilter: FilterState = emptyFilter;
   public currentHomeStayList: HomeStayInformation[] = [];
-  public reviews: reviews[] = []
-  public rating: number[] = []
+  public rating:{ stayId: number, averageScore: number }[] = [];
 
   private _homestayTypeSubscription?: Subscription;
   private _currentFilterSubscription?: Subscription;
@@ -45,7 +44,6 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     this._filterByConditionSubscription = this.service
       .filterHomeStaysByConditions()
       .subscribe((value) => (this.currentHomeStayList = value));
-    this.getReviews()
   }
   ngOnDestroy() {
     this._currentFilterSubscription!.unsubscribe();
@@ -63,29 +61,43 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     this.router.navigate([`housing-visualizer/${id}`]);
   }
 
-  public updateHomeStayList(type?: string, filter?: FilterState,) {
-    this.service.getAvailableHomeStay().subscribe((result) =>{
-      if (type === undefined || type == '') {
-        this.currentHomeStayList = result;
-      } else {
-        this.currentHomeStayList = result.filter(
-          (homeStay) => homeStay.tipo == type && homeStay.precioNoche,
+  updateHomeStayList(type?: string, filter?: FilterState) {
+    this.service.getAvailableHomeStay().pipe(
+      switchMap((result: any[]) => {
+        if (type === undefined || type === '') {
+          this.currentHomeStayList = result;
+        } else {
+          this.currentHomeStayList = result.filter(
+            (homeStay) => homeStay.tipo == type && homeStay.precioNoche
+          );
+        }
+        // Realizar las llamadas a las reseñas después de actualizar currentHomeStayList
+        const reviewRequests = this.currentHomeStayList.map(homeStay =>
+          this.service.getReviewsByID(homeStay.id).pipe(
+            map(reviews => ({
+              stayId: homeStay.id,
+              averageScore: this.calculateAverageScore(reviews)
+            }))
+          )
         );
-      } 
-    })  
+
+        return forkJoin(reviewRequests);
+      })
+    ).subscribe((results: any) => {
+      this.rating = results;
+    });
   }
 
-  public getReviews(){
-    this.service.getHomeStaysReviews().subscribe((result) =>{
-      console.log(result)
-      this.reviews = result
-    })
+  calculateAverageScore(reviews: reviews[]): number {
+    if (reviews.length === 0) return 0;
+    const totalScore = reviews.reduce((sum, review) => sum + review.puntuacion, 0);
+    return totalScore / reviews.length;
   }
-  
-  public getRatings(id: number): string{
-    const filteredReviews = this.reviews.filter(review => review.propiedadCriticadaId === id);
-    const rating = filteredReviews.reduce((sum, review) => sum + review.puntuacion, 0);
-    return filteredReviews.length > 0 ? (rating / filteredReviews.length).toFixed(1) : "0";
+
+  getRating(id:number): number{
+    const rate = this.rating.find(house => house.stayId === id)
+    return rate!.averageScore
+    
   }
 
 }

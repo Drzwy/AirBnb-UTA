@@ -22,6 +22,7 @@ export class BookingService{
   public invalidDates: Date[] = [];
   public rating: string = '';
   public numberReviews: number = -1;
+  public houseImg: string = '';
 
   public startDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
   public endDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
@@ -33,9 +34,10 @@ export class BookingService{
     this.reservation = reservation;
   }
 
-  public addHouseInfo(name: string, type:string){
-    this.houseName = name
-    this.houseType = type
+  public addHouseInfo(name: string, type:string, img: string){
+    this.houseName = name;
+    this.houseType = type;
+    this.houseImg = img
   }
 
   public addStartDate(date: Date){    
@@ -65,7 +67,7 @@ export class BookingService{
   }
 
   public getHouseInfo(): Observable<string[]>{
-    return of([this.houseName, this.houseType])
+    return of([this.houseName, this.houseType, this.houseImg])
   }
 
   public getInvalidDates(){
