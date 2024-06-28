@@ -17,7 +17,10 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
   private _stayRequests: StayOfHost[] = [];
   private _subscription = new Subscription();
 
-  constructor(private service: StaysService) {}
+  constructor(
+    private service: StaysService,
+    private route: Navigator,
+  ) {}
 
   ngOnInit() {
     this._subscription = this.service
