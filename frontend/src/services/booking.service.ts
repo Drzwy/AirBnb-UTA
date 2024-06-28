@@ -78,15 +78,37 @@ export class BookingService{
     return {rating: this.rating, numberReviews: this.numberReviews}
   }
 
+  public addCard(card: any){
+    card = {...card, propietarioId: this.reservation.id}
+    console.log(card)
+  }
+
   public booking(): Observable<any>{
+    console.log(this.reservation.partialPrices)
     const booking = {
       fechaIni: this.reservation.startDate,
       fechaFin: this.reservation.endDate,
+      nochesDeEstadia: this.reservation.nights,
+      costoNoche: this.reservation.pricePerNight,
+      nroAdultos: this.reservation.guests.adults,
+      nroNinos: this.reservation.guests.children,
+      nroBebes: this.reservation.guests.infants,
+      nroMascotas: this.reservation.guests.pets,
+      costoHospedaje: this.reservation.partialPrices[0].price,
+      tarifaServicio: Math.round(this.reservation.partialPrices[2].price),
+      tarifaLimpieza: this.reservation.partialPrices[1].price,
+      metodoDePagoId: 1, //cambiar cuando se puedan registar tarjetas
+      usuarioPagadorId: this.reservation.id,
       huespedId: this.reservation.id,
-      propiedadId: this.reservation.houseId
+      propiedadId: this.reservation.houseId,
     }
     console.log(booking)
-    return this.http.post<any>(this.url, booking).pipe(
+    return this.http.post<any>(this.url, booking, {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      }
+    }).pipe(
       map((result) => {
         if (result) {
           return { success: true };
