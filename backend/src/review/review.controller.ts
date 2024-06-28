@@ -13,6 +13,7 @@ import {
   CreateHomeStayReviewDTO,
   CreateUserReviewDTO,
   DeleteReviewDTO,
+  GetReviewBatch,
   ModifyReviewDTO,
 } from './dto';
 import { ReviewService, ReviewType } from './review.service';
@@ -29,10 +30,20 @@ export class ReviewController {
     return this.reviewService.getAllUserReviews();
   }
 
+  @Post('users/batch')
+  getUserReviewsForIdBatch(@Body() dto: GetReviewBatch) {
+    return this.reviewService.getUserReviewsForIdBatch(dto);
+  }
+
   @UseGuards(JwtGuard)
   @Get('homestays')
   getAllHomeStayReviews() {
     return this.reviewService.getAllHomeStayReviews();
+  }
+
+  @Post('homestays/batch')
+  getHomeStayReviewsForIdBatch(@Body() dto: GetReviewBatch) {
+    return this.reviewService.getHomeStayReviewsForIdBatch(dto);
   }
 
   @Get(':id')
