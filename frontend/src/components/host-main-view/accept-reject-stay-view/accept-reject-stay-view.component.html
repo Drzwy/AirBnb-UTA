@@ -1,13 +1,35 @@
 <h3>Solicitudes de arriendo</h3>
 <div class="row gy-5 container-fluid justify-content-center" >
   <div class="card mx-auto w-75 pt-3 justify-content-center">
-    @if (getCurrentStayRequests().length >= 0){
+    @if (getCurrentStayRequests().length > 0){
       <div class="card-title text-center">
         <h2>
           Solicitudes de Arriendo
         </h2>
       </div>
-      {{getCurrentStayRequests()}}
+      @for (request of getCurrentStayRequests(); track request){
+        <li class="list-group-item bg-body-tertiary">
+          <div class="justify-content-center">
+            <div class="text-black-50">
+              {{request.propiedad.pais}}
+            </div>
+
+            @for (stay of request.hospedajes; track stay) {
+
+              SOLICITADO POR {{stay.huesped.nombre}} el dia {{stay.hospedaje}}
+
+              <button class="btn btn-primary rounded-5" (click)="acceptStay(stay.hospedaje)">
+                Aceptar
+              </button>
+
+              <button class="btn btn-danger rounded-5" (click)="rejectStay(stay.hospedaje)">
+                Rechazar
+              </button>
+            }
+          </div>
+        </li>
+      }
+
       <div class="card-footer justify-content-sm-end">
         <button class="btn btn-secondary">Enviar nuevo mensaje</button>
       </div>

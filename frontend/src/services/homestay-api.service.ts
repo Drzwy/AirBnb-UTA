@@ -65,7 +65,7 @@ export class HomestayApiService {
       pais: form.location,
       ciudad: form.location,
       fechasDisponibles: [form.initDate, form.finishDate],
-      fotos: form.images
+      fotos: form.images,
     };
     return this.http
       .post<HomeStayCreateDTOResponse>(this.postUrl, request)
@@ -92,7 +92,7 @@ export interface HomeStayCreateDTOResponse {
   dormitorios: number;
   camas: number;
   banos: number;
-  precioNoche: number; // TODO CAMBIAR LUEGO
+  precioNoche: number;
   maxPersonas: number;
   tipo: string;
   descripcion: string;
