@@ -36,6 +36,8 @@ export class AddHomeStayComponent implements OnInit, OnDestroy{
     this._userSub?.unsubscribe();
   }
 
+  public minDate = new Date()
+
   readonly CONSTANTS = {
     adultsNumberLabel: 'Número de Adultos',
     childrenNumberLabel: 'Número de Niños',

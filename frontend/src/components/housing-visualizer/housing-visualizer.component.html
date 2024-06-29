@@ -128,7 +128,7 @@
       <h4 class="h4 mt-4">
         {{ TEXTS.ratings }}
       </h4>
-      <div class="col-4 text-start">
+      <div class="col-12 text-start">
         <p class="">
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +163,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-12 col-sm-2 col-md-4 col-lg-3 col-xxl-2">
+              <div class="col-12 col-sm-3 col-md-4 col-lg-3 col-xxl-2">
                 @for (star of [1, 2, 3, 4, 5]; track star) {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +182,7 @@
                   </svg>
                 }
               </div>
-              <div class="col-12 col-sm-8 ps-0">
+              <div class="col-12 col-sm-9 col-md-8 ps-sm-0">
                 <p>
                   {{
                     dateFormat(review.fechaCreacion)

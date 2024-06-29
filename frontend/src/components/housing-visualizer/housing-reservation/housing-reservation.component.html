@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12 mb-3">
-    @if (!startDate || !endDate) {
+    @if (!dates[0] || !dates[1]) {
       <div class="col-12">
         <h4 class="h4 fw-normal">Agrega las fechas para ver los precios</h4>
       </div>
@@ -32,7 +32,7 @@
           <h6 class="h6 mb-0">Llegada</h6>
           <h6 class="h6 fw-normal">
             {{
-              startDate ? (startDate | date: "dd/MM/yyyy") : "Agrega una fecha"
+              dates[0] ? (dates[0] | date: "dd/MM/yyyy") : "Agrega una fecha"
             }}
           </h6>
         </div>
@@ -41,7 +41,7 @@
         >
           <h2 class="h6 mb-0">Salida</h2>
           <h2 class="h6 fw-normal mb-0">
-            {{ endDate && endDate.getTime() > startDate!.getTime() ? (endDate | date: "dd/MM/yyyy") : "Agrega una fecha" }}
+            {{ dates[1] ? (dates[1] | date: "dd/MM/yyyy") : "Agrega una fecha" }}
           </h2>
         </div>
       </div>
@@ -54,9 +54,8 @@
       >
         <div class="container my-3 mx-3">
           <app-calendar
-            (startDate)="onStartDateSelected($event)"
-            (endDate)="onEndDateSelected($event)"
             (nights)="onNightsSelected($event)"
+            (dates)="onRangeSelected($event)"
             [invalidDate]="invalidDates"
           >
           </app-calendar>
@@ -292,11 +291,11 @@
   <div class="col-12 mb-2">
     <button
       class="btn btn-primary w-100 py-2"
-      (click)="startDate && endDate ? reserve() : checkAvailability()"
+      (click)="dates[0] && dates[1] ? reserve() : checkAvailability()"
     >
-      {{ startDate && endDate ? "Reservar" : "Comprobar disponibilidad" }}
+      {{ dates[0] && dates[1] ? "Reservar" : "Comprobar disponibilidad" }}
     </button>
-    @if (startDate && endDate) {
+    @if (dates[0] && dates[1]) {
       <h6 class="h6 text-center fw-normal">
         No se hará ningún cargo por el momento
       </h6>
@@ -305,17 +304,17 @@
 </div>
 
 <div class="row">
-  @if (nights != 0 && startDate!.getTime() < endDate!.getTime()) {
+  @if (dates[0] && dates[1]) {
     @for (price of partialHousingPrices; track price; let i = $index) {
       <div class="row pe-0">
         <div class="col-12 col-sm-8">
           <h6
-            class="h6 fw-normal text-center text-sm-start text-decoration-underline"
+            class="h6 fw-normal text-start text-decoration-underline"
           >
             {{ i === 0 ? "$"+housingPrice.pricePerNight.toLocaleString('en-US') +" CLP "+ typeOfPrice[i] : typeOfPrice[i] }}
           </h6>
         </div>
-        <div class="col-12 col-sm-4 text-center text-sm-end pe-0">
+        <div class="col-12 col-sm-4 text-start mb-2 mb-sm-0 text-sm-end pe-0">
           <h6 class="h6 fw-normal">
             {{
               price
@@ -329,17 +328,11 @@
       <div class="col-12 col-sm-8">
         <h6 class="h6">Total sin incluir impuestos</h6>
       </div>
-      <div class="col-12 col-sm-4 text-center text-sm-end pe-0">
+      <div class="col-12 col-sm-4 text-start text-sm-end pe-0">
         <h6 class="h6">{{ priceWithoutTaxes() }}</h6>
       </div>
     </div>
   }
 </div>
 
-
-{{startDate}}
-<div class="row"></div>
-{{endDate}}
-<div class="row"></div>
-{{nights}}
 

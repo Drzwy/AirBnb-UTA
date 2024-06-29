@@ -40,12 +40,13 @@ export class BookingViewComponent implements OnInit {
     expDate: new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/([0-9]{2})$/), expirationDateValidator()]),
     cvv: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)])
   })
-  public type: string = '';
   public reservation!: Reservation
   public houseInfo!: string[]
   public invalidDates!: Date[]
   public rating: string = ''
   public numberReviews: number = -1
+  public cardId: number = -2
+  public cards: any = [1,2,3,4] //cambiar cuando hayan  tarjetas
 
   public formatGuests(): string {
     let guestString = '';
@@ -119,18 +120,9 @@ export class BookingViewComponent implements OnInit {
     this.paymentMethodForm.get('expiration')?.setValue(value, { emitEvent: false });
   }
 
-  public onStartDateSelected(date: any) {
-    this.reservation.startDate = date;
-    if(!this.reservation.endDate){
-      for (let i = 0; i < 3; i++){
-        this.reservation.partialPrices[i].price = 0
-      }
-      this.reservation.totalPrice = 0
-    }
-  }
-
-  public onEndDateSelected(date: any) {
-    this.reservation.endDate = date;
+  public onRangeSelected(date: any) {
+    this.reservation.startDate = date[0];
+    this.reservation.endDate = date[1]
   }
 
   public onNightsSelected(nights: any) {
@@ -151,6 +143,7 @@ export class BookingViewComponent implements OnInit {
   }
 
   public booking(){
+    this.reservation.paymentMethodId = this.cardId
     this.bookingService.booking().subscribe(result =>{
       if (result && result.success) {
         alert('Se ha registrado la reserva');

@@ -24,11 +24,13 @@ export class BookingService{
   public numberReviews: number = -1;
   public houseImg: string = '';
 
-  public startDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
-  public endDate: BehaviorSubject<Date | null> = new BehaviorSubject<Date|null>(null);
-  startDate$ = this.startDate.asObservable();
-  endDate$ = this.endDate.asObservable();
+  public rangeDates: BehaviorSubject<Date[]> = new BehaviorSubject<Date[]>([]);
+  rangeDates$ = this.rangeDates.asObservable();
 
+  public changeRangeDates(dates: Date[]){
+    this.rangeDates.next(dates)
+    console.log(this.rangeDates, "rangeDates servicio")
+  }
 
   public addReservation(reservation:Reservation){
     this.reservation = reservation;
@@ -40,10 +42,6 @@ export class BookingService{
     this.houseImg = img
   }
 
-  public addStartDate(date: Date){    
-    this.startDate.next(date)
-  }
-
   public addInvalidDates(dates: Date[]){
     this.invalidDates = dates
   }
@@ -53,13 +51,8 @@ export class BookingService{
     this.numberReviews = numberReviews
   }
 
-  public addEndDate(date: Date |null){    
-    this.endDate.next(date)
-  }
-
   public clearSelection(){
-    this.startDate.next(null);
-    this.endDate.next(null);
+    this.rangeDates.next([])
   }
 
   public getReservation(): Observable<Reservation>{
@@ -97,7 +90,7 @@ export class BookingService{
       costoHospedaje: this.reservation.partialPrices[0].price,
       tarifaServicio: Math.round(this.reservation.partialPrices[2].price),
       tarifaLimpieza: this.reservation.partialPrices[1].price,
-      metodoDePagoId: 1, //cambiar cuando se puedan registar tarjetas
+      metodoDePagoId: 1, //cambiar cuando se puedan registar tarjetas, this.reservation.paymentMethodId
       usuarioPagadorId: this.reservation.id,
       huespedId: this.reservation.id,
       propiedadId: this.reservation.houseId,

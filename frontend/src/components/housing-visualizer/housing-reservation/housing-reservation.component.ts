@@ -14,8 +14,6 @@ export class HousingReservationComponent implements OnInit {
     private bookingServ: BookingService,
     private userServ: UserGlobalPreferencesService
   ) {
-    this.startDate = null;
-    this.endDate = null;
     this.nights = 0;
     this.rules = [];
     this.houseName = '';
@@ -46,9 +44,7 @@ export class HousingReservationComponent implements OnInit {
   @Input() public rating: string = '';
   @Input() public numberReviews: number = -1;
 
-
-  public startDate: Date | null;
-  public endDate: Date | null;
+  public dates: (Date|null)[] = []
   public nights: number;
   public id: number;
 
@@ -129,15 +125,13 @@ export class HousingReservationComponent implements OnInit {
     return guestString;
   }
 
-  public onStartDateSelected(date: any) {
-    this.startDate = date;
-  }
-
-  public onEndDateSelected(date: any) {
-    this.endDate = date;
+  public onRangeSelected(date: any) {
+    console.log(date, "fecha en reserva start")
+    this.dates = date;
   }
 
   public onNightsSelected(nights: any) {
+    console.log(nights, "noches en reserva")
     this.nights = nights;
     this.getPrice();
   }
@@ -145,14 +139,14 @@ export class HousingReservationComponent implements OnInit {
   public reserve() {
     let partialPrices: any;
     let reservation: Reservation;
-    if (this.startDate && this.endDate) {
+    if (this.dates[0] && this.dates[1]) {
       partialPrices = this.partialHousingPrices.map((price, index) => ({
         type: this.typeOfPrice[index],
         price: this.toNumber(price),
       }));
       reservation = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.dates[0],
+        endDate: this.dates[1],
         nights: this.nights,
         pricePerNight: this.housingPrice.pricePerNight,
         guests: this.guests,

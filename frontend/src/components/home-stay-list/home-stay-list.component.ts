@@ -91,7 +91,7 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   calculateAverageScore(reviews: reviews[]): number {
     if (reviews.length === 0) return 0;
     const totalScore = reviews.reduce((sum, review) => sum + review.puntuacion, 0);
-    return totalScore / reviews.length;
+    return parseFloat((totalScore / reviews.length).toFixed(1));
   }
 
   getRating(id:number): number{
