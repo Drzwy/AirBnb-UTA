@@ -60,12 +60,16 @@ model Propiedad {
   dormitorios Int
   camas       Int
   banos       Int
-  maxPersonas Int
+  maxAdultos  Int
+  maxNinos    Int
+  maxBebes    Int
+  maxMascotas Int
 
-  fechasDisponibles DateTime[] @db.Date
+  fechasOcupadas DateTime[] @db.Date
   precioNoche       Float
 
   tipo        String
+  titulo      String
   descripcion String
 
   pais    String

@@ -5,8 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Propiedad, Usuario } from '@prisma/client';
+import { Prisma, Propiedad, Usuario } from '@prisma/client';
 import { HomeStayUpdateDTO, HomeStayCreateDTO } from './dto';
+import { HomeStayFilterDTO } from './dto/homeStayFilter.dto';
 
 @Injectable()
 export class HomestayService {
@@ -92,17 +93,46 @@ export class HomestayService {
   }
 
   public async deleteHomeStay(id: number) {
-    const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
-      where: { id, estaActivo: true },
-    });
+    try {
+      const homeStay: Propiedad = await this.prisma.propiedad.findUnique({
+        where: { id, estaActivo: true },
+      });
 
-    if (!homeStay) {
-      throw new NotFoundException('No se encontro la propiedad');
+      if (!homeStay) {
+        throw new NotFoundException('No se encontro la propiedad');
+      }
+
+      return this.prisma.propiedad.update({
+        where: { id },
+        data: { estaActivo: false },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException('Ocurrio un problema');
     }
+  }
 
-    return this.prisma.propiedad.update({
-      where: { id },
-      data: { estaActivo: false },
-    });
+  public async getHomeStayWithFilters(filters: HomeStayFilterDTO) {
+    try {
+      const where: Prisma.PropiedadWhereInput = {
+        estaActivo: true,
+        dormitorios: { gte: filters.dormitorios },
+        camas: { gte: filters.camas },
+        banos: { gte: filters.banos },
+        precioNoche: {
+          gte: filters.precioNocheMin,
+          lte: filters.precioNocheMax,
+        },
+        maxAdultos: { gte: filters.nroAdultos },
+        maxNinos: { gte: filters.nroNinos },
+        maxBebes: { gte: filters.nroBebes },
+        maxMascotas: { gte: filters.nroMascotas },
+        tipo: filters.tipo,
+        pais: filters.pais,
+        ciudad: filters.ciudad,
+      };
+      return this.prisma.propiedad.findMany({ where });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }
