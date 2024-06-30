@@ -6,7 +6,7 @@
         @for (request of getStayRequests(); track  request) {
           <li class="list-group-item flex-wrap">
             <div class="card w-auto m-auto p-3">
-              Solicitud de {{request.propiedadId}}
+              Solicitud de {{request.Propiedad.tipo}}
               <hr>
               estado actual: {{request.estadoAceptacion}}
             </div>

@@ -6,7 +6,6 @@ import {
   StaysService,
 } from '../../../services/stays.service';
 import { Subscription, take } from 'rxjs';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-accept-reject-stay-view',
@@ -17,10 +16,7 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
   private _stayRequests: StayOfHost[] = [];
   private _subscription = new Subscription();
 
-  constructor(
-    private service: StaysService,
-    private route: Navigator,
-  ) {}
+  constructor(private service: StaysService) {}
 
   ngOnInit() {
     this._subscription = this.service

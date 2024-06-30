@@ -75,6 +75,7 @@ export interface StayResponse {
   estadoAceptacion: string;
   nroAdultos: number;
   nroNinos: number;
+  Propiedad: HomeStayGetResponse;
 }
 
 export interface StayPost {
