@@ -15,7 +15,9 @@ export class StayService {
   constructor(private prismaService: PrismaService) {}
 
   async getAllStays(): Promise<Hospedaje[]> {
-    const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany();
+    const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
+      include: { Propiedad: true, Huesped: true },
+    });
 
     if (stays.length == 0)
       throw new NotFoundException(
@@ -27,9 +29,8 @@ export class StayService {
 
   async getStaysByPropertyId(propertyId: number): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
-      where: {
-        propiedadId: propertyId,
-      },
+      where: { propiedadId: propertyId },
+      include: { Huesped: true },
     });
 
     if (stays.length == 0)
@@ -42,9 +43,8 @@ export class StayService {
 
   async getStaysByGuestId(userId: number): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
-      where: {
-        huespedId: userId,
-      },
+      where: { huespedId: userId },
+      include: { Propiedad: true },
     });
 
     if (stays.length == 0)
@@ -107,6 +107,10 @@ export class StayService {
           propiedadId: ids.propiedadId,
         },
       },
+      include: {
+        Huesped: true,
+        Propiedad: true,
+      },
     });
 
     return stay;
@@ -116,6 +120,10 @@ export class StayService {
     try {
       const stay: Hospedaje = await this.prismaService.hospedaje.create({
         data: dto,
+        include: {
+          Huesped: true,
+          Propiedad: true,
+        },
       });
 
       return stay;
@@ -281,5 +289,7 @@ export class HostRequestsToStay {
   propiedad: Propiedad;
   hospedajes: { hospedaje: Hospedaje; huesped: Usuario }[];
 
-  constructor() {}
+  constructor() {
+    this.hospedajes = [];
+  }
 }

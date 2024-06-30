@@ -83,7 +83,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     },
     {
       label: 'Modo Anfitrión',
-      url: 'about-me',
+      url: 'about-me-host',
     },
     {
       label: 'Pon tu espacio en Airbnb',
@@ -91,7 +91,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     },
     {
       label: 'Cuenta',
-      url: '',
+      url: 'about-me',
     },
     {
       label: 'Cerrar Sesión',

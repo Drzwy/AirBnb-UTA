@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
@@ -8,6 +9,7 @@ import {
   CreateHomeStayReviewDTO,
   CreateUserReviewDTO,
   DeleteReviewDTO,
+  GetReviewBatch,
   ModifyReviewDTO,
 } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -25,6 +27,58 @@ export class ReviewService {
     } catch {}
   }
 
+  async getUserReviewsForIdBatch(ids: GetReviewBatch) {
+    try {
+      if (ids.idBatch.length == 0)
+        throw new BadRequestException('Número especificado de ids no válido');
+
+      const userReviews: ValoracionUsuario[] =
+        await this.prismaService.valoracionUsuario.findMany({
+          where: {
+            usuarioCriticadoId: { in: ids.idBatch },
+          },
+          include: {
+            UsuarioCreador: true,
+            UsuarioCriticado: true,
+          },
+        });
+
+      return userReviews;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new InternalServerErrorException(error);
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  async getHomeStayReviewsForIdBatch(ids: GetReviewBatch) {
+    try {
+      if (ids.idBatch.length == 0)
+        throw new BadRequestException('Número especificado de ids no válido');
+
+      const homeStayReviews: ValoracionPropiedad[] =
+        await this.prismaService.valoracionPropiedad.findMany({
+          where: {
+            propiedadCriticadaId: { in: ids.idBatch },
+          },
+          include: {
+            UsuarioCreador: true,
+            PropiedadCriticada: true,
+          },
+        });
+
+      return homeStayReviews;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new InternalServerErrorException(error);
+      } else {
+        throw error;
+      }
+    }
+  }
+
   async getAllHomeStayReviews() {
     try {
       const reviews = await this.prismaService.valoracionPropiedad.findMany();
@@ -35,14 +89,12 @@ export class ReviewService {
   async getAllReviewsFromUser(id: number) {
     const homestayReviewsQuery =
       this.prismaService.valoracionPropiedad.findMany({
-        where: {
-          usuarioCreadorId: id,
-        },
+        where: { usuarioCreadorId: id },
+        include: { PropiedadCriticada: true },
       });
     const userReviewsQuery = this.prismaService.valoracionUsuario.findMany({
-      where: {
-        usuarioCreadorId: id,
-      },
+      where: { usuarioCreadorId: id },
+      include: { UsuarioCriticado: true },
     });
 
     const reviews = await this.prismaService.$transaction([
@@ -56,15 +108,15 @@ export class ReviewService {
   async getAllReviewsForUser(id: number) {
     const reviews = await this.prismaService.valoracionUsuario.findMany({
       where: { usuarioCriticadoId: id },
+      include: { UsuarioCreador: true },
     });
     return reviews;
   }
 
   async getAllReviewsForHomeStay(id: number) {
     const reviews = await this.prismaService.valoracionPropiedad.findMany({
-      where: {
-        propiedadCriticadaId: id,
-      },
+      where: { propiedadCriticadaId: id },
+      include: { UsuarioCreador: true },
     });
     return reviews;
   }

@@ -61,6 +61,17 @@ CREATE TABLE "Hospedaje" (
     "estadoAceptacion" "EstadoSolicitudHospedaje" NOT NULL DEFAULT 'EN_ESPERA',
     "fechaIni" DATE NOT NULL,
     "fechaFin" DATE NOT NULL,
+    "nochesDeEstadia" INTEGER NOT NULL,
+    "costoNoche" DOUBLE PRECISION NOT NULL,
+    "nroAdultos" INTEGER NOT NULL DEFAULT 1,
+    "nroNinos" INTEGER NOT NULL DEFAULT 0,
+    "nroBebes" INTEGER NOT NULL DEFAULT 0,
+    "nroMascotas" INTEGER NOT NULL DEFAULT 0,
+    "costoHospedaje" DOUBLE PRECISION NOT NULL,
+    "tarifaServicio" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "tarifaLimpieza" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "metodoDePagoId" INTEGER NOT NULL,
+    "usuarioPagador" INTEGER NOT NULL,
     "huespedId" INTEGER NOT NULL,
     "propiedadId" INTEGER NOT NULL,
 
@@ -68,9 +79,18 @@ CREATE TABLE "Hospedaje" (
 );
 
 -- CreateTable
+CREATE TABLE "MetodoDePago" (
+    "id" SERIAL NOT NULL,
+    "infoTarjeta" TEXT NOT NULL,
+    "propietarioId" INTEGER NOT NULL,
+
+    CONSTRAINT "MetodoDePago_pkey" PRIMARY KEY ("id","propietarioId")
+);
+
+-- CreateTable
 CREATE TABLE "ValoracionUsuario" (
     "fechaCreacion" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "estaActivo" BOOLEAN NOT NULL,
+    "estaActivo" BOOLEAN NOT NULL DEFAULT true,
     "descripcion" TEXT,
     "puntuacion" INTEGER NOT NULL,
     "usuarioCreadorId" INTEGER NOT NULL,
@@ -82,7 +102,7 @@ CREATE TABLE "ValoracionUsuario" (
 -- CreateTable
 CREATE TABLE "ValoracionPropiedad" (
     "fechaCreacion" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "estaActivo" BOOLEAN NOT NULL,
+    "estaActivo" BOOLEAN NOT NULL DEFAULT true,
     "descripcion" TEXT,
     "puntuacion" INTEGER NOT NULL,
     "usuarioCreadorId" INTEGER NOT NULL,
@@ -104,10 +124,16 @@ CREATE UNIQUE INDEX "Propiedad_pais_ciudad_calle_nroCasa_nroDpto_key" ON "Propie
 ALTER TABLE "Propiedad" ADD CONSTRAINT "Propiedad_anfitrionId_fkey" FOREIGN KEY ("anfitrionId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_metodoDePagoId_usuarioPagador_fkey" FOREIGN KEY ("metodoDePagoId", "usuarioPagador") REFERENCES "MetodoDePago"("id", "propietarioId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_huespedId_fkey" FOREIGN KEY ("huespedId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_propiedadId_fkey" FOREIGN KEY ("propiedadId") REFERENCES "Propiedad"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MetodoDePago" ADD CONSTRAINT "MetodoDePago_propietarioId_fkey" FOREIGN KEY ("propietarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ValoracionUsuario" ADD CONSTRAINT "ValoracionUsuario_usuarioCreadorId_fkey" FOREIGN KEY ("usuarioCreadorId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
