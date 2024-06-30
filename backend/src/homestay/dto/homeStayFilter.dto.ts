@@ -1,4 +1,5 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class HomeStayFilterDTO {
   @IsOptional()
@@ -48,4 +49,28 @@ export class HomeStayFilterDTO {
   @IsOptional()
   @IsString()
   ciudad: string;
+
+  @IsOptional()
+  @IsDate()
+  fechaInicio: Date;
+
+  @IsOptional()
+  @IsDate()
+  fechaFin: Date;
+
+  @IsOptional()
+  @Type(() => String)
+  comodidades: string[] | string;
+
+  @IsOptional()
+  @Type(() => String)
+  opcionesDeSeguridad: string[] | string;
+
+  @IsOptional()
+  @Type(() => String)
+  opcionesDeLlegada: string[] | string;
+
+  @IsOptional()
+  @Type(() => String)
+  reglas: string[] | string;
 }
