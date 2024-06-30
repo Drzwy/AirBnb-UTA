@@ -129,10 +129,45 @@ export class HomestayService {
         tipo: filters.tipo,
         pais: filters.pais,
         ciudad: filters.ciudad,
+        comodidades: filters.comodidades?.length
+          ? { hasEvery: this.transformStringToArray(filters.comodidades) }
+          : undefined,
+        opcionesDeSeguridad: filters.opcionesDeSeguridad?.length
+          ? {
+              hasEvery: this.transformStringToArray(
+                filters.opcionesDeSeguridad,
+              ),
+            }
+          : undefined,
+        opcionesDeLlegada: filters.opcionesDeLlegada?.length
+          ? { hasEvery: this.transformStringToArray(filters.opcionesDeLlegada) }
+          : undefined,
+        reglas: filters.reglas?.length
+          ? { hasEvery: this.transformStringToArray(filters.reglas) }
+          : undefined,
       };
-      return this.prisma.propiedad.findMany({ where });
+      let propiedades = await this.prisma.propiedad.findMany({ where });
+      if (filters.fechaInicio && filters.fechaFin) {
+        propiedades = propiedades.filter((propiedad) => {
+          return !propiedad.fechasOcupadas.some((fecha) => {
+            return fecha >= filters.fechaInicio && fecha <= filters.fechaFin;
+          });
+        });
+      }
+
+      return propiedades;
     } catch (error) {
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  public transformStringToArray(data: string | string[]): string[] {
+    const array: string[] = [];
+    if (typeof data === 'string') {
+      array.push(data);
+      return array;
+    } else {
+      return data;
     }
   }
 }
