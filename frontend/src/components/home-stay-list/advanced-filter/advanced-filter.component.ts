@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeDisplayService } from '../../../services/home-display.service';
+import { HomeDisplayService, HomeStayType } from '../../../services/home-display.service';
 
 @Component({
   selector: 'app-advanced-filter',
@@ -30,6 +30,8 @@ export class AdvancedFilterComponent implements OnInit {
   private _getFilterButtonText = (value: boolean) => {
     return value ? this.CONSTANTS.true : this.CONSTANTS.false;
   };
+
+  homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes();
 
   constructor(private service: HomeDisplayService) {
     this.filterButtonText = this._getFilterButtonText(this.showFilterDiv);
@@ -73,7 +75,7 @@ export class AdvancedFilterComponent implements OnInit {
     maxPriceLabel: 'Precio Máximo por Noche',
     numberOfRoomsLabel: 'Número de Habitaciones',
     numberOfBathroomsLabel: 'Número de Baños',
-    numberOfGuestsLabel: 'Número de Huéspedes',
+    numberOfBedsLabel: 'Número de Camas',
   };
 }
 

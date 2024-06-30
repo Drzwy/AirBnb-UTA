@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
-import { Reservation } from '../housing-visualizer/housing-reservation/housing-reservation.component';
+import { Guests, Reservation } from '../housing-visualizer/housing-reservation/housing-reservation.component';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
@@ -41,12 +41,36 @@ export class BookingViewComponent implements OnInit {
     cvv: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3)])
   })
   public reservation!: Reservation
-  public houseInfo!: string[]
+  public houseInfo!: any[]
   public invalidDates!: Date[]
   public rating: string = ''
   public numberReviews: number = -1
   public cardId: number = -2
   public cards: any = [1,2,3,4] //cambiar cuando hayan  tarjetas
+
+  public increment(field: string): void {
+    if(field == 'adults' || field == 'children'){
+      if(this.reservation.guests.adults + this.reservation.guests.children < this.houseInfo[3].adults + this.houseInfo[3].children){
+        this.reservation.guests[field as keyof Guests] += 1; 
+      }
+    } else {
+      if(this.reservation.guests[field as keyof Guests] < this.houseInfo[3][field as keyof Guests]){
+        this.reservation.guests[field as keyof Guests] += 1;
+      } 
+    }
+  }
+
+  public decrement(field: string): void {
+    if(field == 'adults'){
+      if(this.reservation.guests.adults > 1){
+        this.reservation.guests.adults -=1
+      }
+    } else{
+      if(this.reservation.guests[field as keyof Guests] > 0){
+        this.reservation.guests[field as keyof Guests] -= 1; 
+      }
+    }
+  }
 
   public formatGuests(): string {
     let guestString = '';
@@ -83,7 +107,6 @@ export class BookingViewComponent implements OnInit {
 
   public getReviews(){
     const reviews = this.bookingService.getReviews()
-    console.log(reviews)
     this.rating = reviews.rating
     this.numberReviews = reviews.numberReviews
   }
@@ -127,7 +150,6 @@ export class BookingViewComponent implements OnInit {
 
   public onNightsSelected(nights: any) {
     this.reservation.nights = nights;
-    console.log(this.reservation.nights)
     this.newPrices()
   }
 

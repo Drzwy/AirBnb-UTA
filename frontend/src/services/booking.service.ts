@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Reservation } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
+import { Guests, Reservation } from '../components/housing-visualizer/housing-reservation/housing-reservation.component';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
@@ -23,23 +23,24 @@ export class BookingService{
   public rating: string = '';
   public numberReviews: number = -1;
   public houseImg: string = '';
+  public maxGuests!: Guests
 
   public rangeDates: BehaviorSubject<Date[]> = new BehaviorSubject<Date[]>([]);
   rangeDates$ = this.rangeDates.asObservable();
 
   public changeRangeDates(dates: Date[]){
     this.rangeDates.next(dates)
-    console.log(this.rangeDates, "rangeDates servicio")
   }
 
   public addReservation(reservation:Reservation){
     this.reservation = reservation;
   }
 
-  public addHouseInfo(name: string, type:string, img: string){
+  public addHouseInfo(name: string, type:string, img: string, guests: Guests){
     this.houseName = name;
     this.houseType = type;
-    this.houseImg = img
+    this.houseImg = img;
+    this.maxGuests = guests;
   }
 
   public addInvalidDates(dates: Date[]){
@@ -59,8 +60,8 @@ export class BookingService{
     return of(this.reservation)
   }
 
-  public getHouseInfo(): Observable<string[]>{
-    return of([this.houseName, this.houseType, this.houseImg])
+  public getHouseInfo(): Observable<any[]>{
+    return of([this.houseName, this.houseType, this.houseImg, this.maxGuests])
   }
 
   public getInvalidDates(){
@@ -77,7 +78,6 @@ export class BookingService{
   }
 
   public booking(): Observable<any>{
-    console.log(this.reservation.partialPrices)
     const booking = {
       fechaIni: this.reservation.startDate,
       fechaFin: this.reservation.endDate,
@@ -95,7 +95,6 @@ export class BookingService{
       huespedId: this.reservation.id,
       propiedadId: this.reservation.houseId,
     }
-    console.log(booking)
     return this.http.post<any>(this.url, booking, {
       headers: {
         'Content-type': 'application/json',

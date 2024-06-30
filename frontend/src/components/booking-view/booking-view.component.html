@@ -80,10 +80,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     
                     <h3 class="my-4">Huespedes</h3>
-                    <p class="mb-4">reglas</p>
+                    <p class="mb-4">
+                      Este alojamiento tiene una capacidad máxima de {{houseInfo[3].adults + houseInfo[3].children}} huéspedes y {{houseInfo[3].infants}} bebés. Si vienes con más de {{houseInfo[3].pets}} mascotas, avísale al anfitrión.
+                    </p>
     
                     <div class="justify-content-center">
-    
                       <div class="row p-1 align-items-center">
                         <div class="col-12 col-sm-6">
                           <li class="dropdown-item-text">
@@ -94,9 +95,7 @@
                         <div class="col-12 col-sm-6 align-items-center ps-0 text-sm-end ps-sm-4">
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="
-                              reservation.guests.adults = reservation.guests.adults > 1 ? reservation.guests.adults - 1 : 1
-                            "
+                            (click)="decrement('adults')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +115,7 @@
               
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="reservation.guests.adults = reservation.guests.adults + 1"
+                            (click)="increment('adults')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -144,9 +143,7 @@
                         <div class="col-12 col-sm-6 align-items-center ps-0 text-sm-end ps-sm-4">
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="
-                              reservation.guests.children = reservation.guests.children > 0 ? reservation.guests.children - 1 : 0
-                            "
+                            (click)="decrement('children')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +163,7 @@
               
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="reservation.guests.children = reservation.guests.children + 1"
+                            (click)="increment('children')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -194,9 +191,7 @@
                         <div class="col-12 col-sm-6 align-items-center ps-0 text-sm-end ps-sm-4">
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="
-                              reservation.guests.infants = reservation.guests.infants > 0 ? reservation.guests.infants - 1 : 0
-                            "
+                            (click)="decrement('infants')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +211,7 @@
               
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="reservation.guests.infants = reservation.guests.infants + 1"
+                            (click)="increment('infants')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -241,7 +236,7 @@
                         <div class="col-12 col-sm-6 align-items-center ps-0 text-sm-end ps-sm-4">
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="reservation.guests.pets = reservation.guests.pets > 0 ? reservation.guests.pets - 1 : 0"
+                            (click)="decrement('pets')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +256,7 @@
               
                           <button
                             class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-                            (click)="reservation.guests.pets = reservation.guests.pets + 1"
+                            (click)="increment('pets')"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"

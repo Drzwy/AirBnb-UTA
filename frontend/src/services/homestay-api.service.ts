@@ -20,13 +20,17 @@ export class HomestayApiService {
   public sendHomeStayForm(form: HomeStayForm) {
     
     const request: HomeStayCreateDTOResponse = {
-      // agregar titulo
-      maxPersonas: form.adults, // cambiar por tipo de huesped especifico
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
+      fechasOcupadas: form.noAvailableDates, //cambiar a fechas no disponibles
       precioNoche: form.pricePerNight,
+      maxAdultos: form.adults,
+      maxNinos: form.children,
+      maxBebes: form.babies, 
+      maxMascotas: form.pets, 
       tipo: form.type,
+      titulo: form.title,
       descripcion: form.desc,
       calle: form.street,
       nroCasa: form.streetNumber,
@@ -38,7 +42,6 @@ export class HomestayApiService {
       anfitrionId: form.userId,
       pais: form.country,
       ciudad: form.city,
-      fechasDisponibles: form.noAvailableDates, //cambiar a fechas no disponibles
       fotos: form.images.split(',').map(img => img.trim())
     };
     return this.http
@@ -66,10 +69,17 @@ export interface HomeStayCreateDTOResponse {
   dormitorios: number;
   camas: number;
   banos: number;
+  fechasOcupadas: Date[];
   precioNoche: number; // TODO CAMBIAR LUEGO
-  maxPersonas: number;
+  maxAdultos: number;
+  maxNinos: number;
+  maxBebes: number;
+  maxMascotas: number;
   tipo: string;
+  titulo: string;
   descripcion: string;
+  pais: string;
+  ciudad: string;
   calle: string;
   nroCasa: number;
   nroDpto: number;
@@ -77,11 +87,8 @@ export interface HomeStayCreateDTOResponse {
   opcionesDeSeguridad: string[];
   opcionesDeLlegada: string[];
   reglas: string[];
-  anfitrionId: number;
-  pais: string;
-  ciudad: string;
-  fechasDisponibles: Date[];
   fotos: string[];
+  anfitrionId: number;
 }
 
 export interface HomeStayGetResponse extends HomeStayCreateDTOResponse {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ImageDTO } from './images-card/image-card.component';
 import { HousingInformation } from './housing-info-displayer/housing-info-displayer.component';
-import { HousingPrice } from './housing-reservation/housing-reservation.component';
+import { Guests, HousingPrice } from './housing-reservation/housing-reservation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HomeDisplayService, reviews } from '../../services/home-display.service';
 import { HomeStayInformation } from '../home-stay-list/home-stay-list.component';
@@ -27,8 +27,14 @@ export class HousingVisualizerComponent implements OnInit{
     })
     this.homeStayservice.getHomeStay(this.id).subscribe((value) =>{
       this.homeStay = value
+      this.maxGuests = {
+        adults: value.maxAdultos,
+        children: value.maxNinos,
+        infants: value.maxBebes,
+        pets: value.maxMascotas,
+      }
     })
-    this.getReviews2(this.id)
+    this.getReviews(this.id)
   }
 
   public id: number = 0;
@@ -37,7 +43,7 @@ export class HousingVisualizerComponent implements OnInit{
   public isExpanded: boolean[] = [];
   public reviews: any[] = []
   public users: any[] = []
-
+  public maxGuests!: Guests
 
   public names: string[] = [
     "Retiro de ensueño junto al mar",
@@ -73,7 +79,7 @@ export class HousingVisualizerComponent implements OnInit{
 
   public housingInformation(): HousingInformation{
     const housingInformation: HousingInformation = {
-      numberOfGuests: this.homeStay.maxPersonas,
+      numberOfGuests: this.homeStay.maxAdultos + this.homeStay.maxNinos,
       numberOfBathrooms: this.homeStay.banos,
       numberOfBeds: this.homeStay.camas,
       numberOfRooms: this.homeStay.dormitorios
@@ -95,7 +101,7 @@ export class HousingVisualizerComponent implements OnInit{
     return filteredReviews.length > 0 ? (rating / filteredReviews.length).toFixed(1) : "0";
   }
 
-  public getReviews2(id: number) {
+  public getReviews(id: number) {
     this.homeStayservice.getReviewsByID(id).pipe(
       mergeMap((reviews: any[]) => {
         const usuarioIds = reviews.map(review => review.usuarioCreadorId);
@@ -129,18 +135,4 @@ export class HousingVisualizerComponent implements OnInit{
     }))
   }
 
-}
-
-interface HouseExample {
-  imagesUrl?: ImageDTO[];
-  houseName?: String;
-  hostName?: String;
-  houseDescriptionParagraphs?: String[];
-  prices: HousingPrice;
-  valuations?: any;
-  informationOfNumber: HousingInformation;
-  services?: String[];
-  houseType?: String;
-  location?: String;
-  rules: string;
 }

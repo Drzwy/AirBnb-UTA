@@ -15,7 +15,7 @@
       <div class="modal-body">
 
         <div class="row">
-          <h4 class="">Rango de precios</h4>
+          <h4 class="mb-3">Rango de precios</h4>
           <p-slider [(ngModel)]="rangePrice" [range]="true" [min]="9100" [max]="92000"/>
           <div class="col-6 my-3">
             <div class="form-floating">
@@ -34,41 +34,69 @@
           </div>
         </div>
 
+        <div class="border-bottom my-3"></div>
+
         <div class="row">
-          <h4 class="">Habitaciones</h4>
-          <div class="row">
-            <div class="col-12">
-              <label>{{ CONSTANTS.numberOfGuestsLabel }}</label>
-            </div>
-            <div class="col-12">
-              @for(number of numbers; track number){
-                <button class="btn btn-outline-dark rounded-pill"  [(ngModel)]="currentNumberOfGuests" data-bs-toggle="button" aria-pressed="true">{{number}}</button>
-              }
-            </div>
-            
-            
-          </div>
+          <h4 class="my-3">Habitaciones y camas</h4>
           <div class="row">
             <div class="col-12">
               <label>{{ CONSTANTS.numberOfRoomsLabel }}</label>
             </div>
+            <div class="col-12 mb-3">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                @for(number of numbers; track number){
+                  <input type="radio" class="btn-check" name="btnRooms" id="btnRooms{{number}}" [checked]="number==1" autocomplete="off">
+                  <label class="btn btn-outline-dark rounded-pill me-3" for="btnRooms{{number}}">{{number == 8 ? number+"+" : number}}</label>
+                }
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-12">
-              @for(number of numbers; track number){
-                <button class="btn btn-outline-dark rounded-pill"  [(ngModel)]="currentNumberOfRooms" data-bs-toggle="button" aria-pressed="true">{{number}}</button>
-              }
+              <label>{{ CONSTANTS.numberOfBedsLabel }}</label>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                @for(number of numbers; track number){
+                  <input type="radio" class="btn-check" name="btnBeds" id="btnBeds{{number}}" [checked]="number==1" autocomplete="off">
+                  <label class="btn btn-outline-dark rounded-pill me-3" for="btnBeds{{number}}">{{number == 8 ? number+"+" : number}}</label>
+                }
+              </div>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <label>{{ CONSTANTS.numberOfBathroomsLabel }}</label>
             </div>
-            <div class="col-12">
-              @for(number of numbers; track number){
-                <button class="btn btn-outline-dark rounded-pill"  [(ngModel)]="currentNumberOfRooms" data-bs-toggle="button" aria-pressed="true">{{number}}</button>
-              }
+            <div class="col-12 mb-3">
+              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                @for(number of numbers; track number){
+                  <input type="radio" class="btn-check" name="btnBathrooms" id="btnBathrooms{{number}}" [checked]="number==1" autocomplete="off">
+                  <label class="btn btn-outline-dark rounded-pill me-3" for="btnBathrooms{{number}}">{{number == 8 ? number+"+" : number}}</label>
+                }
+              </div>
             </div>
           </div>
 
+        </div>
+
+        <div class="border-bottom my-3"></div>
+
+        <div class="row">
+          <div class="col-12">
+            <h4 class="my-3">Tipo de propiedad</h4>
+          </div>
+          <div class="col-12 mb-3">
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+              @for(type of homeStayTypes; track type; let i = $index){
+                <input type="radio" class="btn-check" name="btnTypes" id="btnTypes{{i}}" [checked]="i==1" autocomplete="off">
+                <label class="btn btn-outline-dark rounded me-3" for="btnTypes{{i}}">
+                  <img [src]="type.vectorImage.url" [height]="type.vectorImage.height">
+                  {{type.type}}
+                </label>
+              }
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">

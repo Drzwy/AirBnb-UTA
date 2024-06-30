@@ -93,9 +93,7 @@
           <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="
-                guests.adults = guests.adults > 1 ? guests.adults - 1 : 1
-              "
+              (click)="decrement('adults')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +113,7 @@
 
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="guests.adults = guests.adults + 1"
+              (click)="increment('adults')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -143,9 +141,7 @@
           <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="
-                guests.children = guests.children > 0 ? guests.children - 1 : 0
-              "
+              (click)="decrement('children')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +161,7 @@
 
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="guests.children = guests.children + 1"
+              (click)="increment('children')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -193,9 +189,7 @@
           <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="
-                guests.infants = guests.infants > 0 ? guests.infants - 1 : 0
-              "
+              (click)="decrement('infants')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +209,7 @@
 
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="guests.infants = guests.infants + 1"
+              (click)="increment('infants')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -241,7 +235,7 @@
           <div class="col-12 col-sm-4 col-md-6 align-items-center ps-4">
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="guests.pets = guests.pets > 0 ? guests.pets - 1 : 0"
+              (click)="decrement('pets')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +255,7 @@
 
             <button
               class="btn btn-outline-dark btn-sm rounded-circle mx-2"
-              (click)="guests.pets = guests.pets + 1"
+              (click)="increment('pets')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +274,9 @@
           </div>
         </div>
         <div class="p-3">
-          <p class="rules">{{ rules }}</p>
+          <p class="rules">
+            Este alojamiento tiene una capacidad máxima de {{maxGuests.adults + maxGuests.children}} huéspedes y {{maxGuests.infants}} bebés. Si vienes con más de {{maxGuests.pets}} mascotas, avísale al anfitrión.
+          </p>
         </div>
       </ul>
     </div>

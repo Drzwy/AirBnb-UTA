@@ -15,7 +15,6 @@ export class HousingReservationComponent implements OnInit {
     private userServ: UserGlobalPreferencesService
   ) {
     this.nights = 0;
-    this.rules = [];
     this.houseName = '';
     this.houseType = '';
     this.id = -1;
@@ -35,7 +34,6 @@ export class HousingReservationComponent implements OnInit {
     airbnbServiceFee: 0,
   };
 
-  @Input() public rules: string[];
   @Input() public houseId:number;
   @Input() public houseName:string;
   @Input() public houseType:string;
@@ -43,6 +41,7 @@ export class HousingReservationComponent implements OnInit {
   @Input() public invalidDates:Date[] = [];
   @Input() public rating: string = '';
   @Input() public numberReviews: number = -1;
+  @Input() public maxGuests!: Guests
 
   public dates: (Date|null)[] = []
   public nights: number;
@@ -56,12 +55,36 @@ export class HousingReservationComponent implements OnInit {
     'Tarifa por servicio de Airbnb',
   ];
 
-  public guests: any = {
+  public guests: Guests = {
     adults: 1,
     children: 0,
     infants: 0,
     pets: 0,
   };
+
+  public increment(field: string): void {
+    if(field == 'adults' || field == 'children'){
+      if(this.guests.adults + this.guests.children < this.maxGuests.adults + this.maxGuests.children){
+        this.guests[field as keyof Guests] += 1; 
+      }
+    } else {
+      if(this.guests[field as keyof Guests] < this.maxGuests[field as keyof Guests]){
+        this.guests[field as keyof Guests] += 1;
+      } 
+    }
+  }
+
+  public decrement(field: string): void {
+    if(field == 'adults'){
+      if(this.guests.adults > 1){
+        this.guests.adults -=1
+      }
+    } else{
+      if(this.guests[field as keyof Guests] > 0){
+        this.guests[field as keyof Guests] -= 1; 
+      }
+    }
+  }
 
   public toNumber(number: string) {
     return parseFloat(number.replace(/\D/g, ''));
@@ -126,12 +149,10 @@ export class HousingReservationComponent implements OnInit {
   }
 
   public onRangeSelected(date: any) {
-    console.log(date, "fecha en reserva start")
     this.dates = date;
   }
 
   public onNightsSelected(nights: any) {
-    console.log(nights, "noches en reserva")
     this.nights = nights;
     this.getPrice();
   }
@@ -162,10 +183,9 @@ export class HousingReservationComponent implements OnInit {
       window.scrollTo(0, 0);
     });;
     this.bookingServ.addReservation(reservation)
-    this.bookingServ.addHouseInfo(this.houseName, this.houseType, this.houseImg)
+    this.bookingServ.addHouseInfo(this.houseName, this.houseType, this.houseImg, this.maxGuests)
     this.bookingServ.addInvalidDates(this.invalidDates)
     this.bookingServ.addReviews(this.rating, this.numberReviews)
-    console.log(reservation);
     }
   }
 

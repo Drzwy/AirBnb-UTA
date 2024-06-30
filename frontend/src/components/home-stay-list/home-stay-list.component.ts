@@ -61,7 +61,7 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     this.router.navigate([`housing-visualizer/${id}`]);
   }
 
-  updateHomeStayList(type?: string, filter?: FilterState) {
+  public updateHomeStayList(type?: string, filter?: FilterState) {
     this.service.getAvailableHomeStay().pipe(
       switchMap((result: any[]) => {
         if (type === undefined || type === '') {
@@ -88,13 +88,13 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
     });
   }
 
-  calculateAverageScore(reviews: reviews[]): number {
+  public calculateAverageScore(reviews: reviews[]): number {
     if (reviews.length === 0) return 0;
     const totalScore = reviews.reduce((sum, review) => sum + review.puntuacion, 0);
     return parseFloat((totalScore / reviews.length).toFixed(1));
   }
 
-  getRating(id:number): number{
+  public getRating(id:number): number{
     const rate = this.rating.find(house => house.stayId === id)
     return rate!.averageScore
     
@@ -110,10 +110,14 @@ export interface HomeStayInformation {
   dormitorios: number,
   camas: number,
   banos: number,
-  fechasDisponibles: Date[],
+  fechasOcupadas: Date[],
   precioNoche: number,
-  maxPersonas: number,  
+  maxAdultos: number,  
+  maxNinos: number,
+  maxBebes: number,
+  maxMascotas: number,
   tipo: string,
+  titulo: string,
   descripcion: string,
   pais: string,
   ciudad: string,
