@@ -16,9 +16,9 @@ datasource db {
 model Usuario {
   id Int @id @default(autoincrement())
 
-  fechaCreacion      DateTime @default(now())
-  fechaActualizacion DateTime @updatedAt
-  estaActivo         Boolean  @default(true)
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime? @updatedAt
+  estaActivo         Boolean   @default(true)
 
   tipoUsuario UserTypes @default(Cliente)
   email       String    @unique
@@ -29,7 +29,7 @@ model Usuario {
   apellidoPat String
   apellidoMat String
 
-  descripcion String
+  descripcion String?
   idiomas     String[]
   detalles    String[]
 
@@ -39,6 +39,8 @@ model Usuario {
   valoracionesAUsuarios    ValoracionUsuario[]   @relation("reseña usuario")
   valoracionesAPropiedades ValoracionPropiedad[] @relation("reseña propiedad")
   valoracionesRecibidas    ValoracionUsuario[]   @relation("usuario criticado")
+
+  metodosDePago MetodoDePago[] @relation("registra")
 }
 
 enum UserTypes {
@@ -51,9 +53,9 @@ enum UserTypes {
 model Propiedad {
   id Int @id @default(autoincrement())
 
-  fechaCreacion      DateTime @default(now())
-  fechaActualizacion DateTime @updatedAt
-  estaActivo         Boolean  @default(true)
+  fechaCreacion      DateTime  @default(now())
+  fechaActualizacion DateTime? @updatedAt
+  estaActivo         Boolean   @default(true)
 
   dormitorios Int
   camas       Int
@@ -64,7 +66,7 @@ model Propiedad {
   maxMascotas Int
 
   fechasOcupadas DateTime[] @db.Date
-  precioNoche       Float
+  precioNoche    Float
 
   tipo        String
   titulo      String
@@ -74,7 +76,7 @@ model Propiedad {
   ciudad  String
   calle   String
   nroCasa Int
-  nroDpto Int    @default(0)
+  nroDpto String @default("")
 
   comodidades         String[]
   opcionesDeSeguridad String[]
@@ -107,8 +109,23 @@ model Hospedaje {
   estaActivo       Boolean   @default(true)
   estadoAceptacion StayState @default(EN_ESPERA)
 
-  fechaIni DateTime @db.Date
-  fechaFin DateTime @db.Date
+  fechaIni        DateTime @db.Date
+  fechaFin        DateTime @db.Date
+  nochesDeEstadia Int
+  costoNoche      Float
+
+  nroAdultos  Int @default(1)
+  nroNinos    Int @default(0)
+  nroBebes    Int @default(0)
+  nroMascotas Int @default(0)
+
+  costoHospedaje Float
+  tarifaServicio Float @default(0)
+  tarifaLimpieza Float @default(0)
+
+  metodoDePago     MetodoDePago @relation(name: "paga", fields: [metodoDePagoId, usuarioPagadorId], references: [id, propietarioId])
+  metodoDePagoId   Int
+  usuarioPagadorId Int
 
   Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   huespedId   Int
@@ -118,9 +135,22 @@ model Hospedaje {
   @@id([id, huespedId, propiedadId])
 }
 
+model MetodoDePago {
+  id Int @default(autoincrement())
+
+  infoTarjeta String
+
+  propietario   Usuario @relation("registra", fields: [propietarioId], references: [id])
+  propietarioId Int
+
+  hospedajesPagados Hospedaje[] @relation("paga")
+
+  @@id([id, propietarioId])
+}
+
 model ValoracionUsuario {
   fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  estaActivo    Boolean  @default(true)
 
   descripcion String?
   puntuacion  Int
@@ -135,7 +165,7 @@ model ValoracionUsuario {
 
 model ValoracionPropiedad {
   fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  estaActivo    Boolean  @default(true)
 
   descripcion String?
   puntuacion  Int

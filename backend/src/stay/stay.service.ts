@@ -1,9 +1,10 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { Hospedaje, StayState } from '@prisma/client';
+import { Hospedaje, Propiedad, StayState, Usuario } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { StayIdsDTO, SolicitStayDTO } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -14,7 +15,9 @@ export class StayService {
   constructor(private prismaService: PrismaService) {}
 
   async getAllStays(): Promise<Hospedaje[]> {
-    const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany();
+    const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
+      include: { Propiedad: true, Huesped: true },
+    });
 
     if (stays.length == 0)
       throw new NotFoundException(
@@ -26,9 +29,8 @@ export class StayService {
 
   async getStaysByPropertyId(propertyId: number): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
-      where: {
-        propiedadId: propertyId,
-      },
+      where: { propiedadId: propertyId },
+      include: { Huesped: true },
     });
 
     if (stays.length == 0)
@@ -41,9 +43,8 @@ export class StayService {
 
   async getStaysByGuestId(userId: number): Promise<Hospedaje[]> {
     const stays: Hospedaje[] = await this.prismaService.hospedaje.findMany({
-      where: {
-        huespedId: userId,
-      },
+      where: { huespedId: userId },
+      include: { Propiedad: true },
     });
 
     if (stays.length == 0)
@@ -52,6 +53,49 @@ export class StayService {
       );
 
     return stays;
+  }
+
+  async getStaysByHostId(hostId: number): Promise<HostRequestsToStay[]> {
+    try {
+      const properties: Propiedad[] =
+        await this.prismaService.propiedad.findMany({
+          where: {
+            anfitrionId: hostId,
+          },
+        });
+
+      const stayRequests: HostRequestsToStay[] = [];
+      for (const property of properties) {
+        const stayRequest = new HostRequestsToStay();
+
+        stayRequest.propiedad = property;
+
+        const stays: Hospedaje[] = await this.getStaysByPropertyId(property.id);
+
+        for (const stay of stays) {
+          const guest: Usuario = await this.prismaService.usuario.findUnique({
+            where: {
+              id: stay.huespedId,
+            },
+          });
+          stayRequest.hospedajes.push({ hospedaje: stay, huesped: guest });
+        }
+
+        stayRequests.push(stayRequest);
+      }
+
+      return stayRequests;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(error);
+        } else {
+          throw new InternalServerErrorException(error);
+        }
+      } else {
+        throw error;
+      }
+    }
   }
 
   async getStayById(ids: StayIdsDTO): Promise<Hospedaje> {
@@ -63,6 +107,10 @@ export class StayService {
           propiedadId: ids.propiedadId,
         },
       },
+      include: {
+        Huesped: true,
+        Propiedad: true,
+      },
     });
 
     return stay;
@@ -72,6 +120,10 @@ export class StayService {
     try {
       const stay: Hospedaje = await this.prismaService.hospedaje.create({
         data: dto,
+        include: {
+          Huesped: true,
+          Propiedad: true,
+        },
       });
 
       return stay;
@@ -128,10 +180,10 @@ export class StayService {
   async modifyStay(dto: ModifyStayDTO): Promise<Hospedaje> {
     try {
       // deberia estar en el servicio de homestays
-      const { fechasDisponibles: availableDates } =
+      const { fechasOcupadas: availableDates } =
         await this.prismaService.propiedad.findUnique({
           select: {
-            fechasDisponibles: true,
+            fechasOcupadas: true,
           },
           where: {
             id: dto.ids.propiedadId,
@@ -230,5 +282,14 @@ export class StayService {
     }
 
     return dateArray;
+  }
+}
+
+export class HostRequestsToStay {
+  propiedad: Propiedad;
+  hospedajes: { hospedaje: Hospedaje; huesped: Usuario }[];
+
+  constructor() {
+    this.hospedajes = [];
   }
 }

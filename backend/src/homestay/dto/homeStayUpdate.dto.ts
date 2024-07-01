@@ -68,8 +68,8 @@ export class HomeStayUpdateDTO {
   nroCasa: number;
 
   @IsOptional()
-  @IsNumber()
-  nroDpto: number;
+  @IsString()
+  nroDpto: string;
 
   @IsOptional()
   @IsArray()

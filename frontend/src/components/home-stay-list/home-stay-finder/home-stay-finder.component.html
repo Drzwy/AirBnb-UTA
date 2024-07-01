@@ -1,13 +1,26 @@
 <div class="container w-100 border rounded-pill shadow mb-4">
   <div class="row py-2 mx-2">
     <div class="col-4 border-end">
-      <h6 class="text-truncate title-size mt-2 mb-1">Dónde</h6>
-      <input
-        type="text"
-        class="border-0 w-100 text-truncate text-size"
-        [placeholder]="CONSTANTS.wherePlaceHolder"
-        [(ngModel)]="currentWhere"
-      />
+      <div class="row">
+        <h6 class="text-truncate title-size mt-2 mb-1">Dónde</h6>
+        <div class="col-6">
+          <input
+            type="text"
+            class="border-0 ps-0 w-100 text-truncate text-size"
+            placeholder="Ciudad"
+            [(ngModel)]="currentCity"
+          />
+        </div>,
+        <div class="col-5">
+          <input
+            type="text"
+            class="border-0 ps-0  w-100 text-truncate text-size"
+            placeholder="Pais"
+            [(ngModel)]="currentCountry"
+          />
+        </div>
+      </div>
+
     </div>
     <div class="col-4 border-end">
       <button class="w-100 bg-transparent border-0 text-start" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -16,7 +29,7 @@
             <h6 class="text-truncate title-size">Llegada</h6>
             <h6 class="h6 fw-normal text-truncate text-size text-secondary">
               {{
-                currentArrival ? (currentArrival | date: "d MMM") : "Agrega una fecha"
+                dates[0] ? (dates[0] | date: "d MMM") : "Agrega una fecha"
               }}
             </h6>
           </div>
@@ -24,7 +37,7 @@
             <h6 class="h6 text-truncate title-size">Salida</h6>
             <h6 class="h6 fw-normal text-truncate text-size text-secondary">
               {{
-                currentFinish ? (currentFinish | date: "d MMM") : "Agrega una fecha"
+                dates[1] ? (dates[1] | date: "d MMM") : "Agrega una fecha"
               }}
             </h6>
           </div>
@@ -38,8 +51,7 @@
         >
           <div class="container my-3 mx-3">
             <app-calendar
-              (startDate)="onStartDateSelected($event)"
-              (endDate)="onEndDateSelected($event)"
+              (dates)="onRangeSelected($event)"
             >
             </app-calendar>
           </div>
@@ -259,7 +271,7 @@
       </div>
     </div>
     <div class="col-1 d-flex justify-content-end align-items-center">
-      <button class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+      <button class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;" (click)="filter()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
         </svg>
