@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { BookingService } from '../../../services/booking.service';
+import { UserGlobalPreferencesService } from '../../../services/user-global-preferences.service';
 
 @Component({
   selector: 'app-housing-reservation',
@@ -6,14 +9,23 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./housing-reservation.component.css'],
 })
 export class HousingReservationComponent implements OnInit {
-  constructor() {
-    this.startDate = null;
-    this.endDate = null;
+  constructor(
+    private router: Router,
+    private bookingServ: BookingService,
+    private userServ: UserGlobalPreferencesService
+  ) {
     this.nights = 0;
-    this.rules = '';
+    this.houseName = '';
+    this.houseType = '';
+    this.id = -1;
+    this.houseId = -1;
+    this.houseImg = '';
   }
 
   ngOnInit(): void {
+    this.userServ.getCurrentUser().subscribe(response =>{
+      this.id = response.id
+    })
   }
 
   @Input() public housingPrice: HousingPrice = {
@@ -22,11 +34,18 @@ export class HousingReservationComponent implements OnInit {
     airbnbServiceFee: 0,
   };
 
-  @Input() public rules: string;
+  @Input() public houseId:number;
+  @Input() public houseName:string;
+  @Input() public houseType:string;
+  @Input() public houseImg: string;
+  @Input() public invalidDates:Date[] = [];
+  @Input() public rating: string = '';
+  @Input() public numberReviews: number = -1;
+  @Input() public maxGuests!: Guests
 
-  public startDate: Date | null;
-  public endDate: Date | null;
+  public dates: (Date|null)[] = []
   public nights: number;
+  public id: number;
 
   public partialHousingPrices: string[] = [];
 
@@ -36,12 +55,36 @@ export class HousingReservationComponent implements OnInit {
     'Tarifa por servicio de Airbnb',
   ];
 
-  public guests: any = {
+  public guests: Guests = {
     adults: 1,
     children: 0,
     infants: 0,
     pets: 0,
   };
+
+  public increment(field: string): void {
+    if(field == 'adults' || field == 'children'){
+      if(this.guests.adults + this.guests.children < this.maxGuests.adults + this.maxGuests.children){
+        this.guests[field as keyof Guests] += 1; 
+      }
+    } else {
+      if(this.guests[field as keyof Guests] < this.maxGuests[field as keyof Guests]){
+        this.guests[field as keyof Guests] += 1;
+      } 
+    }
+  }
+
+  public decrement(field: string): void {
+    if(field == 'adults'){
+      if(this.guests.adults > 1){
+        this.guests.adults -=1
+      }
+    } else{
+      if(this.guests[field as keyof Guests] > 0){
+        this.guests[field as keyof Guests] -= 1; 
+      }
+    }
+  }
 
   public toNumber(number: string) {
     return parseFloat(number.replace(/\D/g, ''));
@@ -50,8 +93,6 @@ export class HousingReservationComponent implements OnInit {
   public getPrice(): void {
     let prices: string[] = [];
     let text: string;
-
-    console.log(this.housingPrice.pricePerNight * this.nights * this.housingPrice.cleaningFee)
 
     text =
       '$' + (this.housingPrice.pricePerNight * this.nights).toLocaleString('en-US') + ' CLP';
@@ -100,7 +141,6 @@ export class HousingReservationComponent implements OnInit {
             guestString += 's';
           }
         }
-
         guestCount++;
       }
     });
@@ -108,37 +148,44 @@ export class HousingReservationComponent implements OnInit {
     return guestString;
   }
 
-  public onStartDateSelected(date: any) {
-    this.startDate = date;
+  public onRangeSelected(date: any) {
+    this.dates = date;
   }
 
-  public onEndDateSelected(date: any) {
-    this.endDate = date;
-  }
-
-  public onNightsSelected(nigths: any) {
-    this.nights = nigths;
+  public onNightsSelected(nights: any) {
+    this.nights = nights;
     this.getPrice();
   }
 
   public reserve() {
-    console.log('reservar');
     let partialPrices: any;
     let reservation: Reservation;
-    if (this.startDate && this.endDate) {
+    if (this.dates[0] && this.dates[1]) {
       partialPrices = this.partialHousingPrices.map((price, index) => ({
         type: this.typeOfPrice[index],
-        price: this.toNumber(price) * this.nights,
+        price: this.toNumber(price),
       }));
       reservation = {
-        guests: this.guests,
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.dates[0],
+        endDate: this.dates[1],
         nights: this.nights,
+        pricePerNight: this.housingPrice.pricePerNight,
+        guests: this.guests,
         partialPrices: partialPrices,
+        paymentMethodId: 1,
+        payerId: this.id,
+        id: this.id,
+        houseId: this.houseId,
+
         totalPrice: this.toNumber(this.priceWithoutTaxes()),
       };
-      console.log(reservation);
+    this.router.navigate([`booking/${this.houseId}`]).then(() => {
+      window.scrollTo(0, 0);
+    });;
+    this.bookingServ.addReservation(reservation)
+    this.bookingServ.addHouseInfo(this.houseName, this.houseType, this.houseImg, this.maxGuests)
+    this.bookingServ.addInvalidDates(this.invalidDates)
+    this.bookingServ.addReviews(this.rating, this.numberReviews)
     }
   }
 
@@ -161,10 +208,16 @@ export interface Guests {
 }
 
 export interface Reservation {
-  guests: Guests;
   startDate: Date;
   endDate: Date;
   nights: number;
+  pricePerNight: number;
+  guests: Guests;
   partialPrices: any;
-  totalPrice: number;
+  paymentMethodId: number,
+  payerId: number,
+  id: number,
+  houseId: number,
+  
+  totalPrice: number; // este no se envia al backend
 }

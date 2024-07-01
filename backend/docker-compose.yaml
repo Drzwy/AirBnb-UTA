@@ -1,6 +1,6 @@
 services:
   db-dev:
-    image: postgres
+    image: postgres:16
     ports:
       - 6789:5432
     environment:
@@ -11,7 +11,7 @@ services:
       - airbnb-uta
 
   db-test:
-    image: postgres
+    image: postgres:16
     ports:
       - 9999:5432
     environment:

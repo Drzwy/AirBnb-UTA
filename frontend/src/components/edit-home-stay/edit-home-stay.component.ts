@@ -3,7 +3,7 @@ import {
   alternativeImageAlt,
   alternativeImageUrl,
   HomeStayConstants,
-} from '../../../../common/common';
+} from '../../common/common';
 import {
   HomestayApiService,
   HomeStayGetResponse,

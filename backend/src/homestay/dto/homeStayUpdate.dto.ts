@@ -17,7 +17,7 @@ export class HomeStayUpdateDTO {
   @IsOptional()
   @IsArray()
   @Type(() => Date)
-  fechasDisponibles: Date[];
+  fechasOcupadas: Date[];
 
   @IsOptional()
   @IsNumber()
@@ -25,11 +25,27 @@ export class HomeStayUpdateDTO {
 
   @IsOptional()
   @IsNumber()
-  maxPersonas: number;
+  maxAdultos: number;
+
+  @IsOptional()
+  @IsNumber()
+  maxNinos: number;
+
+  @IsOptional()
+  @IsNumber()
+  maxBebes: number;
+
+  @IsOptional()
+  @IsNumber()
+  maxMascotas: number;
 
   @IsOptional()
   @IsString()
   tipo: string;
+
+  @IsOptional()
+  @IsString()
+  titulo: string;
 
   @IsOptional()
   @IsString()
@@ -52,8 +68,8 @@ export class HomeStayUpdateDTO {
   nroCasa: number;
 
   @IsOptional()
-  @IsNumber()
-  nroDpto: number;
+  @IsString()
+  nroDpto: string;
 
   @IsOptional()
   @IsArray()

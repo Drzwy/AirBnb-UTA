@@ -11,17 +11,15 @@ import {
 })
 export class HomeTypeButtonsComponent implements OnInit {
   public homeStayTypes: HomeStayType[] = [];
-  public currentType: string = '';
 
   constructor(private service: HomeDisplayService) {
     this.homeStayTypes = service.getHomeStayTypes();
   }
   ngOnInit() {
-    this.service.currentType.subscribe();
   }
 
   public changeHomeStayType(type: string) {
-    this.service.changeCurrentType(type);
+    this.service.filterHomestays(`tipo=${type}`);
   }
   public getVectorImageSize() {
     return this.service.HOUSE_TYPE_VECTOR_SIZE;
