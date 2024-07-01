@@ -12,7 +12,7 @@ import {
   GetReviewBatch,
   ModifyReviewDTO,
 } from './dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ValoracionPropiedad, ValoracionUsuario } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
