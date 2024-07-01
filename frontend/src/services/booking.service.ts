@@ -90,7 +90,7 @@ export class BookingService{
       costoHospedaje: this.reservation.partialPrices[0].price,
       tarifaServicio: Math.round(this.reservation.partialPrices[2].price),
       tarifaLimpieza: this.reservation.partialPrices[1].price,
-      metodoDePagoId: 1, //cambiar cuando se puedan registar tarjetas, this.reservation.paymentMethodId
+      metodoDePagoId: this.reservation.paymentMethodId, //cambiar cuando se puedan registar tarjetas, this.reservation.paymentMethodId
       usuarioPagadorId: this.reservation.id,
       huespedId: this.reservation.id,
       propiedadId: this.reservation.houseId,

@@ -8,7 +8,7 @@
 
 <div class="container">
   <div class="row">
-    @for (homeStay of currentHomeStayList; track homeStay; let i = $index){
+    @for (homeStay of homestays; track homeStay; let i = $index){
       <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
         <div class="card border border-0 my-2" (click)="homeVisualizer(homeStay.id)">
           <img

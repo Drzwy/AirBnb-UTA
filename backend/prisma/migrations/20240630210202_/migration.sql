@@ -33,10 +33,14 @@ CREATE TABLE "Propiedad" (
     "dormitorios" INTEGER NOT NULL,
     "camas" INTEGER NOT NULL,
     "banos" INTEGER NOT NULL,
-    "maxPersonas" INTEGER NOT NULL,
-    "fechasDisponibles" DATE[],
+    "maxAdultos" INTEGER NOT NULL,
+    "maxNinos" INTEGER NOT NULL,
+    "maxBebes" INTEGER NOT NULL,
+    "maxMascotas" INTEGER NOT NULL,
+    "fechasOcupadas" DATE[],
     "precioNoche" DOUBLE PRECISION NOT NULL,
     "tipo" TEXT NOT NULL,
+    "titulo" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
     "pais" TEXT NOT NULL,
     "ciudad" TEXT NOT NULL,
@@ -71,7 +75,7 @@ CREATE TABLE "Hospedaje" (
     "tarifaServicio" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "tarifaLimpieza" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "metodoDePagoId" INTEGER NOT NULL,
-    "usuarioPagador" INTEGER NOT NULL,
+    "usuarioPagadorId" INTEGER NOT NULL,
     "huespedId" INTEGER NOT NULL,
     "propiedadId" INTEGER NOT NULL,
 
@@ -124,7 +128,7 @@ CREATE UNIQUE INDEX "Propiedad_pais_ciudad_calle_nroCasa_nroDpto_key" ON "Propie
 ALTER TABLE "Propiedad" ADD CONSTRAINT "Propiedad_anfitrionId_fkey" FOREIGN KEY ("anfitrionId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_metodoDePagoId_usuarioPagador_fkey" FOREIGN KEY ("metodoDePagoId", "usuarioPagador") REFERENCES "MetodoDePago"("id", "propietarioId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_metodoDePagoId_usuarioPagadorId_fkey" FOREIGN KEY ("metodoDePagoId", "usuarioPagadorId") REFERENCES "MetodoDePago"("id", "propietarioId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Hospedaje" ADD CONSTRAINT "Hospedaje_huespedId_fkey" FOREIGN KEY ("huespedId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;

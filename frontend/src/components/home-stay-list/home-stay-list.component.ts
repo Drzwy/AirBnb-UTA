@@ -7,7 +7,7 @@ import {
 } from '../../services/home-display.service';
 import { FilterState } from './advanced-filter/advanced-filter.component';
 import { Router } from '@angular/router';
-import { forkJoin, map, Subscription, switchMap } from 'rxjs';
+import { forkJoin, map, max, Subscription, switchMap } from 'rxjs';
 import { ImageDTO } from '../housing-visualizer/images-card/image-card.component';
 
 @Component({
@@ -24,31 +24,38 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public currentHomeStayList: HomeStayInformation[] = [];
   public rating:{ stayId: number, averageScore: number }[] = [];
 
-  private _homestayTypeSubscription?: Subscription;
-  private _currentFilterSubscription?: Subscription;
-  private _filterByConditionSubscription?: Subscription;
+  private homeStaysSubscription?: Subscription;
+  public homestays:HomeStayInformation[] = []
 
   constructor(
     private service: HomeDisplayService,
     private router: Router,
   ) {}
   ngOnInit() {
-    this._homestayTypeSubscription = this.service.currentType.subscribe(
-      (value) => {
-        this.updateHomeStayList(value);
-      },
-    );
-    this._currentFilterSubscription = this.service.currentFilterState.subscribe(
-      (value) => (this.currentFilter = value),
-    );
-    this._filterByConditionSubscription = this.service
-      .filterHomeStaysByConditions()
-      .subscribe((value) => (this.currentHomeStayList = value));
+
+    this.getHome()
+    this.homeStaysSubscription = this.service.availableHomeStays2$.pipe(
+      switchMap((result: any[]) => {
+        this.homestays = result
+
+        const reviewRequests = this.homestays.map(homeStay =>
+          this.service.getReviewsByID(homeStay.id).pipe(
+            map(reviews =>({
+              stayId:homeStay.id,
+              averageScore:this.calculateAverageScore(reviews)
+            }))
+          )
+        );
+        return forkJoin(reviewRequests)
+      })
+    ).subscribe((results: any) => {
+      this.rating = results
+      console.log(results)
+    })
+
   }
   ngOnDestroy() {
-    this._currentFilterSubscription!.unsubscribe();
-    this._filterByConditionSubscription!.unsubscribe();
-    this._homestayTypeSubscription!.unsubscribe();
+    this.homeStaysSubscription!.unsubscribe();
   }
 
   readonly CONSTANTS = {
@@ -57,35 +64,12 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   readonly homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes();
   readonly IMAGE_DIMENSIONS: number = 300;
 
-  public homeVisualizer(id: number) {
-    this.router.navigate([`housing-visualizer/${id}`]);
+  public getHome(){
+    this.service.getHome()
   }
 
-  public updateHomeStayList(type?: string, filter?: FilterState) {
-    this.service.getAvailableHomeStay().pipe(
-      switchMap((result: any[]) => {
-        if (type === undefined || type === '') {
-          this.currentHomeStayList = result;
-        } else {
-          this.currentHomeStayList = result.filter(
-            (homeStay) => homeStay.tipo == type && homeStay.precioNoche
-          );
-        }
-        // Realizar las llamadas a las reseñas después de actualizar currentHomeStayList
-        const reviewRequests = this.currentHomeStayList.map(homeStay =>
-          this.service.getReviewsByID(homeStay.id).pipe(
-            map(reviews => ({
-              stayId: homeStay.id,
-              averageScore: this.calculateAverageScore(reviews)
-            }))
-          )
-        );
-
-        return forkJoin(reviewRequests);
-      })
-    ).subscribe((results: any) => {
-      this.rating = results;
-    });
+  public homeVisualizer(id: number) {
+    this.router.navigate([`housing-visualizer/${id}`]);
   }
 
   public calculateAverageScore(reviews: reviews[]): number {
@@ -97,9 +81,7 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public getRating(id:number): number{
     const rate = this.rating.find(house => house.stayId === id)
     return rate!.averageScore
-    
   }
-
 }
 
 export interface HomeStayInformation {

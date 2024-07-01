@@ -292,8 +292,8 @@
           <div class="row mt-3">
             <div class="col">
               <select class="form-select form-select-lg" [(ngModel)]="cardId">
-                @for (card of cards; track card; let i = $index){
-                  <option [value]="i+1">Tarjeta {{i+1}}</option>
+                @for (card of paymentMethods; track card; let i = $index){
+                  <option [value]="card.id">{{formatNumber(card.infoTarjeta.split(',')[0])}}</option>
                 }
                 <option [value]="-1">Agregar tarjeta de crédito o débito</option>
               </select>
@@ -323,17 +323,8 @@
                   </div>
                 </div>
               </div>
-              <!-- EN DUDA - PA QUE QUIERO SABER EL PAIS? XD SE PUEDE OMITIR SUPONGO -->
-              <!-- <div class="row">
-                <div class="col mt-3">
-                  <select class="form-select form-select-lg">
-                    <option selected>Chile</option>
-                    <option >Peru</option>
-                  </select>
-                </div>
-              </div> -->
               <div class="col-4 mt-3">
-                <button type="submit" class="btn btn-outline-dark" (click)="addCard()">Agregar tarjeta</button>
+                <button type="submit" class="btn btn-outline-dark" [disabled]="!paymentMethodForm.valid" (click)="addPaymentMethod()">Agregar tarjeta</button>
               </div>
             </form>
           }
@@ -478,7 +469,7 @@
             <p class="text">Al seleccionar el botón que aparece a continuación, acepto las siguientes políticas: Reglas del anfitrión de la casa, Reglas fundamentales para los huéspedes, Política de reembolso y asistencia para cambio de reservación de Airbnb. Además, doy mi consentimiento para que Airbnb pueda cobrarme a través de mi método de pago si soy responsable de los daños. Acepto pagar el monto total indicado si el anfitrión acepta mi solicitud de reservación.</p>
           </div>
         </div>
-        <button class="btn btn-primary btn-lg mb-5" [disabled]="!reservation.endDate || !reservation.startDate || (cardId == -1 || cardId == -2)" (click)="booking()">Solicita reservar</button>
+        <button class="btn btn-primary btn-lg mb-5" [disabled]="!reservation.endDate || !reservation.startDate || cardId == -1" (click)="booking()">Solicita reservar</button>
       </div>
         
       </div>

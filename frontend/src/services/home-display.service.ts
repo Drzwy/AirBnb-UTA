@@ -6,11 +6,12 @@ import { FilterState } from '../components/home-stay-list/advanced-filter/advanc
 import { HttpClient } from '@angular/common/http';
 
 export const emptyFilter: FilterState = {
-  numberOfGuests: 0,
   numberOfRooms: 0,
   numberOfBathrooms: 0,
+  numberOfBeds: 0,
   minPricePerNight: 0,
   maxPricePerNight: 0,
+  type: ''
 };
 
 @Injectable({
@@ -18,39 +19,27 @@ export const emptyFilter: FilterState = {
 })
 export class HomeDisplayService {
   private urlHomeStays: string = 'http://localhost:3000/homestays/get';
+  private urlFilter: string = 'http://localhost:3000/homestays/filter'
   private urlReviews: string = 'http://localhost:3000/reviews/homestays'
   private urlUser: string = 'http://localhost:3000/users'
 
   constructor(private http: HttpClient) {}
 
   readonly HOUSE_TYPE_VECTOR_SIZE: number = 30;
-  public availableHomeStays: HomeStayInformation[] = []; //borre los ejemplos y esto hace que cambie para los demas metodos
 
+  public availableHomeStays2: BehaviorSubject<HomeStayInformation[]> = new BehaviorSubject<HomeStayInformation[]>([]);
+  availableHomeStays2$ = this.availableHomeStays2.asObservable();
 
-  //observable type
-  public currentType: BehaviorSubject<string> = new BehaviorSubject<string>('');
-
-  //observable filter validation
-  public filterIsValid: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false,
-  );
-  private _currentFilterState: FilterState = emptyFilter;
-
-  //observable filter
-  public currentFilterState: BehaviorSubject<FilterState> =
-    new BehaviorSubject<FilterState>(this._currentFilterState);
-
-  public filterHomeStaysByConditions(
-    type?: string,
-    filter?: FilterState,
-  ): BehaviorSubject<HomeStayInformation[]> {
-    this.availableHomeStays.forEach((homeStay) => {});
-    return new BehaviorSubject<HomeStayInformation[]>(this.availableHomeStays);
+  public filterHomestays(filter: any){ //any por ahora
+    this.http.get<HomeStayInformation[]>(`${this.urlFilter}?${filter}`).subscribe(result =>{
+      this.availableHomeStays2.next(result)
+    })
   }
 
-  //Simil de GET homestays
-  public getAvailableHomeStay(): Observable<HomeStayInformation[]> {
-    return this.http.get<HomeStayInformation[]>(this.urlHomeStays);
+  public getHome(){
+    this.http.get<HomeStayInformation[]>(this.urlHomeStays).subscribe(result =>{
+      this.availableHomeStays2.next(result)
+    })
   }
 
   public getHomeStaysReviews(): Observable<reviews[]>{
@@ -83,29 +72,7 @@ export class HomeDisplayService {
       },
     });
   }
-
-  public changeCurrentType(type: string) {
-    this.currentType.next(type);
-  }
-
-  public changeCurrentFilterState(state: FilterState): void {
-    this._currentFilterState = state;
-    this.validateCurrentFilterState();
-  }
-
-  private validateCurrentFilterState(): void {
-    if (
-      this._currentFilterState.numberOfGuests <= 0 ||
-      this._currentFilterState.numberOfRooms <= 0 ||
-      this._currentFilterState.numberOfBathrooms <= 0 ||
-      this._currentFilterState.maxPricePerNight <
-        this._currentFilterState.minPricePerNight
-    ) {
-      this.filterIsValid.next(false);
-    } else {
-      this.filterIsValid.next(true);
-    }
-  }
+  
   /*
    * Va a cambiar cuando se pueda llamar a la BBDD y obtener los tipos disponibles
    * */

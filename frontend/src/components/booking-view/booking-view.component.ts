@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookingService } from '../../services/booking.service';
 import { Guests, Reservation } from '../housing-visualizer/housing-reservation/housing-reservation.component';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { PaymentMethodService } from '../../services/payment-method.service';
 
 @Component({
   selector: 'app-booking-view',
@@ -14,6 +15,7 @@ export class BookingViewComponent implements OnInit {
   constructor(
     private router: Router,
     private bookingService: BookingService,
+    private paymentMethodService: PaymentMethodService,
     private route: ActivatedRoute,
   ) { }
 
@@ -32,6 +34,7 @@ export class BookingViewComponent implements OnInit {
     });
     this.getInvalidDates()
     this.getReviews()
+    this.getPaymentMethods()
   }
 
   public indice: number = -1
@@ -45,8 +48,9 @@ export class BookingViewComponent implements OnInit {
   public invalidDates!: Date[]
   public rating: string = ''
   public numberReviews: number = -1
-  public cardId: number = -2
+  public cardId: number = -1
   public cards: any = [1,2,3,4] //cambiar cuando hayan  tarjetas
+  public paymentMethods!: any[]
 
   public increment(field: string): void {
     if(field == 'adults' || field == 'children'){
@@ -176,13 +180,27 @@ export class BookingViewComponent implements OnInit {
     })
   }
 
-  public addCard(){
-    const card = {
-      cardNumber: this.paymentMethodForm.get('cardNumber')?.value,
-      expDate: this.paymentMethodForm.get('expDate')?.value,
-      cvv: this.paymentMethodForm.get('cvv')?.value,
-    }
-    this.bookingService.addCard(card)
+  public addPaymentMethod(){
+    const card: string = `${this.paymentMethodForm.get('cardNumber')?.value},${this.paymentMethodForm.get('expDate')?.value},${this.paymentMethodForm.get('cvv')?.value}`
+    this.paymentMethodService.addPaymentMethod(card).subscribe(result =>{
+      if (result && result.success) {
+        alert('Se ha registrado el metodo de pago');
+      } else {
+        alert(result.message);
+      }
+      this.getPaymentMethods()
+    });
+  }
+
+  public getPaymentMethods(){
+    this.paymentMethodService.getPaymentMethodOfUser().subscribe(result=>{
+      this.paymentMethods = result
+      this.cardId = result[0].id
+    })
+  }
+
+  public formatNumber(cardNumber: string): string{
+    return cardNumber.replace(/\d{4}(?=\s)/g, '⁎⁎⁎⁎')
   }
 
   public back(){
@@ -197,21 +215,14 @@ export function expirationDateValidator(): ValidatorFn {
     if (!value) {
       return null; //si esta vacio
     }
-    // Extraer mes y año
     const parts = value.split('/');
     const month = parseInt(parts[0], 10);
     const year = parseInt(parts[1], 10);
-    console.log(year, 'mes fuera')
-    console.log(year, 'año fuera')
-    // Verificar mes válido (01-12)
     if (month < 1 || month > 12) {
-      console.log(month, 'mes dentro')
-      return { invalidExpirationDate: true }; // Mes inválido
+      return { invalidExpirationDate: true }; 
     }
-    // Verificar año válido (24-35)
     if (year < 24 || year > 35) {
-      console.log(year, 'año dentro')
-      return { invalidExpirationDate: true }; // Año inválido
+      return { invalidExpirationDate: true }; 
     }
     return null;
   };
