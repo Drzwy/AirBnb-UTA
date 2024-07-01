@@ -72,7 +72,7 @@ export class CalendarComponent implements OnInit {
       const startDate = this.rangeDates[0];
       const endDate = this.rangeDates[1];
 
-      if(startDate.getTime != endDate.getTime){
+      if(startDate.getTime() != endDate.getTime()){
         const differenceMs = endDate.getTime() - startDate.getTime();
         const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
