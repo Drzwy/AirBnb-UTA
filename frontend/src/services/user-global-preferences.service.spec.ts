@@ -28,6 +28,7 @@ describe('UserGlobalPreferencesService', () => {
       id: 2,
       nombre: 'Ibar Ossandon Urrutia',
       anfitrionDe: [],
+      apellidoPat: 'Ossandon'
     };
     //Se asegura que el backend responda al mismo usuario que se espera
     service.getCurrentUser().subscribe((response) => {

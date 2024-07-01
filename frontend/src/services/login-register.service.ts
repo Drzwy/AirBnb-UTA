@@ -5,6 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { userLogin } from '../components/login/login.component';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class LoginRegisterService {
   constructor(
     private router: Router,
     private http: HttpClient,
+    private location: Location
   ) {
     this.checkTokenExpiration();
   }

@@ -289,5 +289,7 @@ export class HostRequestsToStay {
   propiedad: Propiedad;
   hospedajes: { hospedaje: Hospedaje; huesped: Usuario }[];
 
-  constructor() {}
+  constructor() {
+    this.hospedajes = [];
+  }
 }

@@ -26,7 +26,22 @@ export class RegisterComponent implements AfterViewInit {
       closeOnSelect: false,
     });
 
+    $('#languagesModal').select2({
+      theme: 'bootstrap-5',
+      width: $(this).data('width')
+        ? $(this).data('width')
+        : $(this).hasClass('w-100')
+          ? '100%'
+          : 'style',
+      closeOnSelect: false,
+    });
+
     $('#languages').on('change', (event: any) => {
+      const selectedValues = $(event.target).val();
+      this.selectedLanguages = selectedValues ? selectedValues : [];
+    });
+
+    $('#languagesModal').on('change', (event: any) => {
       const selectedValues = $(event.target).val();
       this.selectedLanguages = selectedValues ? selectedValues : [];
     });
@@ -57,36 +72,35 @@ export class RegisterComponent implements AfterViewInit {
 
   public selectedLanguages: string[] = [];
 
-  register(): void {
-    if (this.registerForm.valid) {
-      const user = {
-        email: this.registerForm.get('email')?.value,
-        hash: this.registerForm.get('hash')?.value,
-        run: this.registerForm.get('run')?.value,
-        nombre: this.registerForm.get('nombre')?.value,
-        apellidoPat: this.registerForm.get('apellidoPat')?.value,
-        apellidoMat: this.registerForm.get('apellidoMat')?.value,
-        descripcion: this.registerForm.get('descripcion')?.value,
-        idiomas: this.selectedLanguages,
-        detalles: this.registerForm.get('detalles')?.value?.split(',') || [],
-      };
-  
-      this.loginRegisterService.register(user).subscribe((result) => {
-        if (result && result.success) {
-          alert('Usuario registrado correctamente');
-          if(!this.modal){
-            this.router.navigateByUrl('home-stay-list');
-          } else{
-            this.router.navigateByUrl(this.router.url).then(()=>{
-              window.location.reload();
-            })
-          }
-          
-        } else {
-          alert(result?.message || 'Error al registrar el usuario');
+  public register() {
+    const user = {
+      email: this.registerForm.get('email')?.value,
+      hash: this.registerForm.get('hash')?.value,
+      run: this.registerForm.get('run')?.value,
+      nombre: this.registerForm.get('nombre')?.value,
+      apellidoPat: this.registerForm.get('apellidoPat')?.value,
+      apellidoMat: this.registerForm.get('apellidoMat')?.value,
+      descripcion: this.registerForm.get('descripcion')?.value,
+      idiomas: this.selectedLanguages,
+      detalles: this.registerForm.get('detalles')?.value?.split(',') || [],
+    };
+
+    this.loginRegisterService.register(user).subscribe((result) => {
+      if (result && result.success) {
+        alert('Usuario registrado correctamente');
+        if(!this.modal){
+          this.router.navigateByUrl('home-stay-list');
+        } else{
+          this.router.navigateByUrl(this.router.url).then(()=>{
+            window.location.reload();
+          })
         }
-      });
-    }
+        
+      } else {
+        alert(result?.message || 'Error al registrar el usuario');
+      }
+    });
+  
   }
 
   public login() {
