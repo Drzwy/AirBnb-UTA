@@ -75,8 +75,8 @@ export class HomeStayCreateDTO {
   nroCasa: number;
 
   @IsOptional()
-  @IsNumber()
-  nroDpto: number;
+  @IsString()
+  nroDpto: string;
 
   @IsNotEmpty()
   @IsArray()

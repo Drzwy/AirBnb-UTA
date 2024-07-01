@@ -9,7 +9,7 @@ import {
   alternativeImageAlt,
   alternativeImageUrl,
   HomeStayConstants,
-} from '../../../../common/common';
+} from '../../common/common';
 import { StaysService } from '../../services/stays.service';
 import { Router } from '@angular/router';
 import { HomeDisplayService } from '../../services/home-display.service';
