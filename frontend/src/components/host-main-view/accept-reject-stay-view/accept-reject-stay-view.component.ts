@@ -6,6 +6,7 @@ import {
   StaysService,
 } from '../../../services/stays.service';
 import { Subscription, take } from 'rxjs';
+import { UserMeResponse } from '../../../services/user-global-preferences.service';
 
 @Component({
   selector: 'app-accept-reject-stay-view',
@@ -13,7 +14,7 @@ import { Subscription, take } from 'rxjs';
   styleUrl: './accept-reject-stay-view.component.css',
 })
 export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
-  private _stayRequests: StayOfHost[] = [];
+  public _stayRequests: StayOfHost[] = [];
   private _subscription = new Subscription();
 
   constructor(private service: StaysService) {}
@@ -27,10 +28,6 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this._subscription.unsubscribe();
-  }
-
-  public getCurrentStayRequests(): StayOfHost[] {
-    return this._stayRequests;
   }
 
   public acceptStay(stay: StayResponse) {
@@ -58,6 +55,7 @@ export class AcceptRejectStayViewComponent implements OnInit, OnDestroy {
           alert('ALGO MALO HA OCURRIDO');
         }
       });
+      window.location.reload();
   }
 
   private getIdsOfStay(stay: StayResponse): StayPost {

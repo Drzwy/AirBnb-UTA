@@ -69,6 +69,8 @@ export class AdvancedFilterComponent implements OnInit {
     this.currentNumberOfBathrooms = -1;
     this.currentNumberOfBeds = -1;
     this.currentType = '';
+    this.rangePrice = [15000,86000]
+  
     this.service.getHome()
   }
 

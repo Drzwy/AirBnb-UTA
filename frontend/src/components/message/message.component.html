@@ -1,21 +1,7 @@
-<h3>Mensajería</h3>
-<div class="row gy-5 container-fluid justify-content-center" >
-  <div class="card mx-auto w-75 pt-3 justify-content-center">
-    @if (getCurrentHostMessages().length >= 0){
-      <div class="card-title text-center">
-        <h2>
-          Actualmente no posees mensajes
-        </h2>
-      </div>
-      <div class="card-body text-center">
-        <img src="../../assets/images/emptymail.png" alt="empty" height="256" width="256">
-      </div>
-      <div class="card-footer justify-content-sm-end">
-        <button class="btn btn-secondary">Enviar nuevo mensaje</button>
-      </div>
-
-
-    } @else {
+<div class="row justify-content-center">
+  <h2>Mensajería</h2>
+  @if(getCurrentHostMessages().length > 0){
+    <div class="col-12">
       <div class="card-title text-center">
         <h2>
           Últimos Mensajes
@@ -31,9 +17,16 @@
           </li>
         </ul>
       </div>
+    </div>
+  } @else{
+    <div class="col-12 text-center">
+      <h3 class="mt-4 mb-5 fw-normal">Actualmente no posees mensajes</h3>
+      <img src="../../assets/images/emptymail.png" alt="empty" height="130" width="130">
+    </div>
+    <div class="col-12 text-center mt-5">
+      <button class="btn btn-outline-dark">Enviar nuevo mensaje</button>
 
-    }
+    </div>
 
-
-  </div>
+  }
 </div>

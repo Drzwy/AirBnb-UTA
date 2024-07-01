@@ -1,25 +1,96 @@
-<h3>Revisa tus solicitudes de hospedaje</h3>
-<div class="row gy-5 container-fluid justify-content-center" >
-  <div class="card mx-auto w-75 pt-3 justify-content-center">
-    @if (getStayRequests().length > 0){
-      <ul class="list-group">
-        @for (request of getStayRequests(); track  request) {
-          <li class="list-group-item flex-wrap">
-            <div class="card w-auto m-auto p-3">
-              Solicitud de {{request.Propiedad.tipo}}
-              <hr>
-              estado actual: {{request.estadoAceptacion}}
+<div class="row justify-content-center">
+  <h2>Revisa tus solicitudes de hospedaje</h2>
+  @if(getStayRequests().length > 0){
+    @for (request of getStayRequests(); track request){
+      <div class="col-11">
+        <div class="row my-3">
+          <div class="col-10">
+            <h5 class="fw-normal">Solicitud de {{request.Propiedad.titulo}}. {{request.Propiedad.tipo}} en {{request.Propiedad.ciudad}}, {{request.Propiedad.pais}}</h5>
+            <h6 class="fw-normal">• Estado actual: {{request.estadoAceptacion.toLowerCase()}}</h6>
+          </div>
+          <div class="col-2 text-end">
+            <button type="button" class="btn btn btn-outline-dark" data-bs-toggle="modal" [attr.data-bs-target]="'#stayModal' + request.id">Ver detalles</button>
+          </div>
+          <div class="col-2 text-end">
+    
+            <!-- Modal -->
+            <div class="modal fade text-start" [attr.id]="'stayModal' + request.id" tabindex="-1" aria-labelledby="stayModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-2" id="exampleModalLabel">Detalles de la solicitud</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row">
+                          <h5 class="fw-semibold mt-3 mb-1">Solicitud de arriendo para la propiedad:</h5>
+                          <h6 class="fw-normal"> {{request.Propiedad.titulo}}</h6>
+                        </div>
+                        
+                        <div class="row">
+                          <h5 class="fw-semibold mt-3 mb-1">Ubicada en:</h5>
+                          <h6 class="fw-normal"> {{request.Propiedad.ciudad}}, {{request.Propiedad.pais}}</h6>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col-6">
+                            <h5 class="fw-semibold mt-3 mb-1">Fecha de inicio:</h5>
+                            <h6 class="fw-normal">{{request.fechaIni | date: 'dd MMM yyyy'}}</h6>
+                          </div>
+                          <div class="col-6">
+                            <h5 class="fw-semibold mt-3 mb-1">Fecha de termino:</h5>
+                            <h6 class="fw-normal">{{request.fechaFin| date: 'dd MMM yyyy'}}</h6>
+                          </div>
+                        </div>
+    
+                        <div class="row">
+                          <h5 class="fw-semibold mt-3 mb-1">Cantidad de Huespedes:</h5>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Numero de adultos: {{request.nroAdultos}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Numero de niños: {{request.nroNinos}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Numero de bebes: {{request.nroBebes}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Numero de mascotas: {{request.nroMascotas}}</h6>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <h5 class="fw-semibold mt-3 mb-1">Costos del hospedaje:</h5>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Costo por noche: ${{request.costoNoche.toLocaleString()}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Costo por {{request.nochesDeEstadia}} noches: ${{request.costoHospedaje.toLocaleString()}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Tarifa de limpieza: ${{request.tarifaLimpieza.toLocaleString()}}</h6>
+                          </div>
+                          <div class="col-12 mb-2">
+                            <h6 class="fw-normal">Tarifa de servicio: ${{request.tarifaServicio.toLocaleString()}}</h6>
+                          </div>
+                          <div class="col-12 mb-2 text-end">
+                            <h4 class="fw-semibold">Total: ${{(request.costoHospedaje+request.tarifaLimpieza+request.tarifaServicio).toLocaleString()}}</h4>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-outline-dark" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
             </div>
-
-          </li>
-        }
-
-      </ul>
-
-    } @else {
-      hola buenas tardes
-
+          </div>
+        </div>
+      </div>
     }
-
-  </div>
+  }
 </div>
+

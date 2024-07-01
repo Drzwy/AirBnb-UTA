@@ -57,6 +57,7 @@ export interface ChangeOptionDTO {
 export interface UserMeResponse {
   id: number;
   nombre: string;
+  apellidoPat: string;
   anfitrionDe: HomeStayGetResponse[];
   valoracionesRecibidas?: ValoracionUsuarioResponse[];
 }

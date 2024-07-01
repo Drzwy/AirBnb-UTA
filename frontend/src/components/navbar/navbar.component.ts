@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     id: 0,
     nombre: '',
     anfitrionDe: [],
+    apellidoPat: '',
   };
   private configVisibility: boolean = false;
   private loginSub?: Subscription;
@@ -60,7 +61,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         window.location.reload();
       });
     } else if (id == 'home-stay-list') {
-      console.log('ola');
       this.router.navigate([id]).then(() => {
         window.location.reload();
       });
@@ -74,7 +74,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   };
   readonly largeButtonHostMode: UrlOption = {
     label: 'Modo Anfitrión',
-    url: 'about-me',
+    url: 'about-me-host',
   };
   readonly userConfigOptions: UrlOption[] = [
     {

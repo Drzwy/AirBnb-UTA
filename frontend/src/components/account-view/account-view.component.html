@@ -1,12 +1,17 @@
-
 <app-navbar />
-<div class="container m-2 p-3 flex-column m-2">
+<div class="border-bottom"></div>
 
-  <h1>Cuenta</h1>
-
-
-  <app-message [id]="getUserId()"/>
-  <app-stay-requests [id]="getUserId()"/>
-
-
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <h1 class="pt-3 mt-4 text-center">Cuenta</h1>
+      <div class="row mt-5">
+        <app-message [id]="getUserId()"/>
+      </div>
+      <div class="border-bottom my-5"></div>
+      <div class="row my-5">
+        <app-stay-requests [id]="getUserId()"/>
+      </div>
+    </div>
+  </div>
 </div>

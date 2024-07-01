@@ -49,7 +49,6 @@ export class BookingViewComponent implements OnInit {
   public rating: string = ''
   public numberReviews: number = -1
   public cardId: number = -1
-  public cards: any = [1,2,3,4] //cambiar cuando hayan  tarjetas
   public paymentMethods!: any[]
 
   public increment(field: string): void {
@@ -80,14 +79,12 @@ export class BookingViewComponent implements OnInit {
     let guestString = '';
     let guestCount = 0;
 
-    // Lista de tipos de huéspedes
     const guestTypes = [
       { name: 'huésped', count: this.reservation.guests.adults + this.reservation.guests.children },
       { name: 'bebé', count: this.reservation.guests.infants },
       { name: 'mascota', count: this.reservation.guests.pets },
     ];
 
-    // Filtra y agrega tipos de huéspedes a la cadena
     guestTypes.forEach((guest, index) => {
       if (guest.count > 0) {
         if (guestCount > 0) {

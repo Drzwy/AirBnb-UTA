@@ -11,6 +11,8 @@ import {
   HomeStayConstants,
 } from '../../../../common/common';
 import { StaysService } from '../../services/stays.service';
+import { Router } from '@angular/router';
+import { HomeDisplayService } from '../../services/home-display.service';
 
 @Component({
   selector: 'app-host-main-view',
@@ -22,12 +24,15 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
   private _currentHostRatings: ValoracionUsuarioResponse[] = [];
   private _currentHostProfit: number = 0;
   private _currentHostName: string = '';
+  private _currentHostLastname: string = '';
   private _currentHostId: number = 0;
   private _userSubscription: Subscription = new Subscription();
   private _staySubscription: Subscription = new Subscription();
+
   constructor(
     private userService: UserGlobalPreferencesService,
     private stayService: StaysService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -36,6 +41,7 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this._currentHostHouses = value.anfitrionDe;
         this._currentHostName = value.nombre;
+        this._currentHostLastname = value.apellidoPat;
         this._currentHostId = value.id;
         if (value.valoracionesRecibidas) {
           this._currentHostRatings = value.valoracionesRecibidas;
@@ -59,11 +65,18 @@ export class HostMainViewComponent implements OnInit, OnDestroy {
     this._staySubscription.unsubscribe();
   }
 
+
+  public homeVisualizer(id: number) {
+    this.router.navigate([`housing-visualizer/${id}`]);
+  }
   public getCurrentHostHouses(): HomeStayGetResponse[] {
     return this._currentHostHouses;
   }
   public getCurrentHostName(): string {
     return this._currentHostName;
+  }
+  public getCurrentHostLastName(): string {
+    return this._currentHostLastname;
   }
   public getCurrentHostId(): number {
     return this._currentHostId;

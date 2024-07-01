@@ -7,8 +7,9 @@ import {
 } from '../../services/home-display.service';
 import { FilterState } from './advanced-filter/advanced-filter.component';
 import { Router } from '@angular/router';
-import { forkJoin, map, max, Subscription, switchMap } from 'rxjs';
+import { forkJoin, map, Subscription, switchMap } from 'rxjs';
 import { ImageDTO } from '../housing-visualizer/images-card/image-card.component';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'app-home-stay-list',
@@ -23,15 +24,19 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public currentFilter: FilterState = emptyFilter;
   public currentHomeStayList: HomeStayInformation[] = [];
   public rating:{ stayId: number, averageScore: number }[] = [];
+  public homestays:HomeStayInformation[] = []
+  public dates: Date[] = []
 
   private homeStaysSubscription?: Subscription;
-  public homestays:HomeStayInformation[] = []
 
   constructor(
     private service: HomeDisplayService,
     private router: Router,
+    private booking: BookingService,
   ) {}
   ngOnInit() {
+
+      this.booking.changeRangeDates(this.dates)
 
     this.getHome()
     this.homeStaysSubscription = this.service.availableHomeStays2$.pipe(
