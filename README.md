@@ -15,12 +15,6 @@ Se incluyen funciones de la plataforma original tanto como funciones propias des
   - [Prioridades del desarrollo](#prioridades-del-desarrollo)
   - [Funciones actuales](#funciones-actuales)
   - [Instalación](#instalación)
-  - [Ejemplos de uso](#ejemplos-de-uso)
-    - [Registrarse e Iniciar sesión](#registrarse-e-iniciar-sesión)
-    - [Buscar propiedades](#buscar-propiedades)
-    - [Alquilar una propiedad](#alquilar-una-propiedad)
-    - [Crear una propiedad (ser anfitrión)](#crear-una-propiedad-ser-anfitrión)
-    - [Administrar propiedades creadas](#administrar-propiedades-creadas)
   - [Modelo de la base de datos](#modelo-de-la-base-de-datos)
 
 ## Objetivos del proyecto
@@ -45,11 +39,16 @@ El proyecto tiene como principal prioridad replicar el flujo de uso de la plataf
 
 ## Funciones actuales
 
-Algunas de las funciones de la versión actual del proyecto (`0.2.0`) incluyen:
+Algunas de las funciones de la versión actual del proyecto (`1.0.0`) incluyen:
 
 1. Registro y Autenticación de usuarios
-2. Arriendo de propiedades
-3. Gestión de propiedades
+2. Búsqueda y Filtro de propiedades para arrendar
+3. Solicitud de Arriendo de propiedades
+4. Registro de métodos de pago
+5. Gestión de Solicitudes de Arriendo como anfitrión
+6. Resúmenes de valoraciones para propiedades y usuarios
+7. Resúmenes financieros de todos los hospedajes en curso
+8. Gestión de propiedades creadas
 
 ## Instalación
 
@@ -77,21 +76,9 @@ cd frontend/ && npm run start && cd ..
 
 4. Para acceder a la aplicación utilice la dirección local:
 
-```js
-http: /localhost:3000/;
 ```
-
-## Ejemplos de uso
-
-#### Registrarse e Iniciar sesión
-
-#### Buscar propiedades
-
-#### Alquilar una propiedad
-
-#### Crear una propiedad (ser anfitrión)
-
-#### Administrar propiedades creadas
+http:/localhost:3000/
+```
 
 ## Modelo de la base de datos
 
