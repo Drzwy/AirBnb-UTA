@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeDisplayService } from '../../../services/home-display.service';
+import { HomeDisplayService, HomeStayType } from '../../../services/home-display.service';
 
 @Component({
   selector: 'app-advanced-filter',
@@ -14,53 +14,62 @@ export class AdvancedFilterComponent implements OnInit {
 
   public currentMinPricePerNight: number;
   public currentMaxPricePerNight: number;
-  public currentNumberOfGuests: number;
   public currentNumberOfRooms: number;
   public currentNumberOfBathrooms: number;
+  public currentNumberOfBeds: number;
+  public currentType: string;
+
 
   public rangePrice: number[] = [15000, 86000];
   public numbers: number[] = [1,2,3,4,5,6,7,8]
 
   ngOnInit() {
-    this.service.filterIsValid.subscribe((value) => {
-      this._filterIsValid = value;
-    });
   }
 
   private _getFilterButtonText = (value: boolean) => {
     return value ? this.CONSTANTS.true : this.CONSTANTS.false;
   };
 
+  homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes();
+
   constructor(private service: HomeDisplayService) {
     this.filterButtonText = this._getFilterButtonText(this.showFilterDiv);
-    this.currentMinPricePerNight = 0;
-    this.currentMaxPricePerNight = 0;
-    this.currentNumberOfGuests = 0;
-    this.currentNumberOfRooms = 0;
-    this.currentNumberOfBathrooms = 0;
+    this.currentMinPricePerNight = -1;
+    this.currentMaxPricePerNight = -1;
+    this.currentNumberOfRooms = -1;
+    this.currentNumberOfBathrooms = -1;
+    this.currentNumberOfBeds = -1;
+    this.currentType = '';
   }
 
-  public switchFiltersOption() {
-    this.showFilterDiv = !this.showFilterDiv;
-    this.filterButtonText = this._getFilterButtonText(this.showFilterDiv);
-  }
-  public sendCurrentFilterState(): void {
-    const filterState: FilterState = {
-      minPricePerNight: this.currentMinPricePerNight,
-      maxPricePerNight: this.currentMaxPricePerNight,
-      numberOfGuests: this.currentNumberOfGuests,
-      numberOfRooms: this.currentNumberOfRooms,
-      numberOfBathrooms: this.currentNumberOfBathrooms,
-    };
-    this.service.changeCurrentFilterState(filterState);
+  public filter() {
+    let filter = ''
+    filter = `${filter}precioNocheMin=${this.rangePrice[0]}&`
+    filter = `${filter}precioNocheMax=${this.rangePrice[1]}&`
 
-    if (this._filterIsValid) {
-      this.currentMinPricePerNight = 0;
-      this.currentMaxPricePerNight = 0;
-      this.currentNumberOfGuests = 0;
-      this.currentNumberOfRooms = 0;
-      this.currentNumberOfBathrooms = 0;
+    if(this.currentNumberOfRooms != -1){
+      filter = `${filter}dormitorios=${this.currentNumberOfRooms}&`
     }
+    if(this.currentNumberOfBathrooms != -1){
+      filter = `${filter}banos=${this.currentNumberOfBathrooms}&`
+    }
+    if(this.currentNumberOfBeds != -1){
+      filter = `${filter}camas=${this.currentNumberOfBeds}&`
+    }
+    if(this.currentType != ''){
+      filter = `${filter}tipo=${this.currentType}&`
+    }
+    this.service.filterHomestays(filter)
+  }
+
+  public clearAll(){
+    this.currentMinPricePerNight = -1;
+    this.currentMaxPricePerNight = -1;
+    this.currentNumberOfRooms = -1;
+    this.currentNumberOfBathrooms = -1;
+    this.currentNumberOfBeds = -1;
+    this.currentType = '';
+    this.service.getHome()
   }
 
   readonly CONSTANTS = {
@@ -73,14 +82,15 @@ export class AdvancedFilterComponent implements OnInit {
     maxPriceLabel: 'Precio Máximo por Noche',
     numberOfRoomsLabel: 'Número de Habitaciones',
     numberOfBathroomsLabel: 'Número de Baños',
-    numberOfGuestsLabel: 'Número de Huéspedes',
+    numberOfBedsLabel: 'Número de Camas',
   };
 }
 
 export interface FilterState {
   minPricePerNight: number;
   maxPricePerNight: number;
-  numberOfGuests: number;
   numberOfRooms: number;
   numberOfBathrooms: number;
+  numberOfBeds: number;
+  type: string;
 }

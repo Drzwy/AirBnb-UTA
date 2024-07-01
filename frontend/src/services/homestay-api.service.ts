@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HomeStayForm } from '../components/add-home-stay/add-home-stay.component';
-import { catchError, throwError } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,80 +11,67 @@ export class HomestayApiService {
   private getOfUrl: string = 'http://localhost:3000/homestays/get';
   private putUrl: string = 'http://localhost:3000/homestay';
   private deleteUrl: string = 'http://localhost:3000/homestays/delete';
+  private getHomeStays: string =
+    'http://localhost:3000/homestays/get/userHouses';
   constructor(private http: HttpClient) {}
 
   public deleteHomeStay(id: number) {
     return this.http.delete(`${this.deleteUrl}/${id}`);
   }
 
+  public getHomestaysOfUser(id: number): Observable<HomeStayGetResponse[]> {
+    const url = this.getHomeStays.concat('/', id.toString());
+    return this.http.get<HomeStayGetResponse[]>(url);
+  }
+
   public sendHomeStayForm(form: HomeStayForm) {
-    if (
-      !form.guests ||
-      !form.rooms ||
-      !form.beds ||
-      !form.bathrooms ||
-      !form.pricePerNight ||
-      !form.type ||
-      !form.desc ||
-      !form.street ||
-      !form.streetNumber ||
-      !form.depNumber ||
-      !form.services ||
-      !form.securityOptions ||
-      !form.arrivalOptions ||
-      !form.rules ||
-      !form.location ||
-      !form.initDate ||
-      !form.finishDate ||
-      !form.images
-    ) {
-      console.error('Formulario incompleto:', form);
-      return throwError(
-        () =>
-          new Error(
-            'Formulario incompleto o datos no ingresados correctamente. Por favor, completa todos los campos.',
-          ),
-      );
-    }
     const request: HomeStayCreateDTOResponse = {
       dormitorios: form.rooms,
       camas: form.beds,
       banos: form.bathrooms,
-      precioNoche: form.pricePerNight, // TODO CAMBIAR LUEGO
-      maxPersonas: form.guests,
+      fechasOcupadas: form.noAvailableDates, //cambiar a fechas no disponibles
+      precioNoche: form.pricePerNight,
+      maxAdultos: form.adults,
+      maxNinos: form.children,
+      maxBebes: form.babies, 
+      maxMascotas: form.pets, 
       tipo: form.type,
+      titulo: form.title,
       descripcion: form.desc,
       calle: form.street,
       nroCasa: form.streetNumber,
       nroDpto: form.depNumber,
-      comodidades: [form.services],
-      opcionesDeSeguridad: [form.securityOptions],
-      opcionesDeLlegada: [form.arrivalOptions],
-      reglas: [form.rules],
+      comodidades: form.services.split(',').map((service) => service.trim()),
+      opcionesDeSeguridad: form.securityOptions
+        .split(',')
+        .map((option) => option.trim()),
+      opcionesDeLlegada: form.arrivalOptions
+        .split(',')
+        .map((option) => option.trim()),
+      reglas: form.rules.split(',').map((rule) => rule.trim()),
       anfitrionId: form.userId,
-      pais: form.location,
-      ciudad: form.location,
-      fechasDisponibles: [form.initDate, form.finishDate],
-      fotos: form.images
+      pais: form.country,
+      ciudad: form.city,
+      fotos: form.images.split(',').map(img => img.trim())
     };
     return this.http
       .post<HomeStayCreateDTOResponse>(this.postUrl, request)
-      .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      console.error('An error occurred :', error.message);
-    } else {
-      console.error(
-        `Backend returned code ${error.status}, body was: `,
-        error.error,
+      .pipe(
+        map((result) => {
+          if (result) {
+            return { success: true };
+          }
+          return { success: false, message: 'Unknown error' };
+        }),
+        catchError((error) => {
+          console.error('Error during registration', error);
+          let errorMessage = 'An unknown error occurred';
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+          return of({ success: false, message: errorMessage });
+        }),
       );
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(
-      () => new Error('Something bad happened; please try again later.'),
-    );
   }
 }
 
@@ -92,10 +79,17 @@ export interface HomeStayCreateDTOResponse {
   dormitorios: number;
   camas: number;
   banos: number;
+  fechasOcupadas: Date[];
   precioNoche: number; // TODO CAMBIAR LUEGO
-  maxPersonas: number;
+  maxAdultos: number;
+  maxNinos: number;
+  maxBebes: number;
+  maxMascotas: number;
   tipo: string;
+  titulo: string;
   descripcion: string;
+  pais: string;
+  ciudad: string;
   calle: string;
   nroCasa: number;
   nroDpto: number;
@@ -103,11 +97,8 @@ export interface HomeStayCreateDTOResponse {
   opcionesDeSeguridad: string[];
   opcionesDeLlegada: string[];
   reglas: string[];
-  anfitrionId: number;
-  pais: string;
-  ciudad: string;
-  fechasDisponibles: Date[];
   fotos: string[];
+  anfitrionId: number;
 }
 
 export interface HomeStayGetResponse extends HomeStayCreateDTOResponse {

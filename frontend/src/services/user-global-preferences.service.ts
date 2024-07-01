@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HomeStayGetResponse } from './homestay-api.service';
 
-const defaultChangeOption: ChangeOptionDTO = {
-  name: 'Peso Chileno',
-  symbol: '$',
-  abbreviation: 'CLP',
-};
 const availableChangeOptions: ChangeOptionDTO[] = [
   {
     name: 'Peso Chileno',
@@ -63,4 +58,8 @@ export interface UserMeResponse {
   id: number;
   nombre: string;
   anfitrionDe: HomeStayGetResponse[];
+  valoracionesRecibidas?: ValoracionUsuarioResponse[];
+}
+export interface ValoracionUsuarioResponse {
+  puntuacion: number;
 }

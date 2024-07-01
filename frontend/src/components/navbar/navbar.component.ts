@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private _currentUser: UserMeResponse = {
     id: 0,
     nombre: '',
-    anfitrionDe: []
+    anfitrionDe: [],
   };
   private configVisibility: boolean = false;
   private loginSub?: Subscription;
@@ -56,17 +56,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public navigateByURL(id: string): void {
     if (id == 'logout') {
       this.loginService.logout();
-      this.router.navigate([this.router.url])
-      .then(() => {
+      this.router.navigate([this.router.url]).then(() => {
         window.location.reload();
       });
     } else if (id == 'home-stay-list') {
-      console.log('ola')
+      console.log('ola');
       this.router.navigate([id]).then(() => {
         window.location.reload();
-      });;
-    }
-    else{
+      });
+    } else {
       this.router.navigate([id]);
     }
   }
@@ -84,8 +82,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       url: '',
     },
     {
-      label: 'Notificaciones',
-      url: '',
+      label: 'Modo Anfitrión',
+      url: 'about-me-host',
     },
     {
       label: 'Pon tu espacio en Airbnb',
@@ -93,7 +91,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     },
     {
       label: 'Cuenta',
-      url: '',
+      url: 'about-me',
     },
     {
       label: 'Cerrar Sesión',
@@ -131,7 +129,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public currentUserHasHomestays(): boolean {
     return this._currentUser.anfitrionDe.length > 0;
   }
-
 }
 
 export interface UserDto {

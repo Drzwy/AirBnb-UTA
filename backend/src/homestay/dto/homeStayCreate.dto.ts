@@ -24,7 +24,7 @@ export class HomeStayCreateDTO {
   @IsNotEmpty()
   @IsArray()
   @Type(() => Date)
-  fechasDisponibles: Date[];
+  fechasOcupadas: Date[];
 
   @IsNotEmpty()
   @IsNumber()
@@ -32,11 +32,27 @@ export class HomeStayCreateDTO {
 
   @IsNotEmpty()
   @IsNumber()
-  maxPersonas: number;
+  maxAdultos: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  maxNinos: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  maxBebes: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  maxMascotas: number;
 
   @IsNotEmpty()
   @IsString()
   tipo: string;
+
+  @IsNotEmpty()
+  @IsString()
+  titulo: string;
 
   @IsNotEmpty()
   @IsString()

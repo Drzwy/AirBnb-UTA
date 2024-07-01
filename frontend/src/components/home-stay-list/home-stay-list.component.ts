@@ -3,10 +3,11 @@ import {
   emptyFilter,
   HomeDisplayService,
   HomeStayType,
+  reviews,
 } from '../../services/home-display.service';
 import { FilterState } from './advanced-filter/advanced-filter.component';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { forkJoin, map, max, Subscription, switchMap } from 'rxjs';
 import { ImageDTO } from '../housing-visualizer/images-card/image-card.component';
 
 @Component({
@@ -21,32 +22,40 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   public currentType: string = '';
   public currentFilter: FilterState = emptyFilter;
   public currentHomeStayList: HomeStayInformation[] = [];
+  public rating:{ stayId: number, averageScore: number }[] = [];
 
-  private _homestayTypeSubscription?: Subscription;
-  private _currentFilterSubscription?: Subscription;
-  private _filterByConditionSubscription?: Subscription;
+  private homeStaysSubscription?: Subscription;
+  public homestays:HomeStayInformation[] = []
 
   constructor(
     private service: HomeDisplayService,
     private router: Router,
   ) {}
   ngOnInit() {
-    this._homestayTypeSubscription = this.service.currentType.subscribe(
-      (value) => {
-        this.updateHomeStayList(value);
-      },
-    );
-    this._currentFilterSubscription = this.service.currentFilterState.subscribe(
-      (value) => (this.currentFilter = value),
-    );
-    this._filterByConditionSubscription = this.service
-      .filterHomeStaysByConditions()
-      .subscribe((value) => (this.currentHomeStayList = value));
+
+    this.getHome()
+    this.homeStaysSubscription = this.service.availableHomeStays2$.pipe(
+      switchMap((result: any[]) => {
+        this.homestays = result
+
+        const reviewRequests = this.homestays.map(homeStay =>
+          this.service.getReviewsByID(homeStay.id).pipe(
+            map(reviews =>({
+              stayId:homeStay.id,
+              averageScore:this.calculateAverageScore(reviews)
+            }))
+          )
+        );
+        return forkJoin(reviewRequests)
+      })
+    ).subscribe((results: any) => {
+      this.rating = results
+      console.log(results)
+    })
+
   }
   ngOnDestroy() {
-    this._currentFilterSubscription!.unsubscribe();
-    this._filterByConditionSubscription!.unsubscribe();
-    this._homestayTypeSubscription!.unsubscribe();
+    this.homeStaysSubscription!.unsubscribe();
   }
 
   readonly CONSTANTS = {
@@ -55,29 +64,24 @@ export class HomeStayListComponent implements OnInit, OnDestroy {
   readonly homeStayTypes: HomeStayType[] = this.service.getHomeStayTypes();
   readonly IMAGE_DIMENSIONS: number = 300;
 
+  public getHome(){
+    this.service.getHome()
+  }
+
   public homeVisualizer(id: number) {
     this.router.navigate([`housing-visualizer/${id}`]);
   }
 
-  public updateHomeStayList(type?: string, filter?: FilterState,) {
-    this.service.getAvailableHomeStay().subscribe((result) =>{
-      if (type === undefined || type == '') {
-        this.currentHomeStayList = result;
-        this.images = this.service.images
-      } else {
-        this.currentHomeStayList = result.filter(
-          (homeStay) => homeStay.tipo == type && homeStay.precioNoche,
-        );
-      } 
-    })  
+  public calculateAverageScore(reviews: reviews[]): number {
+    if (reviews.length === 0) return 0;
+    const totalScore = reviews.reduce((sum, review) => sum + review.puntuacion, 0);
+    return parseFloat((totalScore / reviews.length).toFixed(1));
   }
 
-  // public getPriceOf(home: HomeStayInformation): String {
-  //   return this.service.intToMoneyFormat(
-  //     home.pricePerNight.price,
-  //     home.pricePerNight.typeChange,
-  //   );
-  // }
+  public getRating(id:number): number{
+    const rate = this.rating.find(house => house.stayId === id)
+    return rate!.averageScore
+  }
 }
 
 export interface HomeStayInformation {
@@ -88,10 +92,14 @@ export interface HomeStayInformation {
   dormitorios: number,
   camas: number,
   banos: number,
-  fechasDisponibles: Date[],
+  fechasOcupadas: Date[],
   precioNoche: number,
-  maxPersonas: number,  
+  maxAdultos: number,  
+  maxNinos: number,
+  maxBebes: number,
+  maxMascotas: number,
   tipo: string,
+  titulo: string,
   descripcion: string,
   pais: string,
   ciudad: string,

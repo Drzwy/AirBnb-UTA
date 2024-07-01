@@ -1,6 +1,6 @@
 services:
   db-dev:
-    image: postgres:13
+    image: postgres:16
     ports:
       - 6789:5432
     environment:
@@ -9,9 +9,13 @@ services:
       POSTGRES_DB: nest
     networks:
       - airbnb-uta
+    env_file:
+      - .env
+    volumes:
+      - db-dev-vol:/var/lib/postgresql/data
 
   db-test:
-    image: postgres:13
+    image: postgres:16
     ports:
       - 9999:5432
     environment:
@@ -20,5 +24,13 @@ services:
       POSTGRES_DB: nest
     networks:
       - airbnb-uta
+    env_file:
+      - .env
+    volumes:
+      - db-test-vol:/var/lib/postgresql/data
+
+volumes:
+  db-dev-vol:
+  db-test-vol:
 networks:
   airbnb-uta:

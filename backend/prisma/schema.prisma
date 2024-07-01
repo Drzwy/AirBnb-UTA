@@ -1,4 +1,4 @@
-  // This is your Prisma schema file,
+// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
@@ -39,6 +39,8 @@ model Usuario {
   valoracionesAUsuarios    ValoracionUsuario[]   @relation("reseña usuario")
   valoracionesAPropiedades ValoracionPropiedad[] @relation("reseña propiedad")
   valoracionesRecibidas    ValoracionUsuario[]   @relation("usuario criticado")
+
+  metodosDePago MetodoDePago[] @relation("registra")
 }
 
 enum UserTypes {
@@ -55,15 +57,19 @@ model Propiedad {
   fechaActualizacion DateTime @updatedAt
   estaActivo         Boolean  @default(true)
 
-  dormitorios       Int
-  camas             Int
-  banos             Int
-  maxPersonas       Int
+  dormitorios Int
+  camas       Int
+  banos       Int
+  maxAdultos  Int
+  maxNinos    Int
+  maxBebes    Int
+  maxMascotas Int
 
-  fechasDisponibles DateTime[] @db.Date
+  fechasOcupadas DateTime[] @db.Date
   precioNoche       Float
 
   tipo        String
+  titulo      String
   descripcion String
 
   pais    String
@@ -103,8 +109,23 @@ model Hospedaje {
   estaActivo       Boolean   @default(true)
   estadoAceptacion StayState @default(EN_ESPERA)
 
-  fechaIni DateTime @db.Date
-  fechaFin DateTime @db.Date
+  fechaIni        DateTime @db.Date
+  fechaFin        DateTime @db.Date
+  nochesDeEstadia Int
+  costoNoche      Float
+
+  nroAdultos  Int @default(1)
+  nroNinos    Int @default(0)
+  nroBebes    Int @default(0)
+  nroMascotas Int @default(0)
+
+  costoHospedaje Float
+  tarifaServicio Float @default(0)
+  tarifaLimpieza Float @default(0)
+
+  metodoDePago     MetodoDePago @relation(name: "paga", fields: [metodoDePagoId, usuarioPagadorId], references: [id, propietarioId])
+  metodoDePagoId   Int
+  usuarioPagadorId Int
 
   Huesped     Usuario   @relation(name: "se hospeda", fields: [huespedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   huespedId   Int
@@ -114,9 +135,22 @@ model Hospedaje {
   @@id([id, huespedId, propiedadId])
 }
 
+model MetodoDePago {
+  id Int @default(autoincrement())
+
+  infoTarjeta String
+
+  propietario   Usuario @relation("registra", fields: [propietarioId], references: [id])
+  propietarioId Int
+
+  hospedajesPagados Hospedaje[] @relation("paga")
+
+  @@id([id, propietarioId])
+}
+
 model ValoracionUsuario {
   fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  estaActivo    Boolean  @default(true)
 
   descripcion String?
   puntuacion  Int
@@ -131,7 +165,7 @@ model ValoracionUsuario {
 
 model ValoracionPropiedad {
   fechaCreacion DateTime @default(now())
-  estaActivo    Boolean
+  estaActivo    Boolean  @default(true)
 
   descripcion String?
   puntuacion  Int

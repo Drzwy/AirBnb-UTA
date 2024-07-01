@@ -2,3 +2,36 @@
   color:black;
   border-color: black;
 }
+
+
+::ng-deep .p-slider .p-slider-range {
+  background: black;
+}
+
+::ng-deep .p-slider .p-slider-handle{
+  border: 2px solid #000000
+}
+
+::ng-deep .p-slider .p-slider-handle{
+  border: 2px solid #000000
+}
+
+::ng-deep .p-slider .p-slider-handle:focus{
+  box-shadow: 0 0 0 0.2rem #dbdbdb;
+}
+
+::ng-deep .p-slider:not(.p-disabled) .p-slider-handle:hover{
+  background: #dbdbdb;
+}
+
+::ng-deep .btn-outline-secondary{
+  --bs-btn-active-bg: #d3d3d3;
+  --bs-btn-border-color: #000000;
+  --bs-btn-active-border-color: #000000;
+  --bs-btn-active-color: #000000;
+  --bs-btn-color: #000000;
+}
+
+.btn-link{
+  color: black;
+}
