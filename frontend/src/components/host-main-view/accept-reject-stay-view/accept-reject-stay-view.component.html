@@ -17,7 +17,7 @@
             <div class="col-2 text-end">
               <!-- Button trigger modal -->
               <button type="button" class="btn btn btn-outline-dark" data-bs-toggle="modal" [attr.data-bs-target]="'#stayModal' + stay.hospedaje.id">Ver detalles</button>
-  
+
               <!-- Modal -->
               <div class="modal fade text-start" [attr.id]="'stayModal' + stay.hospedaje.id" tabindex="-1" aria-labelledby="stayModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -33,17 +33,17 @@
                             <h5 class="fw-semibold mt-3 mb-1">Solicitud de arriendo para la propiedad:</h5>
                             <h6 class="fw-normal"> {{request.propiedad.titulo}}</h6>
                           </div>
-                          
+
                           <div class="row">
                             <h5 class="fw-semibold mt-3 mb-1">Ubicada en:</h5>
                             <h6 class="fw-normal"> {{request.propiedad.ciudad}}, {{request.propiedad.pais}}</h6>
                           </div>
-                          
+
                           <div class="row">
                             <h5 class="fw-semibold mt-3 mb-1">Nombre del huesped:</h5>
                             <h6 class="fw-normal"> {{ stay.huesped.nombre }} {{stay.huesped.apellidoPat}}</h6>
                           </div>
-                          
+
                           <div class="row">
                             <div class="col-6">
                               <h5 class="fw-semibold mt-3 mb-1">Fecha de inicio:</h5>
@@ -99,11 +99,11 @@
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
         }
       </div>
     }
-    
+
   } @else {
     <div class="col-12 text-center">
       <h3 class="my-4 fw-normal">Aun no has recibido ninguna solicitud de arriendo</h3>

@@ -83,7 +83,7 @@ export interface StayResponse {
   fechaIni: Date;
   fechaFin: Date;
   Propiedad: HomeStayGetResponse;
-  nochesDeEstadia:number;
+  nochesDeEstadia: number;
 }
 
 export interface StayPost {
