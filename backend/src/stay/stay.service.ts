@@ -180,10 +180,10 @@ export class StayService {
   async modifyStay(dto: ModifyStayDTO): Promise<Hospedaje> {
     try {
       // deberia estar en el servicio de homestays
-      const { fechasDisponibles: availableDates } =
+      const { fechasOcupadas: availableDates } =
         await this.prismaService.propiedad.findUnique({
           select: {
-            fechasDisponibles: true,
+            fechasOcupadas: true,
           },
           where: {
             id: dto.ids.propiedadId,
