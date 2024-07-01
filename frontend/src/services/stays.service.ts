@@ -72,10 +72,18 @@ export interface StayResponse {
   fechaCreacion: string;
   estaActivo: boolean;
   costoHospedaje: number;
+  costoNoche: number;
+  tarifaServicio: number;
+  tarifaLimpieza: number;
   estadoAceptacion: string;
   nroAdultos: number;
   nroNinos: number;
+  nroBebes: number;
+  nroMascotas: number;
+  fechaIni: Date;
+  fechaFin: Date;
   Propiedad: HomeStayGetResponse;
+  nochesDeEstadia:number;
 }
 
 export interface StayPost {

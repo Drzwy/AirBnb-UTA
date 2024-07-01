@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { BookingService } from '../../services/booking.service';
 import { Subscription } from 'rxjs';
+import { start } from '@popperjs/core';
 
 @Component({
   selector: 'app-calendar',
@@ -71,11 +72,18 @@ export class CalendarComponent implements OnInit {
       const startDate = this.rangeDates[0];
       const endDate = this.rangeDates[1];
 
-      const differenceMs = endDate.getTime() - startDate.getTime();
-      const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+      if(startDate.getTime() != endDate.getTime()){
+        const differenceMs = endDate.getTime() - startDate.getTime();
+        const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
-      this.selectedNights = differenceDays;   
-      this.nights.emit(this.selectedNights);
+        this.selectedNights = differenceDays;   
+        this.nights.emit(this.selectedNights);
+      } else {
+        this.selectedNights = 1;   
+        this.nights.emit(this.selectedNights);
+      }
+
+      
     } else{
       this.selectedNights = 0
       this.nights.emit(this.selectedNights)
@@ -86,7 +94,7 @@ export class CalendarComponent implements OnInit {
   public updateMinMaxDate(startDate: Date) {
     this.minDate = startDate;
     for (let invalidDate of this.invalidDate) {
-      if (invalidDate > startDate) {
+      if (new Date(invalidDate) > startDate) {
         this.maxDate = new Date(invalidDate); // Un día antes del primer día deshabilitado
         this.maxDate.setDate(this.maxDate.getDate() - 1);
         break;

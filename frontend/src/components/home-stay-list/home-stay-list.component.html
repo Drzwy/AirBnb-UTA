@@ -41,13 +41,11 @@
             </div>
             <div class="row card-subtitle">
               <div class="col ps-0">
-                <p class="fw-light">{{ homeStay.fechasOcupadas[0] | date: 'dd MMM' }} - {{ homeStay.fechasOcupadas[1] | date: 'dd MMM' }}
+                <p class="fw-light">{{homeStay.tipo}}
               </div>
-              
             </div>
             <div class="row card-subtitle">
               <div class="col d-flex ps-0">
-                <!-- <p class="fw-semibold">{{getPriceOf(homeStay)}}</p> -->
                 <p class="fw-semibold">${{homeStay.precioNoche |  number:'1.0-0'}} CLP</p>
                 <p class="ms-2">{{CONSTANTS.perNightText}}</p>
               </div>        

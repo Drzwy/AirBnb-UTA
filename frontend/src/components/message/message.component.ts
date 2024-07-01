@@ -31,6 +31,7 @@ export class MessageComponent implements OnInit, OnDestroy {
   constructor(private msgService: MessageApiService) {}
 
   public getCurrentHostMessages(): MessageResponse[] {
+    console.log(this._currentMessages.length)
     return this._currentMessages;
   }
 }
