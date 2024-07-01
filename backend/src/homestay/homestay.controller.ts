@@ -9,9 +9,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { HomestayService } from './homestay.service';
-import { HomeStayUpdateDTO, HomeStayCreateDTO } from './dto';
+import { HomeStayUpdateDTO, HomeStayCreateDTO, HomeStayFilterDTO } from './dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Homestays')
@@ -35,6 +36,12 @@ export class HomestayController {
   @HttpCode(HttpStatus.OK)
   public async getHomeStayByUserId(@Param('id', ParseIntPipe) id: number) {
     return await this.homeStayService.getAllHomeStaysByUserId(id);
+  }
+
+  @Get('filter')
+  @HttpCode(HttpStatus.OK)
+  public async getHomeStayWithFilters(@Query() filters: HomeStayFilterDTO) {
+    return await this.homeStayService.getHomeStayWithFilters(filters);
   }
 
   @Post('create')
